@@ -14,7 +14,7 @@
 // }
 
 const themeConfig = {
-  templateName: 'ระบบสวัสดิการครูดารุสสาลาม',
+  templateName: 'Bacho HRMS :: ระบบริหารบุคคล โรงพยาบาลบาเจาะ',
   layout: 'horizontal',
   mode: 'light',
   direction: 'ltr',

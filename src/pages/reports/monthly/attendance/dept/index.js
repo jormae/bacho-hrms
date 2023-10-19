@@ -25,22 +25,23 @@ import CardLoanReceipt from 'src/views/cards/CardLoanReceipt'
 import CardLoanSurety1 from 'src/views/cards/CardLoanSurety1'
 import CardLoanSurety2 from 'src/views/cards/CardLoanSurety2'
 import FormDebtReport from 'src/views/form-layouts/FormDebtReport'
+import TableReportMonthlyAttendanceDept from 'src/views/tables/TableReportMonthlyAttendanceDept'
 
-export const LoanMemberContext = createContext()
-
-export const LoanRecordHistoryContext = createContext()
-
-export const LoanContext = createContext()
+export const ReportMonthlyAttendanceDeptContext = createContext()
 
 const FormLayouts = () => {
   const router = useRouter()
   if (router.isReady) {
-    router.query.nationalId
+    router.query.deptId
+    router.query.date
   }
-  const [memberLoanHistories, setMemberLoanHistories] = useState({ blogs: [] })
-  const [memberDetail, setMemberDetail] = useState()
-  const [loanDetail, setLoanDetail] = useState()
+
+  const deptId = 3;
+  const date = "2023-10";
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
+
+  const [attendanceReports, setAttendanceReports] = useState({ blogs: [] })
+  console.log(attendanceReports)
 
   const [value, setValue] = React.useState('member')
   const [tabHistoryValue, setTabHistoryValue] = React.useState('loan')
@@ -52,40 +53,15 @@ const FormLayouts = () => {
   const handleTabHistoryChange = (event, newValue) => {
     setTabHistoryValue(newValue)
   }
-  
-  const fetchMemberDetail = async () => {
-    let uri = apiConfig.baseURL + `/members/${router.query.nationalId}`
-    console.log(uri)
-    try{
-     const res = await axios.get(uri)
-      setMemberDetail(res.data[0])
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
-  const fetchLoanDetail = async () => {
-    let uri = apiConfig.baseURL + `/loans/request/${router.query.nationalId}/${router.query.loanId}`
-    console.log(uri)
-    try{
-    const res = await axios.get(uri)
-    console.log(res.data[0])
-    setLoanDetail(res.data[0])
+  const fetchAttendanceReports = async () => {
+    let uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${date}`
 
-      // .then(result => setLoanDetail(result.data[0]))
-      // .catch(error => console.log('An error occurred' + error))
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchMemberLoansHistories = async () => {
-    let uri = apiConfig.baseURL + `/loans/loan-history/${router.query.nationalId}/${router.query.loanId}`
+    // let uri = apiConfig.baseURL + `/reports/monthly/attendances/`
     console.log(uri)
     try {
       const { data } = await axios.get(uri)
-      console.log(data)
-      setMemberLoanHistories({ blogs: data })
+      setAttendanceReports({ blogs: data })
     } catch (error) {
       console.log(error)
     }
@@ -94,15 +70,10 @@ const FormLayouts = () => {
   useEffect(() => {
     if (router.isReady) {
       router.query
-      fetchMemberDetail()
-      fetchMemberLoansHistories()
-      fetchLoanDetail()
+      fetchAttendanceReports()
     }
   }, [router.isReady, router.query])
 
-  console.log('memberLoanHistories = '+memberLoanHistories)
-  console.log('memberDetail = '+memberDetail)
-  console.log('loanDetail = '+loanDetail)
 
   // const SkeletonMemberCardLoading = () => (
   //   <Box sx={{ width: '100%' }}>
@@ -117,40 +88,40 @@ const FormLayouts = () => {
   //         )}
   //   </Box>
   // )
-  const SkeletonMemberLoanFormLoading = () => (
-    <Box sx={{ width: '100%' }}>
-      {memberDetail?.nationalId ? (
-        <LoanContext.Provider value={loanDetail}>
-          <FormLoanDetail />
-        </LoanContext.Provider>
-      ) : (
-        <Typography variant='h4'>
-          <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-        </Typography>
-      )}
-    </Box>
-  )
+  // const SkeletonMemberLoanFormLoading = () => (
+  //   <Box sx={{ width: '100%' }}>
+  //     {memberDetail?.nationalId ? (
+  //       <LoanContext.Provider value={loanDetail}>
+  //         <FormLoanDetail />
+  //       </LoanContext.Provider>
+  //     ) : (
+  //       <Typography variant='h4'>
+  //         <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
+  //       </Typography>
+  //     )}
+  //   </Box>
+  // )
 
-  const SkeletonMemberDebtReportFormLoading = () => (
-    <Box sx={{ width: '100%' }}>
-      {memberDetail?.nationalId ? (
-        <LoanContext.Provider value={loanDetail}>
-          <FormDebtReport />
-        </LoanContext.Provider>
-      ) : (
-        <Typography variant='h4'>
-          <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-        </Typography>
-      )}
-    </Box>
-  )
+  // const SkeletonMemberDebtReportFormLoading = () => (
+  //   <Box sx={{ width: '100%' }}>
+  //     {memberDetail?.nationalId ? (
+  //       <LoanContext.Provider value={loanDetail}>
+  //         <FormDebtReport />
+  //       </LoanContext.Provider>
+  //     ) : (
+  //       <Typography variant='h4'>
+  //         <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
+  //       </Typography>
+  //     )}
+  //   </Box>
+  // )
 
-  const SkeletonMemberLoanLoading = () => (
+  const SkeletonAttendanceReportLoading = () => (
     <Box sx={{ width: '100%' }}>
-      {memberDetail?.nationalId ? (
-        <LoanRecordHistoryContext.Provider value={memberLoanHistories}>
-          <TableMemberLoanPaymentHistory />
-        </LoanRecordHistoryContext.Provider>
+      {attendanceReports?.cid ? (
+        <ReportMonthlyAttendanceDeptContext.Provider value={attendanceReports}>
+          <TableReportMonthlyAttendanceDept />
+        </ReportMonthlyAttendanceDeptContext.Provider>
       ) : (
         <Typography variant='h4'>
           <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
@@ -161,32 +132,35 @@ const FormLayouts = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12} md={6}>
+      {/* <Grid item xs={12} md={6}>
         <SkeletonMemberLoanFormLoading />
       </Grid>
       <Grid item xs={12} md={6}>
         <SkeletonMemberDebtReportFormLoading />
+      </Grid> */}
+      <Grid item xs={12} md={6} lg={4}>
+        <CardAddLoanPayment />
       </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardAddLoanPayment />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardLoanAgreement />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardLoanReceipt/>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardLoanSurety1 />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardLoanSurety2 />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardLoanReceipt/>
-        </Grid>
+      <Grid item xs={12} md={6} lg={4}>
+        <CardLoanAgreement />
+      </Grid>
+      <Grid item xs={12} md={6} lg={4}>
+        <CardLoanReceipt />
+      </Grid>
+      <Grid item xs={12} md={6} lg={4}>
+        <CardLoanSurety1 />
+      </Grid>
+      <Grid item xs={12} md={6} lg={4}>
+        <CardLoanSurety2 />
+      </Grid>
+      <Grid item xs={12} md={6} lg={4}>
+        <CardLoanReceipt />
+      </Grid>
       <Grid item xs={12}>
-        <SkeletonMemberLoanLoading />
+        {/* <SkeletonAttendanceReportLoading /> */}
+        <ReportMonthlyAttendanceDeptContext.Provider value={attendanceReports}>
+          <TableReportMonthlyAttendanceDept />
+        </ReportMonthlyAttendanceDeptContext.Provider>
       </Grid>
     </Grid>
   )

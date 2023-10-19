@@ -439,47 +439,45 @@ const Dashboard = () => {
       <Grid container space={6}>
         <Grid item xs={12}>
           <Grid item md={12} xs={12}>
-            <Card>
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align='center'>ที่</TableCell>
-                      <TableCell align='center'>กลุ่มงาน</TableCell>
-                      <TableCell align='center'>จำนวนสแกนทำงาน</TableCell>
-                      <TableCell align='center'>ตรงเวลา</TableCell>
-                      <TableCell align='center'>สาย</TableCell>
-                      <TableCell align='center'>ลา</TableCell>
-                      <TableCell align='center'>จัดการ</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {dashboardReportAttendance1.blogs.filter((row) => {
-                      return search.toLowerCase() === '' ? row : row.staffName.toLowerCase().includes(search);
-                    }).slice(pg * rpg, pg *
-                      rpg + rpg).map(row => (
-                        <TableRow key={row.attendanceId}>
-                          <TableCell align='center' component='th' scope='row'>
-                            {i++}
-                          </TableCell>
-                          <TableCell>{row.mainDeptName}</TableCell>
-                          <TableCell align='center'>{row.totalAttendance}</TableCell>
-                          <TableCell align='center'>{row.totalPunctual}</TableCell>
-                          <TableCell align='center'>{row.totalLate}</TableCell>
-                          <TableCell align='center'>N/A</TableCell>
-                          <TableCell align='center' color='success'>
-                            {/* <Link href={`../../loan/${row.nationalId}/${row.loanId}`} color='success'> */}
-                            <Button type='button' variant='outlined'>
-                              แสดงรายละเอียด
-                            </Button>
-                            {/* </Link> */}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align='center'>ที่</TableCell>
+                    <TableCell align='center'>กลุ่มงาน</TableCell>
+                    <TableCell align='center'>จำนวนสแกนทำงาน</TableCell>
+                    <TableCell align='center'>ตรงเวลา</TableCell>
+                    <TableCell align='center'>สาย</TableCell>
+                    <TableCell align='center'>ลา</TableCell>
+                    <TableCell align='center'>จัดการ</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dashboardReportAttendance1.blogs.filter((row) => {
+                    return search.toLowerCase() === '' ? row : row.staffName.toLowerCase().includes(search);
+                  }).slice(pg * rpg, pg *
+                    rpg + rpg).map(row => (
+                      <TableRow key={row.attendanceId}>
+                        <TableCell align='center' component='th' scope='row'>
+                          {i++}
+                        </TableCell>
+                        <TableCell>{row.mainDeptName}</TableCell>
+                        <TableCell align='center'>{row.totalAttendance}</TableCell>
+                        <TableCell align='center'>{row.totalPunctual}</TableCell>
+                        <TableCell align='center'>{row.totalLate}</TableCell>
+                        <TableCell align='center'>N/A</TableCell>
+                        <TableCell align='center' color='success'>
+                          {/* <Link href={`../../loan/${row.nationalId}/${row.loanId}`} color='success'> */}
+                          <Button type='button' variant='outlined'>
+                            แสดงรายละเอียด
+                          </Button>
+                          {/* </Link> */}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
           </Grid>
         </Grid>
@@ -488,9 +486,7 @@ const Dashboard = () => {
       <Grid container spacing={12}>
         <Grid item xs={12}>
           <Grid item md={12} xs={12}>
-            <Card>
-              <SkeletonReportDailyAttendancesLoading />
-            </Card>
+            <SkeletonReportDailyAttendancesLoading />
           </Grid>
         </Grid>
       </Grid>

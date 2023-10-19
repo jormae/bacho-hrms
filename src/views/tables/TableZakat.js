@@ -24,23 +24,24 @@ import { all } from 'async'
 
 const TableZakat = () => {
 
-    const [zakats, setZakats] = useState({ blogs: [] })
-    const memberName = typeof window !== 'undefined' ? localStorage.getItem('memberName') : null
-    console.log(zakats)
-    const fetchZakats = async () => {
-      let uri = apiConfig.baseURL + `/zakats`
-      console.log(uri)
-      try {
-        const { data } = await axios.get(uri)
-        setZakats({ blogs: data })
-      } catch (error) {
-        console.log(error)
-      }
+  const [zakats, setZakats] = useState({ blogs: [] })
+  const memberName = typeof window !== 'undefined' ? localStorage.getItem('memberName') : null
+  console.log(zakats)
+
+  const fetchZakats = async () => {
+    let uri = apiConfig.baseURL + `/zakats`
+    console.log(uri)
+    try {
+      const { data } = await axios.get(uri)
+      setZakats({ blogs: data })
+    } catch (error) {
+      console.log(error)
     }
-  
-    useEffect(() => {
-        fetchZakats()
-    }, [])
+  }
+
+  useEffect(() => {
+    fetchZakats()
+  }, [])
 
   return (
     <Card>
@@ -63,7 +64,7 @@ const TableZakat = () => {
               {zakats.blogs.map(row => (
                 <TableRow key={row.zakatId}>
                   <TableCell align='center' component='th' scope='row'>
-                  {row.zakatId}
+                    {row.zakatId}
                   </TableCell>
                   <TableCell align='center'> {moment(row.zakatDateTime).add(543, 'year').format('DD/MM/YYYY')}</TableCell>
                   <TableCell align='center'>{row.zakatTypeName}</TableCell>

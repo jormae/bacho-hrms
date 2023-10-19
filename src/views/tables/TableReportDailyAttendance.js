@@ -26,9 +26,11 @@ import { DashboardReportAttendancesContext, DashboardStrDateContext } from 'src/
 
 const TableReportDailyAttendance = () => {
     console.log("TableReportDailyAttendance")
+
     // const paidReports = useContext(PaidContext)
     const reportDailyAttendances = useContext(DashboardReportAttendancesContext)
     const strDate = useContext(DashboardStrDateContext)
+
     // const dashboardStrDate = useContext(DashboardStrDateContext)
     // const attendanceDataTable = paidReports ?? dashboardReportAttendance1;
     // const attendanceDataTable = useContext(DashboardReportAttendance1Context);
