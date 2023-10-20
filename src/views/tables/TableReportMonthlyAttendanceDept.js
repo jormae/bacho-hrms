@@ -33,6 +33,7 @@ import { CarShiftPattern } from 'mdi-material-ui'
 const TableReportMonthlyAttendanceDept = () => {
 
     const attendanceReports = useContext(ReportMonthlyAttendanceDeptContext)
+    const date = "2023-10"
 
     console.log(attendanceReports)
 
