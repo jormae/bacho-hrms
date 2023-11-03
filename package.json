@@ -1,8 +1,8 @@
 {
-  "name": "daruss_welfare",
-  "description": "Darussalam Welfare Online System",
+  "name": "bacho_hrms_web",
+  "description": "Bacho Human Resource Management System",
   "license": "MIT",
-  "version": "1.3.1",
+  "version": "1.0.0",
   "author": {
     "name": "Maheedeen Jormae",
     "url": "https://themeselection.com/"
@@ -70,6 +70,7 @@
     "eslint-plugin-react": "^7.29.4",
     "mdi-material-ui": "^7.1.0",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "next": "12.0.4",
     "nprogress": "^0.2.0",
     "react": "17.0.2",

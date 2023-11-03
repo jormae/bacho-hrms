@@ -19,7 +19,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import apiConfig from 'src/configs/apiConfig'
 
 // ** Icons Imports
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from '@material-ui/icons/Save'
 import LoadingButton from '@mui/lab/LoadingButton'
 import moment from 'moment'
 
@@ -33,16 +33,15 @@ import {
 } from 'src/pages/member-form'
 
 const FormMember = () => {
+  const positions = useContext(PositionsContext)
 
-    const positions = useContext(PositionsContext)
+  const memberTypes = useContext(MemberTypesContext)
 
-    const memberTypes = useContext(MemberTypesContext)
-  
-    const memberRoles = useContext(MemberRolesContext)
-  
-    const paymentTypes = useContext(PaymentTypesContext)
-  
-    const memberStatus = useContext(MemberStatusContext)
+  const memberRoles = useContext(MemberRolesContext)
+
+  const paymentTypes = useContext(PaymentTypesContext)
+
+  const memberStatus = useContext(MemberStatusContext)
 
   const { register, handleSubmit, reset } = useForm()
   const [loading, setLoading] = React.useState(false)
@@ -109,10 +108,7 @@ const FormMember = () => {
             <Grid item xs={12} md={3}>
               <FormControl fullWidth>
                 <InputLabel>ประเภทสมาชิก</InputLabel>
-                <Select
-                  label='ประเภทสมาชิก'
-                  {...register('memberTypeId', { required: true })}
-                >
+                <Select label='ประเภทสมาชิก' {...register('memberTypeId', { required: true })}>
                   {memberTypes.map(item => {
                     return (
                       <MenuItem key={item.memberTypeId} value={item.memberTypeId}>
@@ -126,10 +122,7 @@ const FormMember = () => {
             <Grid item xs={12} md={3}>
               <FormControl fullWidth>
                 <InputLabel>ประเภทการชำระเงิน</InputLabel>
-                <Select
-                  label='ประเภทการชำระเงิน'
-                  {...register('paymentTypeId', { required: true })}
-                >
+                <Select label='ประเภทการชำระเงิน' {...register('paymentTypeId', { required: true })}>
                   {paymentTypes.map(item => {
                     return (
                       <MenuItem key={item.paymentTypeId} value={item.paymentTypeId}>
@@ -143,10 +136,7 @@ const FormMember = () => {
             <Grid item xs={12} md={3}>
               <FormControl fullWidth>
                 <InputLabel>ประเภทบัญชีผู้ใช้</InputLabel>
-                <Select
-                  label='ประเภทบัญชีผู้ใช้'
-                  {...register('memberRoleId', { required: true })}
-                >
+                <Select label='ประเภทบัญชีผู้ใช้' {...register('memberRoleId', { required: true })}>
                   {memberRoles.map(item => {
                     return (
                       <MenuItem key={item.memberRoleId} value={item.memberRoleId}>
@@ -160,10 +150,7 @@ const FormMember = () => {
             <Grid item xs={12} md={3}>
               <FormControl fullWidth>
                 <InputLabel>สถานะสมาชิก</InputLabel>
-                <Select
-                  label='สถานะสมาชิก'
-                  {...register('memberStatusId', { required: true })}
-                >
+                <Select label='สถานะสมาชิก' {...register('memberStatusId', { required: true })}>
                   {memberStatus.map(item => {
                     return (
                       <MenuItem key={item.memberStatusId} value={item.memberStatusId}>

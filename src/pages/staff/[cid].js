@@ -13,11 +13,6 @@ import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-// import FormSpouseDetail from 'src/views/form-layouts/FormSpouseDetail'
-// import TableStaffInvestmentHistory from 'src/views/tables/TableStaffInvestmentHistory'
-// import TableStaffLoanHistory from 'src/views/tables/TableStaffLoanHistory'
-// import TableStaffDividendHistory from 'src/views/tables/TableStaffDividendHistory'
-// import TableStaffSuretyHistory from 'src/views/tables/TableStaffSuretyHistory'
 import FormAccount from 'src/views/form-layouts/FormAccount'
 import { ConsoleNetworkOutline } from 'mdi-material-ui'
 
@@ -233,15 +228,15 @@ const FormLayouts = () => {
 
   const SkeletonStaffCardLoading = () => (
     <Box sx={{ width: '100%' }}>
-          {staffDetail.cid ? (
-            <StaffContext.Provider value={staffDetail}>
-              <CardUser />
-            </StaffContext.Provider>
-          ) : (
-            <Typography variant='h4'>
-              <Skeleton width='100%' height={300} sx={{ animationDuration: '3.0s' }} />
-            </Typography>
-          )}
+      {staffDetail.cid ? (
+        <StaffContext.Provider value={staffDetail}>
+          <CardUser />
+        </StaffContext.Provider>
+      ) : (
+        <Typography variant='h4'>
+          <Skeleton width='100%' height={300} sx={{ animationDuration: '3.0s' }} />
+        </Typography>
+      )}
     </Box>
   )
 
@@ -255,7 +250,7 @@ const FormLayouts = () => {
             <Tab label='ข้อมูลบัญชีผู้ใช้' value='account' />
           </TabList>
         </Box>
-      <TabPanel value='staff'>
+        <TabPanel value='staff'>
           {staffDetail.cid ? (
             <StaffContext.Provider value={staffDetail}>
               <PositionsContext.Provider value={position}>
@@ -317,9 +312,9 @@ const FormLayouts = () => {
         <TabPanel value='loan'>
           {staffLoanHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
-               <Grid item xs={12} md={12} lg={12}>
+              <Grid item xs={12} md={12} lg={12}>
                 <LoanHistoryContext.Provider value={staffLoanHistories}>
-                  <TableStaffLoanHistory />
+                  {/* <TableStaffLoanHistory /> */}
                 </LoanHistoryContext.Provider>
               </Grid>
             </Grid>
@@ -347,9 +342,9 @@ const FormLayouts = () => {
         <TabPanel value='investment'>
           {staffInvestmentHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
-               <Grid item xs={12} md={12} lg={12}>
+              <Grid item xs={12} md={12} lg={12}>
                 <InvesmentHistoryContext.Provider value={staffInvestmentHistories}>
-                  <TableStaffInvestmentHistory />
+                  {/* <TableStaffInvestmentHistory /> */}
                 </InvesmentHistoryContext.Provider>
               </Grid>
             </Grid>
@@ -362,9 +357,9 @@ const FormLayouts = () => {
         <TabPanel value='dividend'>
           {staffDividendHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
-               <Grid item xs={12} md={12} lg={12}>
+              <Grid item xs={12} md={12} lg={12}>
                 <DividendHistoryContext.Provider value={staffDividendHistories}>
-                  <TableStaffDividendHistory />
+                  {/* <TableStaffDividendHistory /> */}
                 </DividendHistoryContext.Provider>
               </Grid>
             </Grid>
@@ -378,7 +373,7 @@ const FormLayouts = () => {
           {staffSuretyHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
               <SuretyHistoryContext.Provider value={staffSuretyHistories}>
-                <TableStaffSuretyHistory />
+                {/* <TableStaffSuretyHistory /> */}
               </SuretyHistoryContext.Provider>
             </Grid>
           ) : (
@@ -396,7 +391,7 @@ const FormLayouts = () => {
       <Grid item md={4} xs={12}>
         <SkeletonStaffCardLoading />
       </Grid>
-      <Grid item md={8}  xs={12}>
+      <Grid item md={8} xs={12}>
         <SkeletonStaffFormsLoading />
       </Grid>
       <Grid item md={12} xs={12}>

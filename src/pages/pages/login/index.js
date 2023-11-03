@@ -28,8 +28,8 @@ import apiConfig from 'src/configs/apiConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import LoadingButton from '@mui/lab/LoadingButton'
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -49,12 +49,12 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const LoginPage = () => {
-  console.log("base uri = "+process.env.REACT_APP_BASE_URI)
+  console.log('base uri = ' + process.env.REACT_APP_BASE_URI)
 
   const [loading, setLoading] = React.useState(false)
   const [err, setError] = useState(false)
   const [message, setMessage] = useState()
-  
+
   const [values, setValues] = useState({
     password: '',
     showPassword: false
@@ -96,12 +96,15 @@ const LoginPage = () => {
         if (data.status == 'success') {
           localStorage.setItem('token', data.token)
           localStorage.setItem('username', data.username)
-          localStorage.setItem('memberName', data.memberName)
-          localStorage.setItem('memberRoleId', data.memberRoleId)
-          localStorage.setItem('memberRoleName', data.memberRoleName)
+          localStorage.setItem('staffName', data.staffName)
+          localStorage.setItem('userRoleId', data.userRoleId)
+          localStorage.setItem('deptId', data.deptId)
+          localStorage.setItem('mainDeptId', data.mainDeptId)
+          localStorage.setItem('deptName', data.deptName)
+          localStorage.setItem('mainDeptName', data.mainDeptName)
+          localStorage.setItem('positionName', data.positionName)
           window.location = '/'
-        }
-        else{
+        } else {
           setError(true)
           setLoading(false)
           setMessage(data.message)
@@ -118,14 +121,14 @@ const LoginPage = () => {
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Box
-                component="img"
-                sx={{
-                  height: 150,
-                  width: 200
-                }}
-                alt="The house from the offer."
-                src='/images/logos/DTWF.png'
-              />
+              component='img'
+              sx={{
+                height: 150,
+                width: 150
+              }}
+              alt='Bacho HRMS'
+              src='/images/logos/HRMS.png'
+            />
             <Typography>{process.env.REACT_APP_BASE_URI}</Typography>
             <Typography
               variant='h6'
@@ -142,14 +145,14 @@ const LoginPage = () => {
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' textAlign='center' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-               {themeConfig.templateName}
-            </Typography> 
+              {themeConfig.templateName}
+            </Typography>
             {err ? (
-            <Alert severity="error">
-              {/* <AlertTitle>Error</AlertTitle> */}
-              {message}
-            </Alert>
-             ) : (
+              <Alert severity='error'>
+                {/* <AlertTitle>Error</AlertTitle> */}
+                {message}
+              </Alert>
+            ) : (
               ''
             )}
           </Box>
@@ -159,7 +162,9 @@ const LoginPage = () => {
               fullWidth
               label='ชื่อบัญชี'
               sx={{ marginBottom: 4 }}
-              onKeyUp={() => {setError(false)}}
+              onKeyUp={() => {
+                setError(false)
+              }}
               {...register('username', { required: true })}
             />
 
@@ -169,7 +174,9 @@ const LoginPage = () => {
                 label='รหัสผ่าน'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
-                onKeyUp={() => {setError(false)}}
+                onKeyUp={() => {
+                  setError(false)
+                }}
                 {...register('password', { required: true })}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -197,17 +204,17 @@ const LoginPage = () => {
               Login
             </Button> */}
             <LoadingButton
-                fullWidth
-                  type='submit'
-                  color='primary'
-                  onClick={handleSubmit(onSubmit)}
-                  loading={loading}
-                  loadingPosition='start'
-                  variant='contained'
-                  size='large'
-                >
-                  เข้าสู่ระบบ
-                </LoadingButton>
+              fullWidth
+              type='submit'
+              color='primary'
+              onClick={handleSubmit(onSubmit)}
+              loading={loading}
+              loadingPosition='start'
+              variant='contained'
+              size='large'
+            >
+              เข้าสู่ระบบ
+            </LoadingButton>
             {/* <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               {/* <Typography variant='body2' sx={{ marginRight: 2 }}>
                 New on our platform?

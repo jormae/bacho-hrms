@@ -24,50 +24,69 @@ import TableContainer from '@mui/material/TableContainer'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import TablePagination from "@mui/material/TablePagination"
+import TablePagination from '@mui/material/TablePagination'
 import Divider from '@mui/material/Divider'
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import TextField from "@mui/material/TextField";
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import TextField from '@mui/material/TextField'
 import Link from 'next/link'
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import moment from 'moment'
+import 'moment/locale/th' // without this line it didn't work
+
 
 const FormLayouts = () => {
+  var moment = require('moment-timezone');
+  moment.locale('th')
+  const tz = moment().tz("Asia/Bangkok").format();
+  console.log("tz = " + tz)
+  const { register, handleSubmit } = useForm()
 
-  const { register, handleSubmit } = useForm();
-
-  const mainDeptId = 2; //nurses
-  const today = moment().format("YYYY-MM-DD");
-  const currentMonth = moment().format("YYYY-MM");
-  const [date, setDate] = useState(today);
+  // const mainDeptId = 2 //nurses
+  const today = moment().format('YYYY-MM-DD')
+  const currentMonth = moment().format('YYYY-MM')
+  const [date, setDate] = useState(today)
   const [month, setMonth] = useState(currentMonth);
-  const strDate = 'วันที่ ' + moment(date).format('DD') + ' เดือน ' + moment(date).format('MMMM') + ' พ.ศ.' + moment(date).add(543, 'year').format('YYYY');
-  const strMonth = 'เดือน ' + moment(month).format('MMMM') + ' พ.ศ.' + moment(month).add(543, 'year').format('YYYY');
+
+  const currentDateTime = moment().add(543, 'year').format('DD/MM/YYYY hh:mm:ss');
+  const currentDateTimeTz = moment().add(543, 'year').tz("Asia/Bangkok").format('DD/MM/YYYY hh:mm:ss');
+  console.log("currentDateTime = " + currentDateTime)
+
+  const strDate =
+    'วันที่ ' +
+    moment(date).format('DD') +
+    ' เดือน ' +
+    moment(date).format('MMMM') +
+    ' พ.ศ.' +
+    moment(date).add(543, 'year').format('YYYY');
+
+  const strMonth = 'เดือน ' + moment(month).format('MMMM') + ' พ.ศ.' + moment(month).add(543, 'year').format('YYYY')
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
   const userMainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
+  const mainDeptId = typeof window !== 'undefined' ? localStorage.getItem('mainDeptId') : null
+  const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
 
   const [search, setSearch] = useState('')
-  const [deptFilter, setDeptFilter] = useState('all');
-  const [deptOptions, setDeptOptions] = useState({ blogs: [] });
+  const [deptFilter, setDeptFilter] = useState('all')
+  const [deptOptions, setDeptOptions] = useState({ blogs: [] })
   const [dailyAttendanceReports, setDailyAttendanceReports] = useState({ blogs: [] })
   const [attendanceReports, setAttendanceReports] = useState({ blogs: [] })
 
-  const i = 1;
-  const j = 1;
-  const [pg, setpg] = useState(0);
-  const [rpg, setrpg] = useState(10);
+  const i = 1
+  const j = 1
+  const [pg, setpg] = useState(0)
+  const [rpg, setrpg] = useState(10)
 
   function handleChangePage(event, newpage) {
-    setpg(newpage);
+    setpg(newpage)
   }
 
   function handleChangeRowsPerPage(event) {
-    setrpg(parseInt(event.target.value, 10));
-    setpg(0);
+    setrpg(parseInt(event.target.value, 10))
+    setpg(0)
   }
 
-  const handleChange = async (data) => {
+  const handleChange = async data => {
     console.log(data.target.value)
     setMonth(data.target.value)
     let uri = apiConfig.baseURL + `/reports/monthly/attendances/main-dept/${mainDeptId}/${data.target.value}`
@@ -80,7 +99,7 @@ const FormLayouts = () => {
     }
   }
 
-  const handleChangeDaily = async (data) => {
+  const handleChangeDaily = async data => {
     console.log(data.target.value)
     setDate(data.target.value)
     let uri = apiConfig.baseURL + `/reports/daily/attendances/main-dept/${mainDeptId}/${data.target.value}`
@@ -116,8 +135,9 @@ const FormLayouts = () => {
   }
 
   const fetchDepts = async () => {
-    let uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
-
+    let admin_uri = apiConfig.baseURL + `/utils/depts/`
+    let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
+    let uri = (userRoleId == 1) ? admin_uri : manager_uri
     console.log(uri)
     try {
       const { data } = await axios.get(uri)
@@ -128,42 +148,62 @@ const FormLayouts = () => {
   }
 
   useEffect(() => {
-    fetchDepts();
-    fetchDailyAttendanceReports();
-    fetchAttendanceReports();
+    fetchDepts()
+    fetchDailyAttendanceReports()
+    fetchAttendanceReports()
   }, [])
 
   const SkeletonDailyAttendanceReportLoading = () => (
     <Box sx={{ width: '100%' }}>
       {dailyAttendanceReports.blogs ? (
         <Card>
-          <CardHeader title={`รายงานสรุปข้อมูลลงเวลาทำงาน ${strDate} ${userMainDeptName}`} titleTypographyProps={{ variant: 'h6' }} />
+          <CardHeader
+            title={`รายงานสรุปข้อมูลลงเวลาทำงาน ${strDate} ${userMainDeptName}`}
+            titleTypographyProps={{ variant: 'h6' }}
+          />
           <Divider sx={{ margin: 0 }} />
           <CardContent>
             <Grid item xs={12} md={12} lg={12}>
               <form noValidate autoComplete='off'>
                 <Grid container spacing={5}>
                   <Grid item xs={8}>
-                    <TextField fullWidth label='ค้นหาเจ้าหน้าที่' placeholder='พิมพ์ชื่อ-สกุล' {...register('search', {
-                      onChange: (e) => { setSearch(e.target.value) },
-                      onBlur: (e) => { },
-                    })} />
+                    <TextField
+                      fullWidth
+                      label='ค้นหาเจ้าหน้าที่'
+                      placeholder='พิมพ์ชื่อ-สกุล'
+                      {...register('search', {
+                        onChange: e => {
+                          setSearch(e.target.value)
+                        },
+                        onBlur: e => { }
+                      })}
+                    />
                   </Grid>
                   <Grid item xs={2}>
                     <Select
-                      fullWidth label='หน่วยงาน'
+                      fullWidth
+                      label='หน่วยงาน'
                       placeholder='เลือกหน่วยงาน'
                       value={deptFilter}
-                      onChange={(e) => setDeptFilter(e.target.value)}
+                      onChange={e => setDeptFilter(e.target.value)}
                     >
-                      <MenuItem value="all">ทั้งหมด</MenuItem>
+                      <MenuItem value='all'>ทั้งหมด</MenuItem>
                       {deptOptions.blogs.map(row => (
-                        <MenuItem key={row.deptId} value={row.deptName}>{row.deptName}</MenuItem>
+                        <MenuItem key={row.deptId} value={row.deptName}>
+                          {row.deptName}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
                   <Grid item xs={2}>
-                    <TextField fullWidth label='เลือกวันที่' type='date' onChange={handleChangeDaily} defaultValue={today} value={date} />
+                    <TextField
+                      fullWidth
+                      label='เลือกวันที่'
+                      type='date'
+                      onChange={handleChangeDaily}
+                      defaultValue={today}
+                      value={date}
+                    />
                   </Grid>
                 </Grid>
               </form>
@@ -182,23 +222,28 @@ const FormLayouts = () => {
                     <TableCell align='center'>สถานะ</TableCell>
                     <TableCell align='center'>หมายเหตุ</TableCell>
                   </TableRow>
-
-                </TableHead >
-                <TableBody >
-                  {dailyAttendanceReports.blogs.filter((row) => {
-                    return deptFilter === 'all' ? row : (row.deptName.includes(deptFilter));
-                  }).slice(pg * rpg, pg *
-                    rpg + rpg).map(row => (
+                </TableHead>
+                <TableBody>
+                  {dailyAttendanceReports.blogs
+                    .filter(row => {
+                      return deptFilter === 'all' ? row : row.deptName.includes(deptFilter)
+                    })
+                    .slice(pg * rpg, pg * rpg + rpg)
+                    .map(row => (
                       <TableRow key={row.attendanceId}>
                         <TableCell align='center' component='th' scope='row'>
                           {i++}
                         </TableCell>
                         <TableCell>{row.staffName}</TableCell>
                         <TableCell>{row.deptName}</TableCell>
-                        <TableCell align='center'>{row.shiftName} ({row.startShiftTime} - {row.endShiftTime})</TableCell>
-                        <TableCell align='center'>{moment(row.attendanceDateTime).add(543, 'year').format('DD/MM/YYYY hh:mm:ss')}</TableCell>
-                        <TableCell align='center'>{row.attendanceTypeId}</TableCell>
-                        <TableCell align='center'>{row.attendanceStatusId}</TableCell>
+                        <TableCell align='center'>
+                          {row.shiftName} ({row.startShiftTime} - {row.endShiftTime})
+                        </TableCell>
+                        <TableCell align='center'>
+                          {moment(row.attendanceDateTime).add(-7, 'hour').add(543, 'year').format('DD/MM/YYYY HH:mm')}
+                        </TableCell>
+                        <TableCell align='center'>{row.attendanceTypeId == 1 ? 'เข้างาน' : 'ออกงาน'}</TableCell>
+                        <TableCell align='center'>{row.attendanceStatusId == 1 ? 'ตรงเวลา' : 'สาย'}</TableCell>
                         <TableCell align='center'>{row.attendanceRemarks}</TableCell>
                       </TableRow>
                     ))}
@@ -207,7 +252,7 @@ const FormLayouts = () => {
             </TableContainer>
             <TablePagination
               rowsPerPageOptions={[10, 20, 50]}
-              component="div"
+              component='div'
               count={attendanceReports.blogs.length}
               rowsPerPage={rpg}
               page={pg}
@@ -228,33 +273,53 @@ const FormLayouts = () => {
     <Box sx={{ width: '100%' }}>
       {attendanceReports.blogs ? (
         <Card>
-          <CardHeader title={`รายงานสรุปข้อมูลลงเวลาทำงาน ${strMonth} ${userMainDeptName}`} titleTypographyProps={{ variant: 'h6' }} />
+          <CardHeader
+            title={`รายงานสรุปข้อมูลลงเวลาทำงาน ${strMonth} ${userMainDeptName}`}
+            titleTypographyProps={{ variant: 'h6' }}
+          />
           <Divider sx={{ margin: 0 }} />
           <CardContent>
             <Grid item xs={12} md={12} lg={12}>
               <form noValidate autoComplete='off'>
                 <Grid container spacing={5}>
                   <Grid item xs={8}>
-                    <TextField fullWidth label='ค้นหาเจ้าหน้าที่' placeholder='พิมพ์ชื่อ-สกุล' {...register('search', {
-                      onChange: (e) => { setSearch(e.target.value) },
-                      onBlur: (e) => { },
-                    })} />
+                    <TextField
+                      fullWidth
+                      label='ค้นหาเจ้าหน้าที่'
+                      placeholder='พิมพ์ชื่อ-สกุล'
+                      {...register('search', {
+                        onChange: e => {
+                          setSearch(e.target.value)
+                        },
+                        onBlur: e => { }
+                      })}
+                    />
                   </Grid>
                   <Grid item xs={2}>
                     <Select
-                      fullWidth label='หน่วยงาน'
+                      fullWidth
+                      label='หน่วยงาน'
                       placeholder='เลือกหน่วยงาน'
                       value={deptFilter}
-                      onChange={(e) => setDeptFilter(e.target.value)}
+                      onChange={e => setDeptFilter(e.target.value)}
                     >
-                      <MenuItem value="all">ทั้งหมด</MenuItem>
+                      <MenuItem value='all'>ทั้งหมด</MenuItem>
                       {deptOptions.blogs.map(row => (
-                        <MenuItem key={row.deptId} value={row.deptName}>{row.deptName}</MenuItem>
+                        <MenuItem key={row.deptId} value={row.deptName}>
+                          {row.deptName}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
                   <Grid item xs={2}>
-                    <TextField fullWidth label='เลือกเดือน' type='month' onChange={handleChange} defaultValue={currentMonth} value={month} />
+                    <TextField
+                      fullWidth
+                      label='เลือกเดือน'
+                      type='month'
+                      onChange={handleChange}
+                      defaultValue={currentMonth}
+                      value={month}
+                    />
                   </Grid>
                 </Grid>
               </form>
@@ -280,29 +345,48 @@ const FormLayouts = () => {
                     <TableCell align='center'>ราชการ</TableCell>
                     <TableCell align='center'>จัดการ</TableCell>
                   </TableRow>
-
-                </TableHead >
-                <TableBody >
-                  {attendanceReports.blogs.filter((row) => {
-                    // return search === '' ? row : (row.staffName.includes(search) || row.deptName.includes(search));
-                    return deptFilter === 'all' ? row : (row.deptName.includes(deptFilter));
-                  }).slice(pg * rpg, pg *
-                    rpg + rpg).map(row => (
+                </TableHead>
+                <TableBody>
+                  {attendanceReports.blogs
+                    .filter(row => {
+                      // return search === '' ? row : (row.staffName.includes(search) || row.deptName.includes(search));
+                      return deptFilter === 'all' ? row : row.deptName.includes(deptFilter)
+                    })
+                    .slice(pg * rpg, pg * rpg + rpg)
+                    .map(row => (
                       <TableRow key={row.attendanceId}>
                         <TableCell align='center' component='th' scope='row'>
                           {j++}
                         </TableCell>
                         <TableCell>{row.staffName}</TableCell>
                         <TableCell>{row.deptName}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift1}/{row.totalCheckoutShift1}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift2}/{row.totalCheckoutShift2}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift3}/{row.totalCheckoutShift3}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift4}/{row.totalCheckoutShift4}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift6}/{row.totalCheckoutShift6}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift7}/{row.totalCheckoutShift7}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift8}/{row.totalCheckoutShift8}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift9}/{row.totalCheckoutShift9}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift10}/{row.totalCheckoutShift10}</TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift1}/{row.totalCheckoutShift1}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift2}/{row.totalCheckoutShift2}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift3}/{row.totalCheckoutShift3}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift4}/{row.totalCheckoutShift4}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift6}/{row.totalCheckoutShift6}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift7}/{row.totalCheckoutShift7}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift8}/{row.totalCheckoutShift8}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift9}/{row.totalCheckoutShift9}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift10}/{row.totalCheckoutShift10}
+                        </TableCell>
                         <TableCell align='center'>{row.totalLeave ?? 0}</TableCell>
                         <TableCell align='center'>{row.totalOutStation ?? 0}</TableCell>
                         <TableCell align='center' color='success'>
@@ -319,7 +403,7 @@ const FormLayouts = () => {
             </TableContainer>
             <TablePagination
               rowsPerPageOptions={[10, 20, 50]}
-              component="div"
+              component='div'
               count={attendanceReports.blogs.length}
               rowsPerPage={rpg}
               page={pg}
@@ -365,9 +449,9 @@ const FormLayouts = () => {
       <Grid item xs={12}>
         <SkeletonDailyAttendanceReportLoading />
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <SkeletonAttendanceReportLoading />
-      </Grid>
+      </Grid> */}
     </Grid>
   )
 }

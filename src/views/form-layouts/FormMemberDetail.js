@@ -19,7 +19,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import apiConfig from 'src/configs/apiConfig'
 
 // ** Icons Imports
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from '@material-ui/icons/Save'
 import LoadingButton from '@mui/lab/LoadingButton'
 import moment from 'moment'
 
@@ -160,7 +160,7 @@ const FormMemberDetail = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...memberRole != 4 ? null : {disabled:true}}>
+              <FormControl fullWidth {...(memberRole != 4 ? null : { disabled: true })}>
                 <InputLabel>ประเภทสมาชิก</InputLabel>
                 <Select
                   label='ประเภทสมาชิก'
@@ -196,7 +196,7 @@ const FormMemberDetail = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...memberRole == 4 ? {disabled:true} : null }>
+              <FormControl fullWidth {...(memberRole == 4 ? { disabled: true } : null)}>
                 <InputLabel>ประเภทบัญชีผู้ใช้</InputLabel>
                 <Select
                   label='ประเภทบัญชีผู้ใช้'
@@ -214,7 +214,7 @@ const FormMemberDetail = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...memberRole != 4 ? null : {disabled:true}}>
+              <FormControl fullWidth {...(memberRole != 4 ? null : { disabled: true })}>
                 <InputLabel>สถานะสมาชิก</InputLabel>
                 <Select
                   label='สถานะสมาชิก'

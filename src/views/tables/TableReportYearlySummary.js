@@ -20,10 +20,9 @@ import moment from 'moment'
 import { SummaryContext } from 'src/pages/reports/yearly/summary/index'
 
 const TableReportYearlySummary = () => {
-    
-    const summaryReports = useContext(SummaryContext)
+  const summaryReports = useContext(SummaryContext)
 
-    const year = moment().add(543, 'year').format('YYYY')
+  const year = moment().add(543, 'year').format('YYYY')
 
   return (
     <Card>
@@ -41,12 +40,12 @@ const TableReportYearlySummary = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              { summaryReports.blogs.map((row, i) => (
-                <TableRow key={i+1}>
+              {summaryReports.blogs.map((row, i) => (
+                <TableRow key={i + 1}>
                   <TableCell align='center' component='th' scope='row'>
-                  {i+1}
+                    {i + 1}
                   </TableCell>
-                  <TableCell align='center' >{row.loanPaymentMonth}</TableCell>
+                  <TableCell align='center'>{row.loanPaymentMonth}</TableCell>
                   <TableCell align='center'>{row.TOTAL_PAYMENT}</TableCell>
                   <TableCell align='center'>
                     <Link href={`loan/${row.nationalId}/${row.loanId}`} color='success'>

@@ -13,48 +13,30 @@ import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Divider from '@mui/material/Divider'
-import TextField from "@mui/material/TextField";
-import AssessmentIcon from '@material-ui/icons/Assessment';
+import TextField from '@mui/material/TextField'
+import AssessmentIcon from '@material-ui/icons/Assessment'
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import Skeleton from '@mui/material/Skeleton'
-
-// import TableReportPaid from 'src/views/tables/TableReportAttendance1'
-// import TableReportPendingPayment from 'src/views/tables/TableReportPendingPayment'
-// import TableReportFollowupPayment from 'src/views/tables/TableReportFollowupPayment'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import TablePagination from '@mui/material/TablePagination'
 
 // ** Styled Component Import
-import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-import Greeting from 'src/views/dashboard/Greeting'
 import apiConfig from 'src/configs/apiConfig'
 import axios from 'axios'
-import CardMember from 'src/views/cards/CardMember'
-import CardActiveLoan from 'src/views/cards/CardActiveLoan'
-import CardFollowUpLoan from 'src/views/cards/CardFollowUpLoan'
-import CardTotalMoney from 'src/views/cards/CardTotalMoney'
-import CardTotalLoan from 'src/views/cards/CardTotalLoan'
-import CardQueueLoan from 'src/views/cards/CardQueueLoan'
-import TableLoanRequest from 'src/views/tables/TableLoanRequest'
-import TableInvestmentRequest from 'src/views/tables/TableInvestmentRequest'
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import Swal from 'sweetalert2';
-import LoadingButton from '@mui/lab/LoadingButton'
-import Badge from '@mui/material/Badge';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
+
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import Swal from 'sweetalert2'
+import dayjs from 'dayjs'
 
 import moment from 'moment'
-import 'moment/locale/th'  // without this line it didn't work
-import TableDashboardRequests from 'src/views/tables/TableDashboardRequests'
-import TableReportAttendance1 from 'src/views/tables/TableReportAttendance1'
+import 'moment/locale/th' // without this line it didn't work
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -62,8 +44,10 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import Paper from '@mui/material/Paper'
-import TablePagination from "@mui/material/TablePagination"
+import TableReportDailyMainDeptAttendance from 'src/views/tables/TableReportDailyMainDeptAttendance'
 import TableReportDailyAttendance from 'src/views/tables/TableReportDailyAttendance'
+import TableReportDailyDeptAttendance from 'src/views/tables/TableReportDailyDeptAttendance'
+import TableReportMonthlyStaffAttendance from 'src/views/tables/TableReportMonthlyStaffAttendance'
 
 export const DataContext = createContext()
 
@@ -71,77 +55,81 @@ export const DashboardReportAttendance1Context = createContext()
 
 export const DashboardReportAttendancesContext = createContext()
 
+export const DashboardReportMainDeptAttendancesContext = createContext()
+
 export const DashboardPendingPaymentContext = createContext()
 
 export const FollowupPaymentContext = createContext()
 
 export const DashboardStrDateContext = createContext()
 
-export const StrSumPaymentContext = createContext()
+export const DashboardCidContext = createContext()
 
 const Dashboard = () => {
-
   const [err, setError] = useState()
-  const [search, setSearch] = useState('')
-  const [pg, setpg] = React.useState(0);
-  const [rpg, setrpg] = React.useState(10);
+
+  // const [search, setSearch] = useState('')
+  const [searchMainDeptStaffName, setSearchMainDeptStaffName] = useState('')
+  const [searchDeptStaffName, setSearchDeptStaffName] = useState('')
+  const [pg, setpg] = React.useState(0)
+  const [rpg, setrpg] = React.useState(10)
 
   function handleChangePage(event, newpage) {
-    setpg(newpage);
+    setpg(newpage)
   }
 
   function handleChangeRowsPerPage(event) {
-    setrpg(parseInt(event.target.value, 10));
-    setpg(0);
+    setrpg(parseInt(event.target.value, 10))
+    setpg(0)
   }
 
-  const userRole = typeof window !== 'undefined' ? localStorage.getItem('memberRoleId') : null
+  const today = moment().format('YYYY-MM-DD')
+  const month = moment().format('YYYY-MM')
+
+  const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
+  const cid = typeof window !== 'undefined' ? localStorage.getItem('username') : null
+  const mainDeptId = typeof window !== 'undefined' ? localStorage.getItem('mainDeptId') : null
+  const mainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
+  const deptId = typeof window !== 'undefined' ? localStorage.getItem('deptId') : null
 
-  const i = 1;
+  const i = 1
   moment.locale('th')
-  const [dashboardReportAttendance1, setReportAttendance1] = useState({ blogs: [] })
-  const [reportDailyAttendances, setReportDailyAttendances] = useState({ blogs: [] })
-  const [dashboardPendingPaymentReports, setPendingPaymentReports] = useState({ blogs: [] })
-  const [followupPaymentReports, setFollowupPaymentReports] = useState({ blogs: [] })
-  const [tabPayments, setTabPayments] = React.useState('pending-payment')
-  console.log(reportDailyAttendances)
-  console.log("length = " + dashboardReportAttendance1.blogs.length)
-
-  // const [date, setDate]=  React.useState(dayjs('2023-07-17'));
-
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
-  console.log(date)
-  const { register, handleSubmit, control, formState: { errors } } = useForm();
-  const [loading, setLoading] = React.useState(false)
-  const [searchDate, setSearchDate] = useState()
-  const [badgeCouter, setBadgeCouter] = useState(0)
-  const [sumPayment, setSumPayment] = useState(0)
-  const strDate = moment(date).format('DD') + ' เดือน ' + moment(date).format('MMMM') + ' พ.ศ.' + moment(date).add(543, 'year').format('YYYY');
-  const [value, setValue] = React.useState(dayjs('2022-04-17'));
+  const [sumDailyReportAttendance, setSumDailyReportAttendance] = useState({ blogs: [] })
+  const [reportDailyAttendances, setReportDailyAttendances] = useState({ blogs: [] })
+  const [reportDailyDeptAttendances, setReportDailyDeptAttendances] = useState({ blogs: [] })
+  const [reportDailyMainDeptAttendances, setDailyAttendanceMainDeptReports] = useState({ blogs: [] })
+  const [reportMonthlyStaffAttendances, setReportMonthlyStaffAttendances] = useState({ blogs: [] })
 
-  const handleTabChange = (event, newValue) => {
-    setTabPayments(newValue)
-  }
+  // console.log(reportDailyAttendances)
+  // console.log('length = ' + sumDailyReportAttendance.blogs.length)
+  // console.log(date)
 
-  const fetchBadgeCouter = async () => {
-    let uri = apiConfig.baseURL + `/reports/monthly/welfare/count-payment/${date}`
-    try {
-      const { data } = await axios.get(uri)
-      console.log(data)
-      setBadgeCouter(data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors }
+  } = useForm()
 
-  const fetchSumPayment = async () => {
-    let uri = apiConfig.baseURL + `/reports/monthly/welfare/sum-payment/${date}`
+  const strDate =
+    moment(date).format('DD') +
+    ' เดือน ' +
+    moment(date).format('MMMM') +
+    ' พ.ศ.' +
+    moment(date).add(543, 'year').format('YYYY')
+
+
+
+  const handleDeptChangeDate = async data => {
+    console.log(data.target.value)
+    setDate(data.target.value)
+    let uri = apiConfig.baseURL + `/reports/daily/attendances/dept/${deptId}/${data.target.value}`
     console.log(uri)
     try {
       const { data } = await axios.get(uri)
-      console.log(data)
-      setSumPayment(data)
+      setDailyAttendanceDeptReports({ blogs: data })
     } catch (error) {
       console.log(error)
     }
@@ -154,7 +142,7 @@ const Dashboard = () => {
       const { data } = await axios.get(uri)
 
       // console.log(data)
-      setReportAttendance1({ blogs: data })
+      setSumDailyReportAttendance({ blogs: data })
     } catch (error) {
       console.log(error)
     }
@@ -173,23 +161,12 @@ const Dashboard = () => {
     }
   }
 
-  const fetchPendingPaymentReports = async () => {
-    let uri = apiConfig.baseURL + `/reports/monthly/welfare/pending-payment/${date}`
+  const fetchAttendanceReports = async () => {
+    let uri = apiConfig.baseURL + `/reports/monthly/attendances/main-dept/${mainDeptId}/${date}`
     console.log(uri)
     try {
       const { data } = await axios.get(uri)
-      setPendingPaymentReports({ blogs: data })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchFollowupPaymentReports = async () => {
-    let uri = apiConfig.baseURL + `/reports/monthly/welfare/followup-payment/${date}`
-    console.log(uri)
-    try {
-      const { data } = await axios.get(uri)
-      setFollowupPaymentReports({ blogs: data })
+      setAttendanceReports({ blogs: data })
     } catch (error) {
       console.log(error)
     }
@@ -201,16 +178,16 @@ const Dashboard = () => {
     try {
       const { data } = await axios.get(uri)
       console.log(data)
-      if (data.status == "error") {
+      if (data.status == 'error') {
         Swal.fire({
           icon: 'warning',
-          title: "คำแนะนำ!",
-          text: data.message,
+          title: 'คำแนะนำ!',
+          text: data.message
         }).then(okay => {
           if (okay) {
-            window.location.href = `/member/${username}`;
+            window.location.href = `/member/${username}`
           }
-        });
+        })
       }
     } catch (error) {
       console.log(error)
@@ -219,14 +196,14 @@ const Dashboard = () => {
 
   const resetDefaultPassword = () => {
     Swal.fire({
-      title: "คำแนะนำ!",
-      text: "กรุณาเปลี่ยนรหัสผ่านใหม่!",
-      type: "warning"
+      title: 'คำแนะนำ!',
+      text: 'กรุณาเปลี่ยนรหัสผ่านใหม่!',
+      type: 'warning'
     }).then(okay => {
       if (okay) {
-        window.location.href = `/member/${username}`;
+        window.location.href = `/member/${username}`
       }
-    });
+    })
   }
 
   const verifyToken = async () => {
@@ -244,7 +221,7 @@ const Dashboard = () => {
         console.log(data)
         if (data.status !== 'success') {
           localStorage.removeItem('token')
-          localStorage.removeItem('staffName')
+          localStorage.removeItem('username')
           window.location = '/pages/login'
           console.log(data)
         }
@@ -255,129 +232,67 @@ const Dashboard = () => {
       })
   }
 
-  const onSubmit = async data => {
-    setLoading(true)
-    let strYearMonth = data.reportDate.slice(0, 7);
-    setSearchDate(strYearMonth)
-    setDate(strYearMonth)
-
-    let balance_uri = apiConfig.baseURL + `/reports/monthly/welfare/sum-payment/${strYearMonth}`
+  const fetchDailyAttendanceMainDeptReports = async () => {
+    let uri = apiConfig.baseURL + `/reports/daily/attendances/main-dept/${mainDeptId}/${today}`
+    console.log(uri)
     try {
-      const { data } = await axios.get(balance_uri)
-      setSumPayment(data)
+      const { data } = await axios.get(uri)
+      setDailyAttendanceMainDeptReports({ blogs: data })
     } catch (error) {
       console.log(error)
     }
+  }
 
-    let badge_uri = apiConfig.baseURL + `/reports/monthly/welfare/count-payment/${strYearMonth}`
+  const fetchDailyAttendanceDeptReports = async () => {
+    let uri = apiConfig.baseURL + `/reports/daily/attendances/dept/${deptId}/${today}`
+    console.log(uri)
     try {
-      const { data } = await axios.get(badge_uri)
-      setBadgeCouter(data)
+      const { data } = await axios.get(uri)
+      setReportDailyDeptAttendances({ blogs: data })
     } catch (error) {
       console.log(error)
     }
+  }
 
-    let pending_uri = apiConfig.baseURL + `/reports/monthly/welfare/pending-payment/${strYearMonth}`
+  const fetchDepts = async () => {
+    let admin_uri = apiConfig.baseURL + `/utils/depts/`
+    let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
+    let uri = (userRoleId == 1) ? admin_uri : manager_uri
+    console.log(uri)
     try {
-      const { data } = await axios.get(pending_uri)
-      setPendingPaymentReports({ blogs: data })
-      setLoading(false)
+      const { data } = await axios.get(uri)
+      setDeptOptions({ blogs: data })
     } catch (error) {
       console.log(error)
     }
+  }
 
-    let paid_uri = apiConfig.baseURL + `/reports/monthly/welfare/paid/${strYearMonth}`
-    console.log(paid_uri)
+  const fetchMonthlyStaffAttendances = async () => {
+    let uri = apiConfig.baseURL + `/reports/monthly/attendances/cid/${username}/${month}`
+    console.log(uri)
     try {
-      const { data } = await axios.get(paid_uri)
-      console.log(data)
-      setReportAttendance1({ blogs: data })
+      const { data } = await axios.get(uri)
+      setReportMonthlyStaffAttendances({ blogs: data })
     } catch (error) {
       console.log(error)
     }
-
   }
 
   useEffect(() => {
-    // verifyToken();
-    // getUserPass();
-    // fetchSumPayment();
-    // fetchBadgeCouter();
-    fetchReportAttendance1();
-    fetchReportDailyAttendances();
+    verifyToken()
+    fetchReportAttendance1()
+    fetchReportDailyAttendances()
+    fetchDailyAttendanceMainDeptReports()
+    fetchDailyAttendanceDeptReports()
+    fetchAttendanceReports()
+    fetchDepts()
+    fetchMonthlyStaffAttendances()
+  }, [])
 
-    // fetchPendingPaymentReports();
-    // fetchFollowupPaymentReports();
-  }, []);
-
-  // const SkeletonReportMonthlyWelfarePaymentsLoading = () => (
-  //   <Box sx={{ width: '100%' }}>
-  //     <TabContext value={tabPayments}>
-  //       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-  //         <TabList onChange={handleTabChange} aria-label='lab API tabs example' >
-  //           <Tab label='เวรเช้า' value='shift1' />
-  //           {/* <Badge badgeContent={badgeCouter[0]?.TOTAL_MEMBER} color="primary" sx={{mt:4}} /> */}
-  //           <Tab label='เวร Day 4' value='paid' />
-  //           {/* <Badge badgeContent={badgeCouter[1]?.TOTAL_MEMBER} color="primary" sx={{mt:4}} /> */}
-  //         </TabList>
-  //       </Box>
-  //       <TabPanel value='shift1'>
-  //         {dashboardReportAttendance1.blogs.length > 0 ? (
-  //           <Grid container wrap='nowrap'>
-  //             <Grid item xs={12} md={12} lg={12}>
-  //               <DashboardReportAttendance1Context.Provider value={dashboardReportAttendance1}>
-  //                 <DashboardStrDateContext.Provider value={strDate}>
-  //                   <TableReportAttendance1 />
-  //                 </DashboardStrDateContext.Provider>
-  //               </DashboardReportAttendance1Context.Provider>
-  //             </Grid>
-  //           </Grid>
-  //         ) : (
-  //           <Typography variant='h4'>
-  //             <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-  //           </Typography>
-  //         )}
-  //       </TabPanel>
-  //       <TabPanel value='pending-payment'>
-  //         {/* {dashboardPendingPaymentReports.blogs.length > 0 ? (
-  //           <Grid container wrap='nowrap'>
-  //             <Grid item xs={12} md={12} lg={12}>
-  //             <DashboardPendingPaymentContext.Provider value={dashboardPendingPaymentReports}>
-  //               <DashboardStrDateContext.Provider value={strDate}>
-  //                 <TableReportPendingPayment />
-  //               </DashboardStrDateContext.Provider>
-  //             </DashboardPendingPaymentContext.Provider>
-  //             </Grid>
-  //           </Grid>
-  //         ) : (
-  //           <Typography variant='h4'>
-  //             <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-  //           </Typography>
-  //         )} */}
-  //       </TabPanel>
-  //       <TabPanel value='followup-payment'>
-  //         {/* {followupPaymentReports.blogs.length > 0 ? (
-  //           <Grid container wrap='nowrap'>
-  //             <Grid item xs={12} md={12} lg={12}>
-  //             <FollowupPaymentContext.Provider value={followupPaymentReports}>
-  //               <TableReportFollowupPayment />
-  //             </FollowupPaymentContext.Provider>
-  //             </Grid>
-  //           </Grid>
-  //         ) : (
-  //           <Typography variant='h4'>
-  //             <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-  //           </Typography>
-  //         )} */}
-  //       </TabPanel>
-  //     </TabContext>
-  //   </Box>
-  // )
 
   const SkeletonReportDailyAttendancesLoading = () => (
     <Box sx={{ width: '100%' }}>
-
-      {reportDailyAttendances.blogs.length > 0 ? (
+      {reportDailyAttendances.blogs ? (
         <Grid container wrap='nowrap'>
           <Grid item xs={12} md={12} lg={12}>
             <DashboardReportAttendancesContext.Provider value={reportDailyAttendances}>
@@ -392,105 +307,139 @@ const Dashboard = () => {
           <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
         </Typography>
       )}
+    </Box>
+  )
 
+  const SkeletonReportDailyAttendancesMainDeptLoading = () => (
+    <Box sx={{ width: '100%' }}>
+      {reportDailyMainDeptAttendances.blogs ? (
+        <Grid container wrap='nowrap'>
+          <Grid item xs={12} md={12} lg={12}>
+            <DashboardStrDateContext.Provider value={strDate}>
+              <TableReportDailyMainDeptAttendance />
+            </DashboardStrDateContext.Provider>
+          </Grid>
+        </Grid>
+      ) : (
+        <Typography variant='h4'>
+          <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
+        </Typography>
+      )}
+    </Box>
+  )
+
+  const SkeletonReportDailyAttendancesDeptLoading = () => (
+    <Box sx={{ width: '100%' }}>
+      {reportDailyDeptAttendances.blogs ? (
+        <Grid container wrap='nowrap'>
+          <Grid item xs={12} md={12} lg={12}>
+            <DashboardStrDateContext.Provider value={strDate}>
+              <TableReportDailyDeptAttendance />
+            </DashboardStrDateContext.Provider>
+          </Grid>
+        </Grid>
+      ) : (
+        <Typography variant='h4'>
+          <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
+        </Typography>
+      )}
+    </Box>
+  )
+
+  const SkeletonReportMonthlyStaffAttendancesLoading = () => (
+    <Box sx={{ width: '100%' }}>
+      {reportMonthlyStaffAttendances.blogs ? (
+        <Grid container wrap='nowrap'>
+          <Grid item xs={12} md={12} lg={12}>
+            <DashboardStrDateContext.Provider value={strDate}>
+              <DashboardCidContext.Provider value={cid}>
+                <TableReportMonthlyStaffAttendance />
+              </DashboardCidContext.Provider>
+            </DashboardStrDateContext.Provider>
+          </Grid>
+        </Grid>
+      ) : (
+        <Typography variant='h4'>
+          <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
+        </Typography>
+      )}
     </Box>
   )
 
   return (
-    <ApexChartWrapper>
-      <Grid container spacing={6}>
-        {err ? (
-          <Grid item xs={12} md={12}>
-            <Alert severity='error'>
-              <AlertTitle>Error!</AlertTitle>
-              {err}
-            </Alert>
-          </Grid>
-        ) : (
-          ''
-        )}
-
-        {/* <Grid item xs={12} md={4}>
-          <Greeting />
-        </Grid>
-        <Grid item xs={12} md={12} lg={8}>
-          <Grid container spacing={6}>
-            <Grid item xs={12} md={6} lg={6}>
-              <CardTotalMoney />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <CardTotalLoan />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <CardMember />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <CardActiveLoan />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <CardQueueLoan />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <CardFollowUpLoan />
-            </Grid>
-          </Grid>
-        </Grid> */}
-      </Grid>
-      <Grid container space={6}>
-        <Grid item xs={12}>
-          <Grid item md={12} xs={12}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align='center'>ที่</TableCell>
-                    <TableCell align='center'>กลุ่มงาน</TableCell>
-                    <TableCell align='center'>จำนวนสแกนทำงาน</TableCell>
-                    <TableCell align='center'>ตรงเวลา</TableCell>
-                    <TableCell align='center'>สาย</TableCell>
-                    <TableCell align='center'>ลา</TableCell>
-                    <TableCell align='center'>จัดการ</TableCell>
+    <Grid container spacing={6}>
+      <Grid container item></Grid>
+      <Grid item xs={12}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell align='center'>ที่</TableCell>
+                <TableCell align='center'>กลุ่มงาน</TableCell>
+                <TableCell align='center'>จำนวนสแกนทำงาน</TableCell>
+                <TableCell align='center'>ตรงเวลา</TableCell>
+                <TableCell align='center'>สาย</TableCell>
+                <TableCell align='center'>ลา</TableCell>
+                <TableCell align='center'>จัดการ</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {sumDailyReportAttendance.blogs
+                .slice(pg * rpg, pg * rpg + rpg)
+                .map(row => (
+                  <TableRow key={row.attendanceId}>
+                    <TableCell align='center' component='th' scope='row'>
+                      {i++}
+                    </TableCell>
+                    <TableCell>{row.mainDeptName}</TableCell>
+                    <TableCell align='center'>{row.totalAttendance}</TableCell>
+                    <TableCell align='center'>{row.totalPunctual}</TableCell>
+                    <TableCell align='center'>{row.totalLate}</TableCell>
+                    <TableCell align='center'>N/A</TableCell>
+                    <TableCell align='center' color='success'>
+                      {/* <Link href={`../../loan/${row.nationalId}/${row.loanId}`} color='success'> */}
+                      <Button type='button' variant='outlined'>
+                        แสดงรายละเอียด
+                      </Button>
+                      {/* </Link> */}
+                    </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {dashboardReportAttendance1.blogs.filter((row) => {
-                    return search.toLowerCase() === '' ? row : row.staffName.toLowerCase().includes(search);
-                  }).slice(pg * rpg, pg *
-                    rpg + rpg).map(row => (
-                      <TableRow key={row.attendanceId}>
-                        <TableCell align='center' component='th' scope='row'>
-                          {i++}
-                        </TableCell>
-                        <TableCell>{row.mainDeptName}</TableCell>
-                        <TableCell align='center'>{row.totalAttendance}</TableCell>
-                        <TableCell align='center'>{row.totalPunctual}</TableCell>
-                        <TableCell align='center'>{row.totalLate}</TableCell>
-                        <TableCell align='center'>N/A</TableCell>
-                        <TableCell align='center' color='success'>
-                          {/* <Link href={`../../loan/${row.nationalId}/${row.loanId}`} color='success'> */}
-                          <Button type='button' variant='outlined'>
-                            แสดงรายละเอียด
-                          </Button>
-                          {/* </Link> */}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-
-          </Grid>
-        </Grid>
-
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Grid>
-      <Grid container spacing={12}>
-        <Grid item xs={12}>
-          <Grid item md={12} xs={12}>
-            <SkeletonReportDailyAttendancesLoading />
-          </Grid>
-        </Grid>
+      <Grid item xs={12}>
+
+        {userRoleId == 1 || userRoleId == 3 || userRoleId == 10 ? //superadmin,director,hr
+          <SkeletonReportDailyAttendancesLoading />
+          :
+          <Grid />
+        }
       </Grid>
-    </ApexChartWrapper>
+      <Grid item xs={12}>
+        {userRoleId == 1 || userRoleId == 4 ? //superadmin, manager
+          <SkeletonReportDailyAttendancesMainDeptLoading />
+          :
+          <Grid />
+        }
+      </Grid>
+      <Grid item xs={12}>
+        {userRoleId == 1 || userRoleId == 8 ? //superadmin, head dept
+          <SkeletonReportDailyAttendancesDeptLoading />
+          :
+          <Grid />
+        }
+      </Grid>
+      <Grid item xs={12}>
+        {userRoleId == 1 || userRoleId == 7 ? //superadmin, head dept
+          <SkeletonReportMonthlyStaffAttendancesLoading />
+          :
+          <Grid />
+        }
+      </Grid>
+
+    </Grid>
   )
 }
 

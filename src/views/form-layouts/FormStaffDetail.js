@@ -19,7 +19,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import apiConfig from 'src/configs/apiConfig'
 
 // ** Icons Imports
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from '@material-ui/icons/Save'
 import LoadingButton from '@mui/lab/LoadingButton'
 import moment from 'moment'
 
@@ -34,7 +34,6 @@ import {
 import { CosineWave } from 'mdi-material-ui'
 
 const FormStaffDetail = () => {
-
   const staffDetail = useContext(StaffContext)
 
   const positions = useContext(PositionsContext)
@@ -132,7 +131,7 @@ const FormStaffDetail = () => {
           <Grid container spacing={5}>
             <Grid item xs={12} md={3}>
               {staffDetail.cid ? (
-                <TextField fullWidth label='เลขที่บัตรประชาชน' {...register('cid')}  />
+                <TextField fullWidth label='เลขที่บัตรประชาชน' {...register('cid')} />
               ) : (
                 <Skeleton variant='rectangular' width={250} height={55} />
               )}
@@ -163,7 +162,7 @@ const FormStaffDetail = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...staffRole != 4 ? null : {disabled:true}}>
+              <FormControl fullWidth {...(staffRole != 4 ? null : { disabled: true })}>
                 <InputLabel>ประเภทสมาชิก</InputLabel>
                 <Select
                   label='ประเภทสมาชิก'
@@ -199,7 +198,7 @@ const FormStaffDetail = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...staffRole == 4 ? {disabled:true} : null }>
+              <FormControl fullWidth {...(staffRole == 4 ? { disabled: true } : null)}>
                 <InputLabel>ประเภทบัญชีผู้ใช้</InputLabel>
                 <Select
                   label='ประเภทบัญชีผู้ใช้'
@@ -217,7 +216,7 @@ const FormStaffDetail = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...staffRole != 4 ? null : {disabled:true}}>
+              <FormControl fullWidth {...(staffRole != 4 ? null : { disabled: true })}>
                 <InputLabel>สถานะสมาชิก</InputLabel>
                 <Select
                   label='สถานะสมาชิก'

@@ -1,19 +1,12 @@
 import { useEffect, useState, createContext } from 'react'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
 import apiConfig from 'src/configs/apiConfig'
-import FormMemberDetail from 'src/views/form-layouts/FormMemberDetail'
 import axios from 'axios'
-import CardUser from 'src/views/cards/CardUser'
 import Skeleton from '@mui/material/Skeleton'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import Tab from '@mui/material/Tab'
-import TabContext from '@mui/lab/TabContext'
-import TabList from '@mui/lab/TabList'
-import TabPanel from '@mui/lab/TabPanel'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
@@ -24,60 +17,44 @@ import TableContainer from '@mui/material/TableContainer'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import TablePagination from "@mui/material/TablePagination"
+import TablePagination from '@mui/material/TablePagination'
 import Divider from '@mui/material/Divider'
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import TextField from "@mui/material/TextField";
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import TextField from '@mui/material/TextField'
 import Link from 'next/link'
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import moment from 'moment'
-
-import FormSpouseDetail from 'src/views/form-layouts/FormSpouseDetail'
-import TableMemberInvestmentHistory from 'src/views/tables/TableMemberInvestmentHistory'
-import TableMemberLoanHistory from 'src/views/tables/TableMemberLoanHistory'
-import TableMemberDividendHistory from 'src/views/tables/TableMemberDividendHistory'
-import TableMemberLoanPaymentHistory from 'src/views/tables/TableMemberLoanPaymentHistory'
-import FormLoanDetail from 'src/views/form-layouts/FormLoanApproval'
-import CardAddLoanPayment from 'src/views/cards/CardLoanPayment'
-import CardLoanAgreement from 'src/views/cards/CardLoanAgreement'
-import CardLoanReceipt from 'src/views/cards/CardLoanReceipt'
-import CardLoanSurety1 from 'src/views/cards/CardLoanSurety1'
-import CardLoanSurety2 from 'src/views/cards/CardLoanSurety2'
-import FormDebtReport from 'src/views/form-layouts/FormDebtReport'
-import TableReportMonthlyAttendanceDept from 'src/views/tables/TableReportMonthlyAttendanceDept'
 
 export const ReportMonthlyAttendanceDeptContext = createContext()
 
 const FormLayouts = () => {
-
-
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm()
 
   // const { onChange } = register('firstName');
-  const currentMonth = moment().format("YYYY-MM");
-  const [date, setDate] = useState(currentMonth);
-  const strDate = 'เดือน ' + moment(date).format('MMMM') + ' พ.ศ.' + moment(date).add(543, 'year').format('YYYY');
+  const currentMonth = moment().format('YYYY-MM')
+  const [date, setDate] = useState(currentMonth)
+  const strDate = 'เดือน ' + moment(date).format('MMMM') + ' พ.ศ.' + moment(date).add(543, 'year').format('YYYY')
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
   const [search, setSearch] = useState('')
-  const [deptFilter, setDeptFilter] = useState('all');
-  const [deptOptions, setDeptOptions] = useState({ blogs: [] });
+  const [deptFilter, setDeptFilter] = useState('all')
+  const [deptOptions, setDeptOptions] = useState({ blogs: [] })
   const [attendanceReports, setAttendanceReports] = useState({ blogs: [] })
 
-  const i = 1;
-  const [pg, setpg] = useState(0);
-  const [rpg, setrpg] = useState(10);
+  const i = 1
+  const [pg, setpg] = useState(0)
+  const [rpg, setrpg] = useState(10)
 
   function handleChangePage(event, newpage) {
-    setpg(newpage);
+    setpg(newpage)
   }
 
   function handleChangeRowsPerPage(event) {
-    setrpg(parseInt(event.target.value, 10));
-    setpg(0);
+    setrpg(parseInt(event.target.value, 10))
+    setpg(0)
   }
 
-  const handleChange = async (data) => {
+  const handleChange = async data => {
     console.log(data.target.value)
     setDate(data.target.value)
     let uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${data.target.value}`
@@ -121,7 +98,6 @@ const FormLayouts = () => {
     fetchDepts()
     fetchAttendanceReports()
   }, [])
-
 
   // const SkeletonMemberCardLoading = () => (
   //   <Box sx={{ width: '100%' }}>
@@ -175,26 +151,43 @@ const FormLayouts = () => {
               <form noValidate autoComplete='off'>
                 <Grid container spacing={5}>
                   <Grid item xs={8}>
-                    <TextField fullWidth label='ค้นหาเจ้าหน้าที่' placeholder='พิมพ์ชื่อ-สกุล' {...register('search', {
-                      onChange: (e) => { setSearch(e.target.value) },
-                      onBlur: (e) => { },
-                    })} />
+                    <TextField
+                      fullWidth
+                      label='ค้นหาเจ้าหน้าที่'
+                      placeholder='พิมพ์ชื่อ-สกุล'
+                      {...register('search', {
+                        onChange: e => {
+                          setSearch(e.target.value)
+                        },
+                        onBlur: e => { }
+                      })}
+                    />
                   </Grid>
                   <Grid item xs={2}>
                     <Select
-                      fullWidth label='หน่วยงาน'
+                      fullWidth
+                      label='หน่วยงาน'
                       placeholder='เลือกหน่วยงาน'
                       value={deptFilter}
-                      onChange={(e) => setDeptFilter(e.target.value)}
+                      onChange={e => setDeptFilter(e.target.value)}
                     >
-                      <MenuItem value="all">ทั้งหมด</MenuItem>
+                      <MenuItem value='all'>ทั้งหมด</MenuItem>
                       {deptOptions.blogs.map(row => (
-                        <MenuItem key={row.deptId} value={row.deptName}>{row.deptName}</MenuItem>
+                        <MenuItem key={row.deptId} value={row.deptName}>
+                          {row.deptName}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
                   <Grid item xs={2}>
-                    <TextField fullWidth label='เลือกเดือน' type='month' onChange={handleChange} defaultValue={currentMonth} value={date} />
+                    <TextField
+                      fullWidth
+                      label='เลือกเดือน'
+                      type='month'
+                      onChange={handleChange}
+                      defaultValue={currentMonth}
+                      value={date}
+                    />
                   </Grid>
                 </Grid>
               </form>
@@ -220,29 +213,48 @@ const FormLayouts = () => {
                     <TableCell align='center'>ราชการ</TableCell>
                     <TableCell align='center'>จัดการ</TableCell>
                   </TableRow>
-
-                </TableHead >
-                <TableBody >
-                  {attendanceReports.blogs.filter((row) => {
-                    // return search === '' ? row : (row.staffName.includes(search) || row.deptName.includes(search));
-                    return deptFilter === 'all' ? row : (row.deptName.includes(deptFilter));
-                  }).slice(pg * rpg, pg *
-                    rpg + rpg).map(row => (
+                </TableHead>
+                <TableBody>
+                  {attendanceReports.blogs
+                    .filter(row => {
+                      // return search === '' ? row : (row.staffName.includes(search) || row.deptName.includes(search));
+                      return deptFilter === 'all' ? row : row.deptName.includes(deptFilter)
+                    })
+                    .slice(pg * rpg, pg * rpg + rpg)
+                    .map(row => (
                       <TableRow key={row.attendanceId}>
                         <TableCell align='center' component='th' scope='row'>
                           {i++}
                         </TableCell>
                         <TableCell>{row.staffName}</TableCell>
                         <TableCell>{row.deptName}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift1}/{row.totalCheckoutShift1}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift2}/{row.totalCheckoutShift2}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift3}/{row.totalCheckoutShift3}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift4}/{row.totalCheckoutShift4}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift6}/{row.totalCheckoutShift6}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift7}/{row.totalCheckoutShift7}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift8}/{row.totalCheckoutShift8}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift9}/{row.totalCheckoutShift9}</TableCell>
-                        <TableCell align='center'>{row.totalCheckinShift10}/{row.totalCheckoutShift10}</TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift1}/{row.totalCheckoutShift1}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift2}/{row.totalCheckoutShift2}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift3}/{row.totalCheckoutShift3}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift4}/{row.totalCheckoutShift4}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift6}/{row.totalCheckoutShift6}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift7}/{row.totalCheckoutShift7}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift8}/{row.totalCheckoutShift8}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift9}/{row.totalCheckoutShift9}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {row.totalCheckinShift10}/{row.totalCheckoutShift10}
+                        </TableCell>
                         <TableCell align='center'>{row.totalLeave ?? 0}</TableCell>
                         <TableCell align='center'>{row.totalOutStation ?? 0}</TableCell>
                         <TableCell align='center' color='success'>
@@ -259,7 +271,7 @@ const FormLayouts = () => {
             </TableContainer>
             <TablePagination
               rowsPerPageOptions={[10, 20, 50]}
-              component="div"
+              component='div'
               count={attendanceReports.blogs.length}
               rowsPerPage={rpg}
               page={pg}
@@ -304,7 +316,6 @@ const FormLayouts = () => {
       </Grid> */}
       <Grid item xs={12}>
         <SkeletonAttendanceReportLoading />
-
       </Grid>
     </Grid>
   )

@@ -14,7 +14,7 @@ import Link from 'next/link'
 import Grid from '@mui/material/Grid'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from '@material-ui/icons/Save'
 import LoadingButton from '@mui/lab/LoadingButton'
 import axios from 'axios'
 import apiConfig from 'src/configs/apiConfig'
@@ -24,80 +24,81 @@ import { StaffContext } from 'src/pages/staff/[cid]'
 // import { LoanStaffContext } from 'src/pages/loan/[cid]/[loanId]'
 
 const CardUser = () => {
-
-  const staffDetail = useContext(StaffContext) 
-  // const loanStaffDetail = useContext(LoanStaffContext) 
+  const staffDetail = useContext(StaffContext)
+  // const loanStaffDetail = useContext(LoanStaffContext)
   // const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
   const user = typeof staffDetail !== 'undefined' ? staffDetail : ''
   const cid = staffDetail?.cid
   // console.log('cid = '+cid)
   // console.log('staffDetail = '+staffDetail)
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors }
+  } = useForm({
     defaultValues: { otherLoans: '1' }
-  });
+  })
   const [loading, setLoading] = React.useState(false)
 
   const onSubmit = data => {
-      // setLoading(true)
-      console.log(data)
-      // let json = JSON.stringify(data);
-      // console.log(json);
-      // let string = data.toString(json)
-      // console.log(string);
+    // setLoading(true)
+    console.log(data)
+    // let json = JSON.stringify(data);
+    // console.log(json);
+    // let string = data.toString(json)
+    // console.log(string);
 
-      // const newArray = data.toString();
-      // console.log(newArray);
-      // var arrayOfNumbers = arrayOfStrings.map(Number);
-      // console.log(arrayOfNumbers);
+    // const newArray = data.toString();
+    // console.log(newArray);
+    // var arrayOfNumbers = arrayOfStrings.map(Number);
+    // console.log(arrayOfNumbers);
 
-      // let join = data.join("");
-      // console.log(join)
+    // let join = data.join("");
+    // console.log(join)
 
-      let uri = apiConfig.baseURL + `/utils/other-loans/${cid}`
-      fetch(uri, {
+    let uri = apiConfig.baseURL + `/utils/other-loans/${cid}`
+    fetch(uri, {
       method: 'PUT',
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-      })
+    })
       .then(response => response.json())
       .then(data => {
-          console.log(data)
-          setLoading(false)
-          if (data.status == 'success') {
+        console.log(data)
+        setLoading(false)
+        if (data.status == 'success') {
           toast.success(data.message)
-          } else {
+        } else {
           toast.error(data.message || data.errors[0].msg)
-          }
+        }
       })
       .catch(function (error) {
-          console.log(JSON.stringify(error))
+        console.log(JSON.stringify(error))
       })
   }
 
-
   return (
-    
     <Card sx={{ position: 'relative' }}>
       <Toaster />
 
       <CardMedia sx={{ height: '12.625rem' }} image='/images/cards/background-user.png' />
-      <Box sx={{ width:'100%', display: 'flex',  flexWrap: 'wrap',flexDirection: 'column', alignItems:'center'}}>
-
-      <Avatar
-        alt='Robert Meyer'
-        src='/images/avatars/1.png'
-        style={{ display: 'flex',  flexWrap: 'wrap',flexDirection: 'column', alignItems:'center' }}
-        sx={{
-          width: 120,
-          height: 120,
-          top: '8.28125rem',
-          position: 'absolute',
-          border: theme => `0.25rem solid ${theme.palette.common.white}`
-        }}
-      />
+      <Box sx={{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: 'column', alignItems: 'center' }}>
+        <Avatar
+          alt='Robert Meyer'
+          src='/images/avatars/1.png'
+          style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'column', alignItems: 'center' }}
+          sx={{
+            width: 120,
+            height: 120,
+            top: '8.28125rem',
+            position: 'absolute',
+            border: theme => `0.25rem solid ${theme.palette.common.white}`
+          }}
+        />
       </Box>
       <CardContent>
         <Box
@@ -108,12 +109,29 @@ const CardUser = () => {
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            alignContent:'center',
+            alignContent: 'center'
           }}
         >
-          <Box sx={{mt:5, width:'100%', display: 'flex',  flexWrap: 'wrap',flexDirection: 'column', alignItems:'center'}}>
-            <Typography variant='h6' align='center' sx={{ color: 'primary.main',display: 'flex', alignItems: 'center', justifyContent: 'center', }}>{user?.staffName}</Typography>
-            <Typography align="right" sx={{ color: 'primary.main' }}>{user?.staffTypeName}</Typography>
+          <Box
+            sx={{
+              mt: 5,
+              width: '100%',
+              display: 'flex',
+              flexWrap: 'wrap',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <Typography
+              variant='h6'
+              align='center'
+              sx={{ color: 'primary.main', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {user?.staffName}
+            </Typography>
+            <Typography align='right' sx={{ color: 'primary.main' }}>
+              {user?.staffTypeName}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -123,7 +141,7 @@ const CardUser = () => {
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'space-between'
           }}
         >
           {/* <Link href={`../../loan-payment/${user?.cid}`} color='primary'>
@@ -136,7 +154,7 @@ const CardUser = () => {
             <Button variant='outlined'>ใบคำร้อง</Button>
           </Link>
         </Box>
-        <Divider/>
+        <Divider />
         {/* <Box sx={{ gap: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant='h6' align='center' sx={{ mb:2 }}>
             รายการหนี้อื่นๆ
@@ -201,7 +219,6 @@ const CardUser = () => {
           </Grid>
         </Grid>
       </form> */}
-
       </CardContent>
     </Card>
   )

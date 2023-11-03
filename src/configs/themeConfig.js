@@ -14,7 +14,7 @@
 // }
 
 const themeConfig = {
-  templateName: 'Bacho HRMS :: ระบบริหารบุคคล โรงพยาบาลบาเจาะ',
+  templateName: 'Bacho HRMS',
   layout: 'horizontal',
   mode: 'light',
   direction: 'ltr',

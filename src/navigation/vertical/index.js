@@ -15,6 +15,12 @@ import ChartLine from 'mdi-material-ui/ChartLine'
 import Profile from 'mdi-material-ui/FaceManProfile'
 
 const navigation = () => {
+
+  const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
+  const memberName = typeof window !== 'undefined' ? localStorage.getItem('memberName') : null
+  const memberRoleName = typeof window !== 'undefined' ? localStorage.getItem('memberRoleName') : null
+  const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
+
   return [
     {
       title: 'Dashboard',
@@ -30,11 +36,13 @@ const navigation = () => {
     {
       sectionTitle: 'Pages'
     },
-    {
-      title: 'เจ้าหน้าที่',
-      icon: Profile,
-      path: '/staff'
-    },
+
+    // {
+    //   title: 'เจ้าหน้าที่',
+    //   icon: Profile,
+    //   path: '/staff'
+    // },
+
     // {
     //   title: 'ส่งสรุปชาร์ต',
     //   icon: Login,
@@ -94,19 +102,22 @@ const navigation = () => {
     //   path: '/pages/error',
     //   openInNewTab: false
     // },
-    {
-      sectionTitle: 'System Reports'
-    },
-    {
-      title: 'ชาร์ตทั้งหมด',
-      icon: FileDocumentMultipleOutline,
-      path: '/all-chart'
-    },
-    {
-      title: 'รายงานความครบถ้วน',
-      icon: FileDocumentMultipleOutline,
-      path: '/report-chart-status'
-    },
+    // {
+    //   sectionTitle: 'System Reports'
+    // },
+    // userRoleId == 1 || useRoleId == 10 ?
+    //   {
+    //     title: 'ชาร์ตทั้งหมด',
+    //     icon: FileDocumentMultipleOutline,
+    //     path: '/all-chart'
+    //   } : null,
+    // userRoleId == 1 || useRoleId == 10 ?
+    //   {
+    //     title: 'รายงานความครบถ้วน',
+    //     icon: FileDocumentMultipleOutline,
+    //     path: '/report-chart-status'
+    //   } : null,
+
     // {
     //   title: 'รายงานความทันเวลา',
     //   icon: FileDocumentMultipleOutline,

@@ -52,11 +52,11 @@ const UserDropdown = () => {
   }
 
   const handleDropdownCloseAndLogout = url => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('memberRoleId');
-    localStorage.removeItem('memberRoleName');
-    localStorage.removeItem('memberName');
-    localStorage.removeItem('username');
+    localStorage.removeItem('token')
+    localStorage.removeItem('memberRoleId')
+    localStorage.removeItem('memberRoleName')
+    localStorage.removeItem('memberName')
+    localStorage.removeItem('username')
 
     if (url) {
       router.push(url)
@@ -131,7 +131,7 @@ const UserDropdown = () => {
             Dashboard
           </Box>
         </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/member/${username}`)}>
+        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/member/${username}`)}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             ข้อมูลของฉัน
@@ -156,48 +156,60 @@ const UserDropdown = () => {
               รายการทอง
             </Box>
           </MenuItem>
-          ) : ''}
-           {memberRoleId != 4 ? (
+        ) : (
+          ''
+        )}
+        {memberRoleId != 4 ? (
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/allowance`)}>
             <Box sx={styles}>
               <EmailOutline sx={{ marginRight: 2 }} />
               รายการเงินสมทบ
             </Box>
           </MenuItem>
-           ) : ''}
-           {memberRoleId != 4 ? (
+        ) : (
+          ''
+        )}
+        {memberRoleId != 4 ? (
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/zakat`)}>
             <Box sx={styles}>
               <EmailOutline sx={{ marginRight: 2 }} />
               รายการซากาต
             </Box>
           </MenuItem>
-           ) : ''}
-           {memberRoleId != 4 ? (
+        ) : (
+          ''
+        )}
+        {memberRoleId != 4 ? (
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/debt`)}>
             <Box sx={styles}>
               <EmailOutline sx={{ marginRight: 2 }} />
               รายการหนี้รายเดือน
             </Box>
           </MenuItem>
-           ) : ''}
-          {memberRoleId != 4 ? (
+        ) : (
+          ''
+        )}
+        {memberRoleId != 4 ? (
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/reports/monthly/welfare-payment`)}>
             <Box sx={styles}>
               <EmailOutline sx={{ marginRight: 2 }} />
               รายงานสวัสดิการรายเดือน
             </Box>
           </MenuItem>
-           ) : ''}
-          {memberRoleId != 4 ? (
+        ) : (
+          ''
+        )}
+        {memberRoleId != 4 ? (
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/reports/yearly/summary`)}>
             <Box sx={styles}>
               <EmailOutline sx={{ marginRight: 2 }} />
               รายงานสรุปสวัสดิการรายปี
             </Box>
           </MenuItem>
-         ) : ''}
-        
+        ) : (
+          ''
+        )} */}
+
         {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <MessageOutline sx={{ marginRight: 2 }} />

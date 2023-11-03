@@ -22,16 +22,10 @@ const FooterContent = () => {
       </Typography>
       {hidden ? null : (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', '& :not(:last-child)': { mr: 4 } }}>
-          <Link
-            target='_blank'
-            href='#'
-          >
+          <Link target='_blank' href='#'>
             คู่มือ
           </Link>
-          <Link
-            target='_blank'
-            href='https://facebook.com/jormae'
-          >
+          <Link target='_blank' href='https://facebook.com/jormae'>
             ติดต่อผู้พัฒนา
           </Link>
         </Box>
