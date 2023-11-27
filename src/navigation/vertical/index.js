@@ -36,23 +36,22 @@ const navigation = () => {
     {
       sectionTitle: 'Pages'
     },
+    {
+      title: 'เจ้าหน้าที่',
+      icon: Profile,
+      path: '/staff'
+    },
+    {
+      title: 'ลา',
+      icon: FileDocumentMultipleOutline,
+      path: '/leaves'
+    },
+    {
+      title: 'รายงานรายเดือน',
+      icon: BarcodeScan,
+      path: '/reports/monthly/attendance'
+    },
 
-    // {
-    //   title: 'เจ้าหน้าที่',
-    //   icon: Profile,
-    //   path: '/staff'
-    // },
-
-    // {
-    //   title: 'ส่งสรุปชาร์ต',
-    //   icon: Login,
-    //   path: '/summary-chart'
-    // },
-    // {
-    //   title: 'รับคืนสรุปชาร์ต',
-    //   icon: BarcodeScan,
-    //   path: '/return-chart'
-    // },
     // {
     //   title: 'ส่ง-รับคืนสรุปชาร์ต',
     //   icon: BarcodeScan,

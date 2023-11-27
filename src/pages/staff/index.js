@@ -6,6 +6,9 @@ import axios from 'axios'
 import { useEffect, useState, createContext } from 'react'
 import { useForm } from 'react-hook-form'
 import apiConfig from 'src/configs/apiConfig'
+import Error401 from '../401'
+import Error404 from '../404'
+import Error500 from '../500'
 
 export const DataContext = createContext()
 
@@ -13,7 +16,11 @@ export const CardContext = createContext()
 
 const FormLayouts = () => {
   const [staff, setStaff] = useState({ blogs: [] })
-  console.log(staff)
+  const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
+  console.log(userRoleId)
+
+
+  // console.log(staff)
 
   // const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
 
@@ -88,26 +95,21 @@ const FormLayouts = () => {
     fetchStaff()
   }, [])
 
-  return (
-    <Grid container spacing={6}>
-      {/* <Grid item xs={12} md={6} lg={4}>
-          <CardMember />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardTotalLoan />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <CardAddMember/>
-        </Grid> */}
+  if (userRoleId != 1) {
+    return <Error401 />;
+  }
+  else {
 
-      <DataContext.Provider value={staff}>
-        <Grid item xs={12}>
-          {/* <TableTodo /> */}
-          <TableMember />
-        </Grid>
-      </DataContext.Provider>
-    </Grid>
-  )
+    return (
+      <Grid container spacing={6}>
+        <DataContext.Provider value={staff}>
+          <Grid item xs={12}>
+            <TableMember />
+          </Grid>
+        </DataContext.Provider>
+      </Grid>
+    )
+  }
 }
 
 export default FormLayouts

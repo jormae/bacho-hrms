@@ -92,7 +92,7 @@ const TableReportMonthlyAttendanceDept = () => {
                     onChange: e => {
                       setSearch(e.target.value)
                     },
-                    onBlur: e => {}
+                    onBlur: e => { }
                   })}
                 />
               </Grid>
@@ -140,12 +140,11 @@ const TableReportMonthlyAttendanceDept = () => {
             <TableBody>
               {attendanceReports.blogs
                 .filter(row => {
-                  // return search === '' ? row : (row.staffName.includes(search) || row.deptName.includes(search));
-                  return dept === 'all' ? row : row.deptName.includes(dept)
+                  return search === '' ? row : row.staffName.includes(search);
                 })
                 .slice(pg * rpg, pg * rpg + rpg)
                 .map(row => (
-                  <TableRow key={row.attendanceId} data={filteredData}>
+                  <TableRow key={row.attendanceId}>
                     <TableCell align='center' component='th' scope='row'>
                       {i++}
                     </TableCell>
@@ -178,10 +177,10 @@ const TableReportMonthlyAttendanceDept = () => {
                     <TableCell align='center'>
                       {row.totalCheckinShift10}/{row.totalCheckoutShift10}
                     </TableCell>
-                    <TableCell align='center'>{row.totalLeave ?? 0}</TableCell>
+                    <TableCell align='center'>{row.totalLeave}</TableCell>
                     <TableCell align='center'>{row.totalOutStation ?? 0}</TableCell>
                     <TableCell align='center' color='success'>
-                      <Link href={`../../monthly/attendance/cid/${row.cid}/${date}`} color='success'>
+                      <Link passHref href={`../../monthly/attendance/cid/${row.cid}/${date}`} color='success'>
                         <Button type='button' variant='outlined'>
                           รายละเอียด
                         </Button>

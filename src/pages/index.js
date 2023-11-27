@@ -367,47 +367,61 @@ const Dashboard = () => {
   )
 
   return (
+
     <Grid container spacing={6}>
       <Grid container item></Grid>
       <Grid item xs={12}>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell align='center'>ที่</TableCell>
-                <TableCell align='center'>กลุ่มงาน</TableCell>
-                <TableCell align='center'>จำนวนสแกนทำงาน</TableCell>
-                <TableCell align='center'>ตรงเวลา</TableCell>
-                <TableCell align='center'>สาย</TableCell>
-                <TableCell align='center'>ลา</TableCell>
-                <TableCell align='center'>จัดการ</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sumDailyReportAttendance.blogs
-                .slice(pg * rpg, pg * rpg + rpg)
-                .map(row => (
-                  <TableRow key={row.attendanceId}>
-                    <TableCell align='center' component='th' scope='row'>
-                      {i++}
-                    </TableCell>
-                    <TableCell>{row.mainDeptName}</TableCell>
-                    <TableCell align='center'>{row.totalAttendance}</TableCell>
-                    <TableCell align='center'>{row.totalPunctual}</TableCell>
-                    <TableCell align='center'>{row.totalLate}</TableCell>
-                    <TableCell align='center'>N/A</TableCell>
-                    <TableCell align='center' color='success'>
-                      {/* <Link href={`../../loan/${row.nationalId}/${row.loanId}`} color='success'> */}
-                      <Button type='button' variant='outlined'>
-                        แสดงรายละเอียด
-                      </Button>
-                      {/* </Link> */}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Card>
+          <CardHeader
+            title={`รายงานสรุปข้อมูลลงเวลาวันที่ ${strDate}`}
+            titleTypographyProps={{ variant: 'h6' }} align="center"
+          />
+          <Divider sx={{ margin: 0 }} />
+          <CardContent>
+            <Grid item xs={12} md={12} lg={12}>
+              <Grid container spacing={5}>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align='center'>ที่</TableCell>
+                        <TableCell align='center'>กลุ่มงาน</TableCell>
+                        <TableCell align='center'>จำนวนสแกนทำงาน</TableCell>
+                        <TableCell align='center'>ตรงเวลา</TableCell>
+                        <TableCell align='center'>สาย</TableCell>
+                        <TableCell align='center'>ลา</TableCell>
+                        {/* <TableCell align='center'>จัดการ</TableCell> */}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {sumDailyReportAttendance.blogs
+                        .slice(pg * rpg, pg * rpg + rpg)
+                        .map(row => (
+                          <TableRow key={row.attendanceId}>
+                            <TableCell align='center' component='th' scope='row'>
+                              {i++}
+                            </TableCell>
+                            <TableCell>{row.mainDeptName}</TableCell>
+                            <TableCell align='center'>{row.totalAttendance}</TableCell>
+                            <TableCell align='center'>{row.totalPunctual}</TableCell>
+                            <TableCell align='center'>{row.totalLate}</TableCell>
+                            <TableCell align='center'>N/A</TableCell>
+                            {/* <TableCell align='center' color='success'>
+                              <Link href={`../../loan/${row.nationalId}/${row.loanId}`} color='success'>
+                              <Button type='button' variant='outlined'>
+                                แสดงรายละเอียด
+                              </Button>
+                              </Link>
+                            </TableCell> */}
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
       </Grid>
       <Grid item xs={12}>
 
