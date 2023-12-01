@@ -28,18 +28,21 @@ import moment from 'moment'
 import TableReportMonthlyAttendanceDept from 'src/views/tables/TableReportMonthlyAttendanceDept'
 import TableReportMonthlyStaffAttendance from 'src/views/tables/TableReportMonthlyStaffAttendance'
 import TableReportMonthlyStaffSumAttendance from 'src/views/tables/TableReportMonthlyStaffSumAttendance'
-
-export const ReportMonthlyAttendanceDeptContext = createContext()
+import TablePrintReportMonthlyStaffSumAttendance from 'src/views/tables/TablePrintReportMonthlyStaffSumAttendance'
 
 export const ReportMonthlyAttendanceCidContext = createContext()
+
+export const ReportMonthlyAttendanceDateContext = createContext()
 
 const FormLayouts = () => {
   const router = useRouter()
   if (router.isReady) {
     router.query.cid
+    router.query.date
   }
 
   const cid = router.query.cid;
+  const date = router.query.date;
 
   useEffect(() => {
     if (router.isReady) {
@@ -53,19 +56,9 @@ const FormLayouts = () => {
       <Grid container wrap='nowrap'>
         <Grid item xs={12} md={12} lg={12}>
           <ReportMonthlyAttendanceCidContext.Provider value={cid}>
-            <TableReportMonthlyStaffSumAttendance />
-          </ReportMonthlyAttendanceCidContext.Provider>
-        </Grid>
-      </Grid>
-    </Box>
-  )
-
-  const SkeletonReportMonthlyStaffAttendancesLoading = () => (
-    <Box sx={{ width: '100%' }}>
-      <Grid container wrap='nowrap'>
-        <Grid item xs={12} md={12} lg={12}>
-          <ReportMonthlyAttendanceCidContext.Provider value={cid}>
-            <TableReportMonthlyStaffAttendance />
+            <ReportMonthlyAttendanceDateContext.Provider value={date}>
+              <TablePrintReportMonthlyStaffSumAttendance />
+            </ReportMonthlyAttendanceDateContext.Provider>
           </ReportMonthlyAttendanceCidContext.Provider>
         </Grid>
       </Grid>
@@ -76,9 +69,6 @@ const FormLayouts = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <SkeletonReportMonthlyStaffSumAttendancesLoading />
-      </Grid>
-      <Grid item xs={12}>
-        <SkeletonReportMonthlyStaffAttendancesLoading />
       </Grid>
     </Grid>
   )

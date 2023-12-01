@@ -26,7 +26,7 @@ import MenuItem from '@mui/material/MenuItem'
 import { DashboardStrDateContext, DashboardCidContext } from 'src/pages/index'
 import { ReportMonthlyAttendanceCidContext } from 'src/pages/reports/monthly/attendance/cid/[cid].js'
 
-const TableReportMonthlyStaffAttendance = () => {
+const TableReportMonthlyStaffSumAttendance = () => {
 
     const strDate = useContext(DashboardStrDateContext)
     const DashboardCid = useContext(DashboardCidContext)
@@ -59,7 +59,6 @@ const TableReportMonthlyStaffAttendance = () => {
     console.log("staffInfo = " + staffInfo)
     const strStaffName = staffInfo ? staffInfo[0]['pname'] + staffInfo[0]['fname'] + " " + staffInfo[0]['lname'] : null
     const strDeptName = staffInfo ? staffInfo[0]['deptName'] : null
-
     const [reportMonthlyStaffAttendances, setReportMonthlyStaffAttendances] = useState({ blogs: [] })
 
     const strMonth =
@@ -83,7 +82,7 @@ const TableReportMonthlyStaffAttendance = () => {
     const handleChangeMonth = async data => {
         console.log(data.target.value)
         setDate(data.target.value)
-        let uri = apiConfig.baseURL + `/reports/monthly/attendances/cid/${strUserName}/${data.target.value}`
+        let uri = apiConfig.baseURL + `/reports/monthly/sum-attendances/${strUserName}/${data.target.value}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -94,7 +93,7 @@ const TableReportMonthlyStaffAttendance = () => {
     }
 
     const fetchMonthlyStaffAttendances = async () => {
-        let uri = apiConfig.baseURL + `/reports/monthly/attendances/cid/${strUserName}/${month}`
+        let uri = apiConfig.baseURL + `/reports/monthly/sum-attendances/${strUserName}/${month}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -123,7 +122,7 @@ const TableReportMonthlyStaffAttendance = () => {
     return (
         <Card>
             <CardHeader
-                title={`รายงานข้อมูลลงเวลา ${strMonth} ${strStaffName} ${strDeptName}`}
+                title={`รายงานข้อมูลสรุปลงเวลา ${strMonth} ${strStaffName} ${strDeptName}`}
                 titleTypographyProps={{ variant: 'h6' }}
             />
             <Divider sx={{ margin: 0 }} />
@@ -165,9 +164,18 @@ const TableReportMonthlyStaffAttendance = () => {
                                 <TableCell align='center'>ที่</TableCell>
                                 <TableCell align='center'>วันที่</TableCell>
                                 <TableCell align='center'>วัน</TableCell>
-                                <TableCell align='center'>ชื่อเวร</TableCell>
-                                <TableCell align='center'>เวลาเข้า</TableCell>
-                                <TableCell align='center'>เวลาออก</TableCell>
+                                <TableCell align='center'>เวรเช้า</TableCell>
+                                <TableCell align='center'>เวร DAY 4</TableCell>
+                                <TableCell align='center'>เวร DAY</TableCell>
+                                <TableCell align='center'>เวร NIGHT</TableCell>
+                                <TableCell align='center'>เวรเช้าครึ่งวัน</TableCell>
+                                <TableCell align='center'>บ่าย-ดึก</TableCell>
+                                <TableCell align='center'>บ่าย-เที่ยงคืน</TableCell>
+                                <TableCell align='center'>เวร 24 ชั่วโมง</TableCell>
+                                <TableCell align='center'>เวรหัวรุ่ง 1</TableCell>
+                                <TableCell align='center'>เวรหัวรุ่ง 2</TableCell>
+                                <TableCell align='center'>ลา</TableCell>
+                                <TableCell align='center'>ราชการ</TableCell>
                                 <TableCell align='center'>หมายเหตุ</TableCell>
                             </TableRow>
                         </TableHead>
@@ -184,16 +192,19 @@ const TableReportMonthlyStaffAttendance = () => {
                                         </TableCell>
                                         <TableCell align='center'>{moment(row.attendanceDate).add(543, 'year').format('DD/MM/YYYY')}</TableCell>
                                         <TableCell align='center'>{moment(row.attendanceDate).format("dddd")}</TableCell>
-                                        <TableCell align='center'>
-                                            {row.shiftName} {row.shiftName != "" ? `(${row.startShiftTime} - ${row.endShiftTime})` : ""}
-                                        </TableCell>
-                                        <TableCell align='center'>
-                                            {row.checkinTime}
-                                        </TableCell>
-                                        <TableCell align='center'>
-                                            {row.checkoutTime}
-                                        </TableCell>
-                                        <TableCell align='center'>{row.dateRemarks}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift1} - {row.checkoutShift1}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift2} - {row.checkoutShift2}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift3} - {row.checkoutShift3}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift4} - {row.checkoutShift4}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift5} - {row.checkoutShift5}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift6} - {row.checkoutShift6}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift7} - {row.checkoutShift7}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift8} - {row.checkoutShift8}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift9} - {row.checkoutShift9}</TableCell>
+                                        <TableCell align='center'>{row.checkinShift10} - {row.checkoutShift10}</TableCell>
+                                        <TableCell align='center'>{row.leaveTitle}</TableCell>
+                                        <TableCell align='center'>{row.outStation ? "ราชการนอกสถานที่" : ""}</TableCell>
+                                        <TableCell align='center'>{row.dayRemark}{row.holidayRemark}</TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>
@@ -208,9 +219,9 @@ const TableReportMonthlyStaffAttendance = () => {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-                <Link passHref href={`../../reports/monthly/attendance/print/${cid}/${date}`} color='success'>
+                <Link passHref href={`../print/${strUserName}/${date}`} color='success'>
                     <Button type='button' variant='outlined'>
-                        รายละเอียด
+                        พิมพ์รายงาน
                     </Button>
                 </Link>
             </CardContent>
@@ -218,4 +229,4 @@ const TableReportMonthlyStaffAttendance = () => {
     )
 }
 
-export default TableReportMonthlyStaffAttendance
+export default TableReportMonthlyStaffSumAttendance
