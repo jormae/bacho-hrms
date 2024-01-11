@@ -210,7 +210,7 @@ const TableReportMonthlyStaffAttendance = () => {
                 />
                 <Link passHref href={`../../reports/monthly/attendance/print/${cid}/${date}`} color='success'>
                     <Button type='button' variant='outlined'>
-                        รายละเอียด
+                        พิมพ์รายงาน
                     </Button>
                 </Link>
             </CardContent>

@@ -22,12 +22,14 @@ import apiConfig from 'src/configs/apiConfig'
 import moment from 'moment'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 import { DashboardStrDateContext } from 'src/pages/index'
 
 const TableLeavesDirectorSigned = () => {
 
-    const yearBudget = 2024;
+    const yearBudget = moment().format('YYYY')
     const thYearBudget = yearBudget + 543;
 
     const { register } = useForm()
@@ -119,7 +121,7 @@ const TableLeavesDirectorSigned = () => {
                 <Grid item xs={12} md={12} lg={12}>
                     <form noValidate autoComplete='off'>
                         <Grid container spacing={5}>
-                            <Grid item xs={8}>
+                            <Grid item xs={10}>
                                 <TextField
                                     fullWidth
                                     label='ค้นหาเจ้าหน้าที่'
@@ -133,30 +135,22 @@ const TableLeavesDirectorSigned = () => {
                                 />
                             </Grid>
                             <Grid item xs={2}>
-                                <Select
-                                    fullWidth
-                                    label='หน่วยงาน'
-                                    placeholder='เลือกหน่วยงาน'
-                                    value={deptFilter}
-                                    onChange={handleChangeDept}
-                                >
-                                    <MenuItem value='all'>ทั้งหมด</MenuItem>
-                                    {deptOptions.blogs.map(row => (
-                                        <MenuItem key={row.deptId} value={row.deptId}>
-                                            {row.deptName}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <TextField
-                                    fullWidth
-                                    label='เลือกเดือน'
-                                    type='year'
-                                    onChange={handleChange}
-                                    defaultValue={yearBudget}
-                                    value={yearBudget}
-                                />
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">หน่วยงาน</InputLabel>
+                                    <Select
+                                        fullWidth
+                                        label='หน่วยงาน'
+                                        value={deptFilter}
+                                        onChange={handleChangeDept}
+                                    >
+                                        <MenuItem value='all'>ทั้งหมด</MenuItem>
+                                        {deptOptions.blogs.map(row => (
+                                            <MenuItem key={row.deptId} value={row.deptId}>
+                                                {row.deptName}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                         </Grid>
                     </form>

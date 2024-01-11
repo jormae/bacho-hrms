@@ -25,6 +25,8 @@ import TextField from '@mui/material/TextField'
 import Link from 'next/link'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import moment from 'moment'
 
 export const ReportMonthlyLeaveDeptContext = createContext()
@@ -35,18 +37,19 @@ const Leaves = () => {
         router.query.cid
     }
     const { register, handleSubmit } = useForm()
-    const yearBudget = 2024
-
-    // const { onChange } = register('firstName');
-    const currentMonth = moment().format('YYYY-MM')
-    const [date, setDate] = useState(currentMonth)
-    const strDate = 'เดือน ' + moment(date).format('MMMM') + ' พ.ศ.' + moment(date).add(543, 'year').format('YYYY')
+    const currentYear = moment().format('YYYY')
     const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
     const [search, setSearch] = useState('')
     const [deptFilter, setDeptFilter] = useState('all')
-    const [deptOptions, setDeptOptions] = useState({ blogs: [] })
-    const [leaveReports, setLeaveReports] = useState({ blogs: [] })
 
+    const [yearOptions, setYearOptions] = useState({ blogs: [] })
+    const [selectedYear, setSelectedYear] = useState(currentYear)
+    const [leaveReports, setLeaveReports] = useState({ blogs: [] })
+    const strYearBudget = parseInt(selectedYear) + 543
+    console.log(leaveReports)
+    console.log(leaveReports.blogs)
+    console.log(leaveReports['blogs'])
+    console.log(leaveReports['blogs'][0]?.staffName)
     const i = 1
     const [pg, setpg] = useState(0)
     const [rpg, setrpg] = useState(10)
@@ -62,8 +65,8 @@ const Leaves = () => {
 
     const handleChange = async data => {
         console.log(data.target.value)
-        setDate(data.target.value)
-        let uri = apiConfig.baseURL + `/reports/monthly/leaves/date/${data.target.value}`
+        setSelectedYear(data.target.value)
+        let uri = apiConfig.baseURL + `/leaves/cid/${data.target.value}/${router.query.cid}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -74,7 +77,7 @@ const Leaves = () => {
     }
 
     const fetchLeaveReports = async () => {
-        let uri = apiConfig.baseURL + `/leaves/cid/${yearBudget}/${router.query.cid}`
+        let uri = apiConfig.baseURL + `/leaves/cid/${selectedYear}/${router.query.cid}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -84,23 +87,21 @@ const Leaves = () => {
         }
     }
 
-    const fetchDepts = async () => {
-        let uri = apiConfig.baseURL + `/utils/depts`
-
-        console.log(uri)
-        try {
-            const { data } = await axios.get(uri)
-            setDeptOptions({ blogs: data })
-        } catch (error) {
-            console.log(error)
+    const fetchYearBudgetOptions = () => {
+        let minYear = 2023
+        let maxYear = moment(currentYear).format('YYYY')
+        let yearOptions = []
+        for (let i = minYear; i <= maxYear; i++) {
+            yearOptions.push({ year: i })
         }
+        setYearOptions({ blogs: yearOptions })
     }
 
     useEffect(() => {
         if (router.isReady) {
             router.query
         }
-        fetchDepts()
+        fetchYearBudgetOptions()
         fetchLeaveReports()
     }, [router.isReady, router.query])
 
@@ -108,50 +109,31 @@ const Leaves = () => {
         <Box sx={{ width: '100%' }}>
             {leaveReports.blogs ? (
                 <Card>
-                    <CardHeader title={`รายงานสรุปข้อมูลลงเวลาทำงาน ${strDate}`} titleTypographyProps={{ variant: 'h6' }} />
+                    <CardHeader title={`รายงานข้อมูลลาปฏิบัติงานและราชการนอกสถานที่ปีงบประมาณ ${strYearBudget}`} titleTypographyProps={{ variant: 'h6' }} />
                     <Divider sx={{ margin: 0 }} />
                     <CardContent>
                         <Grid item xs={12} md={12} lg={12}>
                             <form noValidate autoComplete='off'>
                                 <Grid container spacing={5}>
-                                    <Grid item xs={8}>
-                                        <TextField
-                                            fullWidth
-                                            label='ค้นหาเจ้าหน้าที่'
-                                            placeholder='พิมพ์ชื่อ-สกุล'
-                                            {...register('search', {
-                                                onChange: e => {
-                                                    setSearch(e.target.value)
-                                                },
-                                                onBlur: e => { }
-                                            })}
-                                        />
+                                    <Grid item xs={10}>
+                                        ชื่อ-สกุล : {leaveReports['blogs'][0]?.staffName}
                                     </Grid>
                                     <Grid item xs={2}>
-                                        <Select
-                                            fullWidth
-                                            label='หน่วยงาน'
-                                            placeholder='เลือกหน่วยงาน'
-                                            value={deptFilter}
-                                            onChange={e => setDeptFilter(e.target.value)}
-                                        >
-                                            <MenuItem value='all'>ทั้งหมด</MenuItem>
-                                            {deptOptions.blogs.map(row => (
-                                                <MenuItem key={row.deptId} value={row.deptName}>
-                                                    {row.deptName}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <TextField
-                                            fullWidth
-                                            label='เลือกเดือน'
-                                            type='month'
-                                            onChange={handleChange}
-                                            defaultValue={currentMonth}
-                                            value={date}
-                                        />
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">ปีงบประมาณ</InputLabel>
+                                            <Select
+                                                fullWidth
+                                                label="ปีงบประมาณ"
+                                                value={selectedYear}
+                                                onChange={handleChange}
+                                            >
+                                                {yearOptions.blogs.map(row => (
+                                                    <MenuItem key={row.year} value={row.year}>
+                                                        {row.year + 543}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
                                     </Grid>
                                 </Grid>
                             </form>
@@ -198,7 +180,7 @@ const Leaves = () => {
                                                 <TableCell align='center'>{row.filePath ?? "-"} </TableCell>
                                                 <TableCell>{row.leaveRemark ?? "-"}</TableCell>
                                                 <TableCell align='center' color='success'>
-                                                    <Link passHref href={`../../monthly/leave/cid/${row.cid}`} color='success'>
+                                                    <Link passHref href={`../../leaves/leaveId/${row.leaveId}`} color='success'>
                                                         <Button type='button' variant='outlined'>
                                                             รายละเอียด
                                                         </Button>

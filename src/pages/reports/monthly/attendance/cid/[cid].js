@@ -77,9 +77,9 @@ const FormLayouts = () => {
       <Grid item xs={12}>
         <SkeletonReportMonthlyStaffSumAttendancesLoading />
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <SkeletonReportMonthlyStaffAttendancesLoading />
-      </Grid>
+      </Grid> */}
     </Grid>
   )
 }

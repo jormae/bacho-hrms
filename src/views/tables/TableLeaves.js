@@ -22,14 +22,17 @@ import apiConfig from 'src/configs/apiConfig'
 import moment from 'moment'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 import { DashboardStrDateContext } from 'src/pages/index'
 
 const TableLeaves = () => {
 
     const strDate = useContext(DashboardStrDateContext)
-    const yearBudget = 2024;
-    const thYearBudget = yearBudget + 543;
+
+    // const yearBudget = 2024;
+    // const thYearBudget = yearBudget + 543;
 
     const { register } = useForm()
     const [search, setSearch] = useState('')
@@ -44,25 +47,37 @@ const TableLeaves = () => {
     const deptName = typeof window !== 'undefined' ? localStorage.getItem('deptName') : null
     const [leaves, setLeaves] = useState({ blogs: [] })
 
+    const currentYear = moment().format('YYYY')
+
+    // const currentYear = 2023
+    const [yearOptions, setYearOptions] = useState({ blogs: [] })
+    const [selectedYear, setSelectedYear] = useState(currentYear)
+
+    // const [leaveReports, setLeaveReports] = useState({ blogs: [] })
+    const strYearBudget = parseInt(selectedYear) + 543
+
     const [dept, setDept] = useState('all')
     const [deptFilter, setDeptFilter] = useState('all')
     const [deptOptions, setDeptOptions] = useState({ blogs: [] })
 
-    const handleChange = async data => {
+    const handleYearBudgetChange = async data => {
         console.log(data.target.value)
-        setDate(data.target.value)
-        let uri = apiConfig.baseURL + `/leaves/yearbudget/deptId/${yearBudget}/${data.target.value}`
+
+        // setDate(data.target.value)
+        setSelectedYear(data.target.value)
+
+        let uri = apiConfig.baseURL + `/leaves/yearbudget/${data.target.value}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
-            setLeaveReports({ blogs: data })
+            setLeaves({ blogs: data })
         } catch (error) {
             console.log(error)
         }
     }
 
     const handleChangeDept = async data => {
-        let uri = apiConfig.baseURL + `/leaves/yearbudget/deptId/${yearBudget}/${data.target.value}`
+        let uri = apiConfig.baseURL + `/leaves/yearbudget/deptId/${selectedYear}/${data.target.value}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -85,7 +100,7 @@ const TableLeaves = () => {
     }
 
     const fetchLeaves = async () => {
-        let uri = apiConfig.baseURL + `/leaves/all/${yearBudget}`
+        let uri = apiConfig.baseURL + `/leaves/all/${selectedYear}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -107,14 +122,25 @@ const TableLeaves = () => {
         }
     }
 
+    const fetchYearBudgetOptions = () => {
+        let minYear = 2023
+        let maxYear = moment(currentYear).format('YYYY')
+        let yearOptions = []
+        for (let i = minYear; i <= maxYear; i++) {
+            yearOptions.push({ year: i })
+        }
+        setYearOptions({ blogs: yearOptions })
+    }
+
     useEffect(() => {
+        fetchYearBudgetOptions()
         fetchLeaves()
         fetchDepts()
     }, [])
 
     return (
         <Card>
-            <CardHeader title={`รายงานสรุปข้อมูลการลาปฎิบัติงานประจำปีงบประมาณ ${thYearBudget}`} sx={{ textAlign: "center" }} titleTypographyProps={{ variant: 'h3' }} />
+            <CardHeader title={`รายงานสรุปข้อมูลการลาปฎิบัติงานประจำปีงบประมาณ ${strYearBudget}`} sx={{ textAlign: "center" }} titleTypographyProps={{ variant: 'h3' }} />
             <Divider sx={{ margin: 0 }} />
             <CardContent>
                 <Grid item xs={12} md={12} lg={12}>
@@ -134,30 +160,39 @@ const TableLeaves = () => {
                                 />
                             </Grid>
                             <Grid item xs={2}>
-                                <Select
-                                    fullWidth
-                                    label='หน่วยงาน'
-                                    placeholder='เลือกหน่วยงาน'
-                                    value={deptFilter}
-                                    onChange={handleChangeDept}
-                                >
-                                    <MenuItem value='all'>ทั้งหมด</MenuItem>
-                                    {deptOptions.blogs.map(row => (
-                                        <MenuItem key={row.deptId} value={row.deptId}>
-                                            {row.deptName}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">หน่วยงาน</InputLabel>
+                                    <Select
+                                        fullWidth
+                                        label='หน่วยงาน'
+                                        value={deptFilter}
+                                        onChange={handleChangeDept}
+                                    >
+                                        <MenuItem value='all'>ทั้งหมด</MenuItem>
+                                        {deptOptions.blogs.map(row => (
+                                            <MenuItem key={row.deptId} value={row.deptId}>
+                                                {row.deptName}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={2}>
-                                <TextField
-                                    fullWidth
-                                    label='เลือกเดือน'
-                                    type='year'
-                                    onChange={handleChange}
-                                    defaultValue={yearBudget}
-                                    value={yearBudget}
-                                />
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">ปีงบประมาณ</InputLabel>
+                                    <Select
+                                        fullWidth
+                                        label="ปีงบประมาณ"
+                                        value={selectedYear}
+                                        onChange={handleYearBudgetChange}
+                                    >
+                                        {yearOptions.blogs.map(row => (
+                                            <MenuItem key={row.year} value={row.year}>
+                                                {row.year + 543}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                         </Grid>
                     </form>
@@ -174,10 +209,10 @@ const TableLeaves = () => {
                                 <TableCell align='center'>ลาพักผ่อน</TableCell>
                                 <TableCell align='center'>ลากิจ</TableCell>
                                 <TableCell align='center'>ลาป่วย</TableCell>
-                                <TableCell align='center'>ปฏิบัติราชการนอกสถานที่</TableCell>
                                 <TableCell align='center'>ลาคลอด</TableCell>
                                 <TableCell align='center'>ลาดูแลภรรยาคลอดบุตร</TableCell>
                                 <TableCell align='center'>ประกอบพิธีฮัจย์</TableCell>
+                                <TableCell align='center'>ปฏิบัติราชการนอกสถานที่</TableCell>
                                 <TableCell align='center'>จัดการ</TableCell>
                             </TableRow>
                         </TableHead>
@@ -207,9 +242,6 @@ const TableLeaves = () => {
                                             {row.medicalLeave ?? "-"}
                                         </TableCell>
                                         <TableCell align='center'>
-                                            {row.officialLeave ?? "-"}
-                                        </TableCell>
-                                        <TableCell align='center'>
                                             {row.birthLeave ?? "-"}
                                         </TableCell>
                                         <TableCell align='center'>
@@ -218,7 +250,9 @@ const TableLeaves = () => {
                                         <TableCell align='center'>
                                             {row.hajjLeave ?? "-"}
                                         </TableCell>
-
+                                        <TableCell align='center'>
+                                            {row.officialLeave ?? "-"}
+                                        </TableCell>
                                         <TableCell align='center' color='success'>
                                             <Link passHref href={`../../leaves/cid/${row.cid}`} color='success'>
                                                 <Button type='button' variant='outlined'>

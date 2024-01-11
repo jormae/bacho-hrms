@@ -44,9 +44,6 @@ const Leaves = () => {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleTabHistoryChange} aria-label='lab API tabs example'>
                         <Tab label='รออนุมัติ' value='newLeave' />
-                        {/* <Tab label='ผู้รับผิดชอบแทนรับทราบ' value='colleagueSigned' /> */}
-                        {/* <Tab label='หัวหน้างานรับทราบ' value='headSigned' /> */}
-                        {/* <Tab label='หัวหน้ากลุ่มเห็นชอบ' value='managerSigned' /> */}
                         <Tab label='อนุมัติ' value='directorSigned' />
                         <Tab label='ไม่อนุมัติ' value='rejectedLeaves' />
                     </TabList>
@@ -56,21 +53,6 @@ const Leaves = () => {
                         <TableLeavesNew />
                     </Grid>
                 </TabPanel>
-                {/* <TabPanel value='colleagueSigned'>
-                    <Grid container wrap='nowrap'>
-                        <TableLeavesColleagueSigned />
-                    </Grid>
-                </TabPanel>
-                <TabPanel value='headSigned'>
-                    <Grid container wrap='nowrap'>
-                        <TableLeavesHeadDeptSigned />
-                    </Grid>
-                </TabPanel>
-                <TabPanel value='managerSigned'>
-                    <Grid container wrap='nowrap'>
-                        <TableLeavesDirectorSigned />
-                    </Grid>
-                </TabPanel> */}
                 <TabPanel value='directorSigned'>
                     <Grid container wrap='nowrap'>
                         <TableLeavesDirectorSigned />
