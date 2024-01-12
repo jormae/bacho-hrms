@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -54,9 +54,15 @@ const UserDropdown = () => {
   const handleDropdownCloseAndLogout = url => {
     localStorage.removeItem('token')
     localStorage.removeItem('memberRoleId')
-    localStorage.removeItem('memberRoleName')
-    localStorage.removeItem('memberName')
+    localStorage.removeItem('positionName')
+    localStorage.removeItem('staffName')
     localStorage.removeItem('username')
+    localStorage.removeItem('avatar')
+    localStorage.removeItem('mainDeptId')
+    localStorage.removeItem('mainDeptName')
+    localStorage.removeItem('userRoleId')
+    localStorage.removeItem('deptName')
+    localStorage.removeItem('deptId')
 
     if (url) {
       router.push(url)
@@ -77,11 +83,25 @@ const UserDropdown = () => {
       color: 'text.secondary'
     }
   }
-
+  const [avatar, setAvatar] = useState()
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
-  const memberName = typeof window !== 'undefined' ? localStorage.getItem('memberName') : null
-  const memberRoleName = typeof window !== 'undefined' ? localStorage.getItem('memberRoleName') : null
+  const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
+  const positionName = typeof window !== 'undefined' ? localStorage.getItem('positionName') : null
   const memberRoleId = typeof window !== 'undefined' ? localStorage.getItem('memberRoleId') : null
+
+  // console.log(avatar)
+
+  // function getStorageItem() {
+
+
+
+  // }
+
+  useEffect(() => {
+    // getStorageItem()
+    setAvatar(typeof window !== 'undefined' ? localStorage.getItem('avatar') : null)
+  })
+
 
   return (
     <Fragment>
@@ -96,7 +116,7 @@ const UserDropdown = () => {
           alt='John Doe'
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
-          src='/images/avatars/1.png'
+          src={`data:image/png;base64,${avatar}` ?? 'Loading...'}
         />
       </Badge>
       <Menu
@@ -114,12 +134,12 @@ const UserDropdown = () => {
               badgeContent={<BadgeContentSpan />}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
-              <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
+              <Avatar alt='John Doe' src={`data:image/png;base64,${avatar}`} sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>{memberName}</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{staffName}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                {memberRoleName}
+                {positionName}
               </Typography>
             </Box>
           </Box>

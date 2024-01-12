@@ -16,19 +16,19 @@ import TabPanel from '@mui/lab/TabPanel'
 import FormAccount from 'src/views/form-layouts/FormAccount'
 import { ConsoleNetworkOutline } from 'mdi-material-ui'
 
-const defaultData = {
-  ptName: 'Loading',
-  admitDate: '2022-04-09T17:00:00.000Z',
-  dischargeDate: '2022-04-11T17:00:00.000Z',
-  doctorCode: 'Loading',
-  wardCode: 'Loading',
-  dischargeStatusCode: 'Loading',
-  dischargeTypeCode: 'Loading',
-  referCauseCode: 0,
-  referHospitalCode: 0,
-  pttypeCode: 'Loading',
-  admitDuration: 'Loading'
-}
+// const defaultData = {
+//   ptName: 'Loading',
+//   admitDate: '2022-04-09T17:00:00.000Z',
+//   dischargeDate: '2022-04-11T17:00:00.000Z',
+//   doctorCode: 'Loading',
+//   wardCode: 'Loading',
+//   dischargeStatusCode: 'Loading',
+//   dischargeTypeCode: 'Loading',
+//   referCauseCode: 0,
+//   referHospitalCode: 0,
+//   pttypeCode: 'Loading',
+//   admitDuration: 'Loading'
+// }
 
 export const StaffContext = createContext()
 
@@ -61,8 +61,9 @@ const FormLayouts = () => {
   if (router.isReady) {
     router.query.cid
   }
-  const [staffDetail, setStaffDetail] = useState(defaultData)
+  const [staffDetail, setStaffDetail] = useState()
   console.log(staffDetail)
+  const cid = staffDetail?.cid
   const [position, setPositions] = useState([])
   const [staffTypes, setStaffTypes] = useState([])
   const [staffRoles, setStaffRoles] = useState([])
@@ -73,8 +74,8 @@ const FormLayouts = () => {
   const [staffLoanHistories, setStaffLoanHistories] = useState({ blogs: [] })
   const [staffDividendHistories, setStaffDividendHistories] = useState({ blogs: [] })
   const [staffSuretyHistories, setStaffSuretyHistories] = useState({ blogs: [] })
-  const [value, setValue] = React.useState('staff')
-  const [tabHistoryValue, setTabHistoryValue] = React.useState('loan')
+  const [value, setValue] = React.useState('personalInfo')
+  const [tabHistoryValue, setTabHistoryValue] = React.useState('monthly-attendance')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -228,7 +229,7 @@ const FormLayouts = () => {
 
   const SkeletonStaffCardLoading = () => (
     <Box sx={{ width: '100%' }}>
-      {staffDetail.cid ? (
+      {staffDetail?.cid ? (
         <StaffContext.Provider value={staffDetail}>
           <CardUser />
         </StaffContext.Provider>
@@ -245,13 +246,13 @@ const FormLayouts = () => {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label='lab API tabs example'>
-            <Tab label='ข้อมูลสมาชิก' value='staff' />
-            <Tab label='ข้อมูลคู่สมรส' value='spouse' />
-            <Tab label='ข้อมูลบัญชีผู้ใช้' value='account' />
+            <Tab label='ข้อมูลส่วนตัว' value='personalInfo' />
+            <Tab label='ข้อมูลการทำงาน' value='workInfo' />
+            <Tab label='ข้อมูลบัญชีผู้ใช้' value='accountInfo' />
           </TabList>
         </Box>
-        <TabPanel value='staff'>
-          {staffDetail.cid ? (
+        <TabPanel value='personalInfo'>
+          {staffDetail?.cid ? (
             <StaffContext.Provider value={staffDetail}>
               <PositionsContext.Provider value={position}>
                 <StaffTypesContext.Provider value={staffTypes}>
@@ -271,19 +272,19 @@ const FormLayouts = () => {
             </Typography>
           )}
         </TabPanel>
-        <TabPanel value='spouse'>
-          {/* {staffDetail.cid ? (
+        <TabPanel value='workInfo'>
+          {staffDetail?.cid ? (
             <SpouseContext.Provider value={spouseDetails}>
-              <FormSpouseDetail />
+              <FormAccount />
             </SpouseContext.Provider>
           ) : (
             <Typography variant='h4'>
               <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
             </Typography>
-          )} */}
+          )}
         </TabPanel>
-        <TabPanel value='account'>
-          {staffDetail.cid ? (
+        <TabPanel value='accountInfo'>
+          {staffDetail?.cid ? (
             <StaffContext.Provider value={staffDetail}>
               <FormAccount />
             </StaffContext.Provider>
@@ -302,14 +303,13 @@ const FormLayouts = () => {
       <TabContext value={tabHistoryValue}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleTabHistoryChange} aria-label='lab API tabs example'>
-            <Tab label='ประวัติกู้' value='loan' />
-            {/* <Tab label='ประวัติกู้อื้นๆ' value='otherLoan' /> */}
-            <Tab label='ประวัติหุ้น' value='investment' />
-            <Tab label='ประวัติปันผล' value='dividend' />
-            <Tab label='ประวัติค้ำประกัน' value='surety' />
+            <Tab label='ข้อมูลปฏิบัติงาน(รายเดือน)' value='monthly-attendance' />
+            <Tab label='ข้อมูลสรุปปฏิบัติงาน(รายปี)' value='yearly-attendance' />
+            <Tab label='ประวัติลา' value='yearly-leave' />
+            <Tab label='ประวัติราชการนอกสถานที่' value='yearly-outstation' />
           </TabList>
         </Box>
-        <TabPanel value='loan'>
+        <TabPanel value='monthly-attendance'>
           {staffLoanHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
               <Grid item xs={12} md={12} lg={12}>
@@ -339,7 +339,7 @@ const FormLayouts = () => {
             </Typography>
           )}
         </TabPanel> */}
-        <TabPanel value='investment'>
+        <TabPanel value='yearly-attendance'>
           {staffInvestmentHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
               <Grid item xs={12} md={12} lg={12}>
@@ -354,7 +354,7 @@ const FormLayouts = () => {
             </Typography>
           )}
         </TabPanel>
-        <TabPanel value='dividend'>
+        <TabPanel value='yearly-leave'>
           {staffDividendHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
               <Grid item xs={12} md={12} lg={12}>
@@ -369,7 +369,7 @@ const FormLayouts = () => {
             </Typography>
           )}
         </TabPanel>
-        <TabPanel value='surety'>
+        <TabPanel value='yearly-outstation'>
           {staffSuretyHistories.blogs.length > 0 ? (
             <Grid container wrap='nowrap'>
               <SuretyHistoryContext.Provider value={staffSuretyHistories}>
@@ -388,10 +388,10 @@ const FormLayouts = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid item md={4} xs={12}>
+      <Grid item lg={4} md={12} xs={12}>
         <SkeletonStaffCardLoading />
       </Grid>
-      <Grid item md={8} xs={12}>
+      <Grid item lg={8} md={12} xs={12}>
         <SkeletonStaffFormsLoading />
       </Grid>
       <Grid item md={12} xs={12}>

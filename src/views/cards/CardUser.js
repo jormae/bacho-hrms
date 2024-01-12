@@ -21,65 +21,18 @@ import apiConfig from 'src/configs/apiConfig'
 import Divider from '@mui/material/Divider'
 
 import { StaffContext } from 'src/pages/staff/[cid]'
-// import { LoanStaffContext } from 'src/pages/loan/[cid]/[loanId]'
 
 const CardUser = () => {
   const staffDetail = useContext(StaffContext)
-  // const loanStaffDetail = useContext(LoanStaffContext)
-  // const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
   const user = typeof staffDetail !== 'undefined' ? staffDetail : ''
   const cid = staffDetail?.cid
-  // console.log('cid = '+cid)
-  // console.log('staffDetail = '+staffDetail)
+  const avatar = staffDetail?.avatar
+  const staffName = staffDetail?.staffName
+  const positionName = staffDetail?.positionName
+  const mainDeptName = staffDetail?.mainDeptName
+  console.log('card user = ' + staffDetail.fname)
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors }
-  } = useForm({
-    defaultValues: { otherLoans: '1' }
-  })
   const [loading, setLoading] = React.useState(false)
-
-  const onSubmit = data => {
-    // setLoading(true)
-    console.log(data)
-    // let json = JSON.stringify(data);
-    // console.log(json);
-    // let string = data.toString(json)
-    // console.log(string);
-
-    // const newArray = data.toString();
-    // console.log(newArray);
-    // var arrayOfNumbers = arrayOfStrings.map(Number);
-    // console.log(arrayOfNumbers);
-
-    // let join = data.join("");
-    // console.log(join)
-
-    let uri = apiConfig.baseURL + `/utils/other-loans/${cid}`
-    fetch(uri, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setLoading(false)
-        if (data.status == 'success') {
-          toast.success(data.message)
-        } else {
-          toast.error(data.message || data.errors[0].msg)
-        }
-      })
-      .catch(function (error) {
-        console.log(JSON.stringify(error))
-      })
-  }
 
   return (
     <Card sx={{ position: 'relative' }}>
@@ -89,7 +42,7 @@ const CardUser = () => {
       <Box sx={{ width: '100%', display: 'flex', flexWrap: 'wrap', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar
           alt='Robert Meyer'
-          src='/images/avatars/1.png'
+          src={`data:image/png;base64,${avatar}`}
           style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'column', alignItems: 'center' }}
           sx={{
             width: 120,
@@ -127,14 +80,18 @@ const CardUser = () => {
               align='center'
               sx={{ color: 'primary.main', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              {user?.staffName}
+              {staffName}
+            </Typography>
+            <Divider />
+            <Typography align='right' sx={{ color: 'primary.main' }}>
+              {positionName}
             </Typography>
             <Typography align='right' sx={{ color: 'primary.main' }}>
-              {user?.staffTypeName}
+              {mainDeptName}
             </Typography>
           </Box>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             mt: 5.75,
             mb: 8.75,
@@ -144,81 +101,13 @@ const CardUser = () => {
             justifyContent: 'space-between'
           }}
         >
-          {/* <Link href={`../../loan-payment/${user?.cid}`} color='primary'>
-            <Button variant='outlined'>ชำระเงินกู้</Button>
-          </Link> */}
           <Link href={`../../investment-form/${user?.cid}`} color='primary'>
             <Button variant='outlined'>ฝาก-ถอนหุ้น</Button>
           </Link>
           <Link href={`../../loan-form/${user?.cid}`} color='primary'>
             <Button variant='outlined'>ใบคำร้อง</Button>
           </Link>
-        </Box>
-        <Divider />
-        {/* <Box sx={{ gap: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant='h6' align='center' sx={{ mb:2 }}>
-            รายการหนี้อื่นๆ
-          </Typography>
-        </Box>
-        <form>
-        <Grid container spacing={5}>
-          <Grid item xs={6}>
-            <Checkbox
-              type='checkbox'
-              value='1'
-              placeholder='เงินสมทบ'
-              {...register('otherLoans')}
-              className='mx-3'
-              // checked={false}
-            />
-            <label htmlFor=''>เงินสมทบ</label>
-          </Grid>
-          <Grid item xs={6}>
-            <Checkbox
-              type='checkbox'
-              value='2'
-              placeholder='ธนาคาร'
-              {...register('otherLoans')}
-              className='mx-3'
-            />
-            <label htmlFor=''>ธนาคาร</label>
-          </Grid>
-          <Grid item xs={6}>
-            <Checkbox
-              type='checkbox'
-              value='3'
-              placeholder='กยศ.'
-              {...register('otherLoans')}
-              className='mx-3'
-            />
-            <label htmlFor=''>กยศ.</label>
-          </Grid>
-          <Grid item xs={6}>
-            <Checkbox
-              type='checkbox'
-              value='4'
-              placeholder='ค่าน้ำ-ค่าไฟ'
-              {...register('otherLoans')}
-              className='mx-3'
-            />
-            <label htmlFor=''>ค่าน้ำ-ค่าไฟ</label>
-          </Grid>
-          <Grid item xs={6}>
-            <LoadingButton
-              type='submit'
-              color='primary'
-              onClick={handleSubmit(onSubmit)}
-              loading={loading}
-              loadingPosition='start'
-              startIcon={<SaveIcon />}
-              variant='contained'
-              size='large'
-            >
-              บันทึก
-            </LoadingButton>
-          </Grid>
-        </Grid>
-      </form> */}
+        </Box> */}
       </CardContent>
     </Card>
   )

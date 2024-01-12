@@ -1,7 +1,7 @@
 // ** MUI Imports
 import React, { useContext, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Paper from '@mui/material/Paper'
+import { Paper, Avatar } from '@mui/material'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -57,7 +57,7 @@ const TableStaff = props => {
                     onChange: e => {
                       setSearch(e.target.value)
                     },
-                    onBlur: e => {}
+                    onBlur: e => { }
                   })}
                 />
               </Grid>
@@ -70,6 +70,7 @@ const TableStaff = props => {
             <TableHead>
               <TableRow>
                 <TableCell align='center'>ที่</TableCell>
+                <TableCell align='center'>รูป</TableCell>
                 <TableCell align='center'>เลขประชาชน</TableCell>
                 <TableCell align='center'>ชื่อ-สกุล</TableCell>
                 <TableCell align='center'>ตำแหน่ง</TableCell>
@@ -89,6 +90,13 @@ const TableStaff = props => {
                   <TableRow key={row.cid} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell align='center' component='th' scope='row'>
                       {i++}
+                    </TableCell>
+                    <TableCell align='center'>
+                      <Avatar
+                        alt={row.staffName}
+                        sx={{ width: 30, height: 30 }}
+                        src={`data:image/png;base64,${row.avatar}` ?? 'Loading...'}
+                      />
                     </TableCell>
                     <TableCell align='center'>{row.cid}</TableCell>
                     <TableCell>{row.staffName}</TableCell>

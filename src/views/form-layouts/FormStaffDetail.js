@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Skeleton from '@mui/material/Skeleton'
 import { useForm } from 'react-hook-form'
 
@@ -51,9 +51,12 @@ const FormStaffDetail = () => {
   console.log(staffDetail)
 
   const cid = staffDetail?.cid
+  const pname = staffDetail?.pname
+  const fname = staffDetail?.fname
+  const lname = staffDetail?.lname
   const staffName = staffDetail?.staffName
-  const villageNo = staffDetail?.villageNo
-  const subDistrict = staffDetail?.subDistrict
+  const sex = staffDetail?.sex
+  const birthday = moment(staffDetail?.birthday).format('YYYY-MM-DD')
   const district = staffDetail?.district
   const province = staffDetail?.province
   const houseNo = staffDetail?.houseNo
@@ -64,30 +67,25 @@ const FormStaffDetail = () => {
   const staffRoleId = staffDetail?.staffRoleId
   const paymentTypeId = staffDetail?.paymentTypeId
   const staffStatusId = staffDetail?.staffStatusId
+  console.log(birthday)
 
   const staffRole = typeof window !== 'undefined' ? localStorage?.getItem('staffRoleId') : ''
+
   // const strDisabled = staffRole != 4 ? '' : 'disabled';
   console.log(staffRole)
   useEffect(() => {
     if (staffDetail) {
       reset({
         cid: staffDetail?.cid,
+        pname: staffDetail?.pname,
+        fname: staffDetail?.fname,
+        lname: staffDetail?.lname,
         staffName: staffDetail?.staffName,
-        salary: staffDetail?.salary,
-        houseNo: staffDetail?.houseNo,
-        streetName: staffDetail?.streetName,
-        villageName: staffDetail?.villageName,
-        villageNo: staffDetail?.villageNo,
-        subDistrict: staffDetail?.subDistrict,
-        district: staffDetail?.district,
-        province: staffDetail?.province,
-        postCode: staffDetail?.postCode,
+        sex: staffDetail?.sex,
+        birthday: staffDetail?.birthday,
         contactNo: staffDetail?.contactNo,
-        positionId: staffDetail?.positionId,
-        staffTypeId: staffDetail?.staffTypeId,
-        staffRoleId: staffDetail?.staffRoleId,
-        paymentTypeId: staffDetail?.paymentTypeId,
-        staffStatusId: staffDetail?.staffStatusId
+        email: staffDetail?.email,
+        address: staffDetail?.address
       })
     }
   }, [])
@@ -129,28 +127,10 @@ const FormStaffDetail = () => {
       <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <Grid container spacing={5}>
-            <Grid item xs={12} md={3}>
-              {staffDetail.cid ? (
-                <TextField fullWidth label='เลขที่บัตรประชาชน' {...register('cid')} />
-              ) : (
-                <Skeleton variant='rectangular' width={250} height={55} />
-              )}
-            </Grid>
-            <Grid item xs={12} md={3}>
-              {staffDetail.staffName ? (
-                <TextField fullWidth label='ชื่อสมาชิก' {...register('staffName')} />
-              ) : (
-                <Skeleton variant='rectangular' width={250} height={55} />
-              )}
-              {/* <input type='hidden' {...register('updatedBy')} value={updatedBy} /> */}
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='เงินเดือน' type='number' {...register('salary')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={6} lg={4}>
               <FormControl fullWidth>
-                <InputLabel>ตำแหน่ง</InputLabel>
-                <Select label='ตำแหน่ง' defaultValue={positionId ?? ''} {...register('positionId', { required: true })}>
+                <InputLabel>คำนำหน้า</InputLabel>
+                <Select label='คำนำหน้า' defaultValue={positionId ?? ''} {...register('pname', { required: true })}>
                   {positions.map(item => {
                     return (
                       <MenuItem key={item.positionId} value={item.positionId}>
@@ -161,110 +141,86 @@ const FormStaffDetail = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...(staffRole != 4 ? null : { disabled: true })}>
-                <InputLabel>ประเภทสมาชิก</InputLabel>
-                <Select
-                  label='ประเภทสมาชิก'
-                  defaultValue={staffTypeId ?? ''}
-                  {...register('staffTypeId', { required: true })}
-                >
-                  {staffTypes.map(item => {
-                    return (
-                      <MenuItem key={item.staffTypeId} value={item.staffTypeId}>
-                        {item.staffTypeName}
-                      </MenuItem>
-                    )
-                  })}
-                </Select>
-              </FormControl>
+            <Grid item xs={12} md={6} lg={4}>
+              {staffDetail.cid ? (
+                <TextField fullWidth label='ชื่อ' {...register('fname')} />
+              ) : (
+                <Skeleton variant='rectangular' width={250} height={55} />
+              )}
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={6} lg={4}>
+              {staffDetail.cid ? (
+                <TextField fullWidth label='สกุล' {...register('lname')} />
+              ) : (
+                <Skeleton variant='rectangular' width={250} height={55} />
+              )}
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              {staffDetail.cid ? (
+                <TextField fullWidth label='เลขที่บัตรประชาชน' {...register('cid')} />
+              ) : (
+                <Skeleton variant='rectangular' width={250} height={55} />
+              )}
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
               <FormControl fullWidth>
-                <InputLabel>ประเภทการชำระเงิน</InputLabel>
-                <Select
-                  label='ประเภทการชำระเงิน'
-                  defaultValue={paymentTypeId ?? ''}
-                  {...register('paymentTypeId', { required: true })}
-                >
-                  {paymentTypes.map(item => {
-                    return (
-                      <MenuItem key={item.paymentTypeId} value={item.paymentTypeId}>
-                        {item.paymentTypeName}
-                      </MenuItem>
-                    )
-                  })}
+                <InputLabel>เพศ</InputLabel>
+                <Select label='เพศ' defaultValue={sex} {...register('sex', { required: true })} >
+                  <MenuItem key={1} value={1}>
+                    ชาย
+                  </MenuItem>
+                  <MenuItem key={2} value={2}>
+                    หญิง
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...(staffRole == 4 ? { disabled: true } : null)}>
-                <InputLabel>ประเภทบัญชีผู้ใช้</InputLabel>
-                <Select
-                  label='ประเภทบัญชีผู้ใช้'
-                  defaultValue={staffRoleId ?? ''}
-                  {...register('staffRoleId', { required: true })}
-                >
-                  {staffRoles.map(item => {
-                    return (
-                      <MenuItem key={item.staffRoleId} value={item.staffRoleId}>
-                        {item.staffRoleName}
-                      </MenuItem>
-                    )
-                  })}
-                </Select>
-              </FormControl>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='วันเกิด' type='date' value={birthday} {...register('birthday')} />
             </Grid>
-            <Grid item xs={12} md={3}>
-              <FormControl fullWidth {...(staffRole != 4 ? null : { disabled: true })}>
-                <InputLabel>สถานะสมาชิก</InputLabel>
-                <Select
-                  label='สถานะสมาชิก'
-                  defaultValue={staffStatusId ?? ''}
-                  {...register('staffStatusId', { required: true })}
-                >
-                  {staffStatus.map(item => {
-                    return (
-                      <MenuItem key={item.staffStatusId} value={item.staffStatusId}>
-                        {item.staffStatusName}
-                      </MenuItem>
-                    )
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-        </CardContent>
-        <CardHeader title='ข้อมูลที่อยู่' titleTypographyProps={{ variant: 'h6' }} />
-        <CardContent>
-          <Grid container spacing={5}>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='บ้านเลขที่' type='text' {...register('houseNo')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='ถนน' type='text' {...register('streetName')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='หมู่บ้าน' type='text' {...register('villageName')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='หมู่ที่' type='text' {...register('villageNo')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='ตำบล' type='text' {...register('subDistrict')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='อำเภอ' type='text' {...register('district')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='จังหวัด' type='text' {...register('province')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField fullWidth label='รหัสไปรษณีย์' type='text' {...register('postCode')} />
-            </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={6} lg={6}>
               <TextField fullWidth label='โทรศัพท์' type='text' {...register('contactNo')} />
             </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <TextField fullWidth label='อีเมล' type='text' {...register('email')} />
+            </Grid>
+            <Grid item xs={12} md={12} lg={12}>
+              <TextField fullWidth label='ที่อยู่' type='text' {...register('address')} />
+            </Grid>
+
+          </Grid>
+
+        </CardContent>
+        {/* <CardHeader title='ข้อมูลที่อยู่' titleTypographyProps={{ variant: 'h6' }} /> */}
+        <CardContent>
+          <Grid container spacing={5}>
+            {/* <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='บ้านเลขที่' type='text' {...register('houseNo')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='ถนน' type='text' {...register('streetName')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='หมู่บ้าน' type='text' {...register('villageName')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='หมู่ที่' type='text' {...register('villageNo')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='ตำบล' type='text' {...register('subDistrict')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='อำเภอ' type='text' {...register('district')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='จังหวัด' type='text' {...register('province')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='รหัสไปรษณีย์' type='text' {...register('postCode')} />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextField fullWidth label='โทรศัพท์' type='text' {...register('contactNo')} />
+            </Grid> */}
 
             <Grid item xs={12}>
               <Box
@@ -280,7 +236,6 @@ const FormStaffDetail = () => {
                 <LoadingButton
                   type='submit'
                   color='primary'
-                  //   onClick={handleClick}
                   onClick={handleSubmit(onSubmit)}
                   loading={loading}
                   loadingPosition='start'
