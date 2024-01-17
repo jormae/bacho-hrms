@@ -28,23 +28,16 @@ import {
   PositionsContext,
   StaffTypesContext,
   StaffRolesContext,
-  PaymentTypesContext,
+  PnamesContext,
   StaffStatusContext
 } from 'src/pages/staff/[cid]'
 import { CosineWave } from 'mdi-material-ui'
 
 const FormStaffDetail = () => {
+
   const staffDetail = useContext(StaffContext)
 
-  const positions = useContext(PositionsContext)
-
-  const staffTypes = useContext(StaffTypesContext)
-
-  const staffRoles = useContext(StaffRolesContext)
-
-  const paymentTypes = useContext(PaymentTypesContext)
-
-  const staffStatus = useContext(StaffStatusContext)
+  const pNames = useContext(PnamesContext)
 
   const { register, handleSubmit, reset } = useForm()
   const [loading, setLoading] = React.useState(false)
@@ -56,48 +49,17 @@ const FormStaffDetail = () => {
   const lname = staffDetail?.lname
   const staffName = staffDetail?.staffName
   const sex = staffDetail?.sex
+
+  // const bd = staffDetail?.birthday
   const birthday = moment(staffDetail?.birthday).format('YYYY-MM-DD')
-  const district = staffDetail?.district
-  const province = staffDetail?.province
-  const houseNo = staffDetail?.houseNo
-  const postCode = staffDetail?.postCode
-  const contactNo = staffDetail?.contactNo
-  const positionId = staffDetail?.positionId
-  const staffTypeId = staffDetail?.staffTypeId
-  const staffRoleId = staffDetail?.staffRoleId
-  const paymentTypeId = staffDetail?.paymentTypeId
-  const staffStatusId = staffDetail?.staffStatusId
-  console.log(birthday)
 
-  const staffRole = typeof window !== 'undefined' ? localStorage?.getItem('staffRoleId') : ''
-
-  // const strDisabled = staffRole != 4 ? '' : 'disabled';
-  console.log(staffRole)
-  useEffect(() => {
-    if (staffDetail) {
-      reset({
-        cid: staffDetail?.cid,
-        pname: staffDetail?.pname,
-        fname: staffDetail?.fname,
-        lname: staffDetail?.lname,
-        staffName: staffDetail?.staffName,
-        sex: staffDetail?.sex,
-        birthday: staffDetail?.birthday,
-        contactNo: staffDetail?.contactNo,
-        email: staffDetail?.email,
-        address: staffDetail?.address
-      })
-    }
-  }, [])
+  // console.log('bd = ' + bd)
+  console.log('birthday = ' + birthday)
 
   const onSubmit = data => {
     setLoading(true)
-    console.log(data)
-    let staffId = staffDetail?.cid
-    console.log(staffId)
-
-    let uri = apiConfig.baseURL + `/staffs/${cid}`
-
+    let cid = staffDetail?.cid
+    let uri = apiConfig.baseURL + `/staff/personal/${cid}`
     fetch(uri, {
       method: 'PUT',
       headers: {
@@ -130,11 +92,11 @@ const FormStaffDetail = () => {
             <Grid item xs={12} md={6} lg={4}>
               <FormControl fullWidth>
                 <InputLabel>คำนำหน้า</InputLabel>
-                <Select label='คำนำหน้า' defaultValue={positionId ?? ''} {...register('pname', { required: true })}>
-                  {positions.map(item => {
+                <Select label='คำนำหน้า' defaultValue={staffDetail.pname ?? ''} {...register('pname', { required: true })}>
+                  {pNames.map(item => {
                     return (
-                      <MenuItem key={item.positionId} value={item.positionId}>
-                        {item.positionName}
+                      <MenuItem key={item.pname} value={item.pname}>
+                        {item.pname}
                       </MenuItem>
                     )
                   })}
@@ -143,21 +105,21 @@ const FormStaffDetail = () => {
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               {staffDetail.cid ? (
-                <TextField fullWidth label='ชื่อ' {...register('fname')} />
+                <TextField fullWidth label='ชื่อ' defaultValue={fname} {...register('fname')} />
               ) : (
                 <Skeleton variant='rectangular' width={250} height={55} />
               )}
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               {staffDetail.cid ? (
-                <TextField fullWidth label='สกุล' {...register('lname')} />
+                <TextField fullWidth label='สกุล' defaultValue={lname} {...register('lname')} />
               ) : (
                 <Skeleton variant='rectangular' width={250} height={55} />
               )}
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               {staffDetail.cid ? (
-                <TextField fullWidth label='เลขที่บัตรประชาชน' {...register('cid')} />
+                <TextField fullWidth label='เลขที่บัตรประชาชน' defaultValue={cid} {...register('cid')} />
               ) : (
                 <Skeleton variant='rectangular' width={250} height={55} />
               )}
@@ -176,52 +138,21 @@ const FormStaffDetail = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='วันเกิด' type='date' value={birthday} {...register('birthday')} />
+              <TextField fullWidth label='วันเกิด' type='date' InputLabelProps={{ shrink: true, }} defaultValue={birthday}  {...register('birthday')} />
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
-              <TextField fullWidth label='โทรศัพท์' type='text' {...register('contactNo')} />
+              <TextField fullWidth label='โทรศัพท์' type='text' defaultValue={staffDetail?.contactNo} {...register('contactNo')} />
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
-              <TextField fullWidth label='อีเมล' type='text' {...register('email')} />
+              <TextField fullWidth label='อีเมล' type='text' defaultValue={staffDetail?.email} {...register('email')} />
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
-              <TextField fullWidth label='ที่อยู่' type='text' {...register('address')} />
+              <TextField fullWidth label='ที่อยู่' type='text' defaultValue={staffDetail?.address} {...register('address')} />
             </Grid>
-
           </Grid>
-
         </CardContent>
-        {/* <CardHeader title='ข้อมูลที่อยู่' titleTypographyProps={{ variant: 'h6' }} /> */}
         <CardContent>
           <Grid container spacing={5}>
-            {/* <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='บ้านเลขที่' type='text' {...register('houseNo')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='ถนน' type='text' {...register('streetName')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='หมู่บ้าน' type='text' {...register('villageName')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='หมู่ที่' type='text' {...register('villageNo')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='ตำบล' type='text' {...register('subDistrict')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='อำเภอ' type='text' {...register('district')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='จังหวัด' type='text' {...register('province')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='รหัสไปรษณีย์' type='text' {...register('postCode')} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <TextField fullWidth label='โทรศัพท์' type='text' {...register('contactNo')} />
-            </Grid> */}
-
             <Grid item xs={12}>
               <Box
                 sx={{

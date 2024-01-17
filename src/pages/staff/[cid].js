@@ -15,6 +15,7 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import FormAccount from 'src/views/form-layouts/FormAccount'
 import { ConsoleNetworkOutline } from 'mdi-material-ui'
+import FormWork from 'src/views/form-layouts/FormWork'
 
 // const defaultData = {
 //   ptName: 'Loading',
@@ -34,11 +35,11 @@ export const StaffContext = createContext()
 
 export const PositionsContext = createContext()
 
-export const StaffTypesContext = createContext()
+export const ContractTypesContext = createContext()
 
-export const StaffRolesContext = createContext()
+export const DeptsContext = createContext()
 
-export const PaymentTypesContext = createContext()
+export const PnamesContext = createContext()
 
 export const StaffStatusContext = createContext()
 
@@ -62,12 +63,13 @@ const FormLayouts = () => {
     router.query.cid
   }
   const [staffDetail, setStaffDetail] = useState()
-  console.log(staffDetail)
-  const cid = staffDetail?.cid
-  const [position, setPositions] = useState([])
-  const [staffTypes, setStaffTypes] = useState([])
-  const [staffRoles, setStaffRoles] = useState([])
-  const [paymentTypes, setPaymentTypes] = useState([])
+
+  // console.log(staffDetail)
+  // const cid = staffDetail?.cid
+  const [positions, setPositions] = useState([])
+  const [contractTypes, setContractTypes] = useState([])
+  const [depts, setDepts] = useState([])
+  const [pNames, setPnames] = useState([])
   const [StaffStatus, setReferCauses] = useState([])
   const [spouseDetails, setSpouseDetails] = useState()
   const [staffInvestmentHistories, setStaffInvestmentHistories] = useState({ blogs: [] })
@@ -85,14 +87,17 @@ const FormLayouts = () => {
     setTabHistoryValue(newValue)
   }
 
-  const fetchStaffDetail = () => {
+  const fetchStaffDetail = async () => {
     let uri = apiConfig.baseURL + `/staff/${router.query.cid}`
     console.log(uri)
-
-    axios
-      .get(uri)
-      .then(result => setStaffDetail(result.data[0]))
-      .catch(error => console.log('An error occurred' + error))
+    try {
+      await axios
+        .get(uri)
+        .then(result => setStaffDetail(result.data[0]))
+        .catch(error => console.log('An error occurred' + error))
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const fetchPositions = async () => {
@@ -108,103 +113,39 @@ const FormLayouts = () => {
     }
   }
 
-  const fetchStaffTypes = async () => {
-    let uri = apiConfig.baseURL + `/utils/staff-types`
+  const fetchPnames = async () => {
+    let uri = apiConfig.baseURL + `/utils/pname`
+    console.log(uri)
     try {
       await axios
         .get(uri)
-        .then(result => setStaffTypes(result.data))
+        .then(result => setPnames(result.data))
         .catch(error => console.log('An error occurred' + error))
     } catch (error) {
       console.log(error)
     }
   }
 
-  const fetchStaffRoles = async () => {
-    let uri = apiConfig.baseURL + `/utils/staff-roles`
+  const fetchContractTypes = async () => {
+    let uri = apiConfig.baseURL + `/utils/contract-types`
+    console.log(uri)
     try {
       await axios
         .get(uri)
-        .then(result => setStaffRoles(result.data))
+        .then(result => setContractTypes(result.data))
         .catch(error => console.log('An error occurred' + error))
     } catch (error) {
       console.log(error)
     }
   }
 
-  const fetchPaymentTypes = async () => {
-    let uri = apiConfig.baseURL + `/utils/payment-types`
+  const fetchDepts = async () => {
+    let uri = apiConfig.baseURL + `/utils/depts`
     try {
       await axios
         .get(uri)
-        .then(result => setPaymentTypes(result.data))
+        .then(result => setDepts(result.data))
         .catch(error => console.log('An error occurred' + error))
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchStaffStatus = async () => {
-    let uri = apiConfig.baseURL + `/utils/staff-status`
-    try {
-      await axios
-        .get(uri)
-        .then(result => setReferCauses(result.data))
-        .catch(error => console.log('An error occurred' + error))
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchSpouseDetail = () => {
-    let uri = apiConfig.baseURL + `/spouses/${router.query.cid}`
-    console.log(uri)
-
-    axios
-      .get(uri)
-      .then(result => setSpouseDetails(result.data[0]))
-      .catch(error => console.log('An error occurred' + error))
-  }
-
-  const fetchStaffInvestments = async () => {
-    let uri = apiConfig.baseURL + `/investments/history/${router.query.cid}`
-    try {
-      const { data } = await axios.get(uri)
-      setStaffInvestmentHistories({ blogs: data })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchStaffLoans = async () => {
-    let uri = apiConfig.baseURL + `/loans/staff/${router.query.cid}`
-    console.log(uri)
-    try {
-      const { data } = await axios.get(uri)
-      setStaffLoanHistories({ blogs: data })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchStaffDividends = async () => {
-    let uri = apiConfig.baseURL + `/dividends/${router.query.cid}`
-    console.log(uri)
-    try {
-      const { data } = await axios.get(uri)
-      setStaffDividendHistories({ blogs: data })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const fetchStaffSureties = async () => {
-    let uri = apiConfig.baseURL + `/loans/surety/${router.query.cid}`
-    console.log(uri)
-    try {
-      const { data } = await axios.get(uri)
-      console.log(data)
-      setStaffSuretyHistories({ blogs: data })
     } catch (error) {
       console.log(error)
     }
@@ -214,16 +155,10 @@ const FormLayouts = () => {
     if (router.isReady) {
       router.query
       fetchStaffDetail()
+      fetchPnames()
+      fetchContractTypes()
       fetchPositions()
-      fetchStaffTypes()
-      fetchStaffRoles()
-      fetchPaymentTypes()
-      fetchStaffStatus()
-      fetchSpouseDetail()
-      fetchStaffInvestments()
-      fetchStaffLoans()
-      fetchStaffDividends()
-      fetchStaffSureties()
+      fetchDepts()
     }
   }, [router.isReady, router.query])
 
@@ -254,17 +189,11 @@ const FormLayouts = () => {
         <TabPanel value='personalInfo'>
           {staffDetail?.cid ? (
             <StaffContext.Provider value={staffDetail}>
-              <PositionsContext.Provider value={position}>
-                <StaffTypesContext.Provider value={staffTypes}>
-                  <StaffRolesContext.Provider value={staffRoles}>
-                    <PaymentTypesContext.Provider value={paymentTypes}>
-                      <StaffStatusContext.Provider value={StaffStatus}>
-                        <FormStaffDetail />
-                      </StaffStatusContext.Provider>
-                    </PaymentTypesContext.Provider>
-                  </StaffRolesContext.Provider>
-                </StaffTypesContext.Provider>
-              </PositionsContext.Provider>
+              <PnamesContext.Provider value={pNames}>
+                <StaffStatusContext.Provider value={StaffStatus}>
+                  <FormStaffDetail />
+                </StaffStatusContext.Provider>
+              </PnamesContext.Provider>
             </StaffContext.Provider>
           ) : (
             <Typography variant='h4'>
@@ -274,9 +203,15 @@ const FormLayouts = () => {
         </TabPanel>
         <TabPanel value='workInfo'>
           {staffDetail?.cid ? (
-            <SpouseContext.Provider value={spouseDetails}>
-              <FormAccount />
-            </SpouseContext.Provider>
+            <StaffContext.Provider value={staffDetail}>
+              <PositionsContext.Provider value={positions}>
+                <ContractTypesContext.Provider value={contractTypes}>
+                  <DeptsContext.Provider value={depts}>
+                    <FormWork />
+                  </DeptsContext.Provider>
+                </ContractTypesContext.Provider>
+              </PositionsContext.Provider>
+            </StaffContext.Provider>
           ) : (
             <Typography variant='h4'>
               <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />

@@ -56,38 +56,48 @@ const FormAccount = () => {
   const [confirmLoading, setConfirmLoading] = React.useState(false)
   const [newPassword, setNewPassword] = useState()
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
-  const staffRoleId = typeof window !== 'undefined' ? localStorage.getItem('staffRoleId') : null
+  const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
   const cid = staffDetail?.cid
+  console.log('newPassword = ' + newPassword)
   console.log('cid = ' + cid)
   console.log('username = ' + username)
+
   const onSubmit = data => {
-    setSaveLoading(true)
+    // setSaveLoading(true)
     console.log('onSubmit')
     console.log(data)
+    if (data.newPassword !== data.confirmPassword) {
+      toast.error("Error : คุณใส่ข้อมูลยืนยันรหัสผ่านไม่เหมือนกัน")
+      setNewPassword('')
+    }
+    else {
 
-    let uri = apiConfig.baseURL + `/auth/${data.cid}`
-    console.log(uri)
 
-    fetch(uri, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setSaveLoading(false)
-        if (data.status == 'success') {
-          toast.success(data.message)
-        } else {
-          toast.error(data.message)
-        }
-      })
-      .catch(function (error) {
-        console.log(JSON.stringify(error))
-      })
+      let uri = apiConfig.baseURL + `/auth/${cid}`
+      console.log(uri)
+
+      // fetch(uri, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(data)
+      // })
+      //   .then(response => response.json())
+      //   .then(data => {
+      //     console.log(data)
+      //     setSaveLoading(false)
+      //     if (data.status == 'success') {
+      //       toast.success(data.message)
+      //     } else {
+      //       toast.error(data.message)
+      //     }
+      //   })
+      //   .catch(function (error) {
+      //     console.log(JSON.stringify(error))
+      //   })
+    }
+
   }
 
   const handleReset = data => {
@@ -103,7 +113,6 @@ const FormAccount = () => {
       headers: {
         'Content-Type': 'application/json'
       }
-      // body: JSON.stringify(data)
     })
       .then(response => response.json())
       .then(data => {
@@ -136,7 +145,7 @@ const FormAccount = () => {
         <DialogTitle id='alert-dialog-title'>{'คุณแน่ใจ?'}</DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
-            กรุณายืนยันการรีเซตรหัสผ่านใหม่? รหัสผ่านใหม่ของบัญชีนี้คือ 123456
+            กรุณายืนยันการรีเซตรหัสผ่านใหม่? รหัสผ่านใหม่ของบัญชีนี้คือ 123456789
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -164,7 +173,7 @@ const FormAccount = () => {
       <CardContent>
         <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={5}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               {staffDetail?.cid ? (
                 <TextField
                   fullWidth
@@ -176,7 +185,7 @@ const FormAccount = () => {
                 <Skeleton variant='rectangular' width={250} height={55} />
               )}
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               {staffDetail?.staffName ? (
                 <TextField
                   fullWidth
@@ -188,32 +197,7 @@ const FormAccount = () => {
                 <Skeleton variant='rectangular' width={250} height={55} />
               )}
             </Grid>
-            <Grid item xs={12} md={4}>
-              {staffDetail?.cid ? (
-                <TextField
-                  fullWidth
-                  InputProps={{ readOnly: true }}
-                  label='สถานะบัญชี'
-                  defaultValue={staffDetail.staffStatusId == 1 ? 'ปกติ' : 'ปิดการใช้งาน'}
-                />
-              ) : (
-                <Skeleton variant='rectangular' width={250} height={55} />
-              )}
-            </Grid>
-            <Grid item xs={12} md={4}>
-              {staffDetail?.cid ? (
-                <TextField
-                  fullWidth
-                  InputProps={{ readOnly: true }}
-                  label='เลขที่บัตรประชาชน'
-                  defaultValue={staffDetail.cid}
-                  {...register('cid')}
-                />
-              ) : (
-                <Skeleton variant='rectangular' width={250} height={55} />
-              )}
-            </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label='รหัสผ่านใหม่'
@@ -231,7 +215,7 @@ const FormAccount = () => {
                 </FormHelperText>
               )}
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label='ยืนยันรหัสผ่านใหม่'
@@ -243,11 +227,11 @@ const FormAccount = () => {
                   Error : กรุณาใส่ข้อมูลยืนยันรหัสผ่านใหม่
                 </FormHelperText>
               )}
-              {errors.confirmPassword && errors.confirmPassword !== newPassword && (
+              {/* {errors.confirmPassword !== newPassword && (
                 <FormHelperText id='confirmPassword' sx={{ color: '#d32f2f' }}>
                   Error : คุณใส่ข้อมูลยืนยันรหัสผ่านไม่เหมือนกัน
                 </FormHelperText>
-              )}
+              )} */}
             </Grid>
             <Grid item xs={6}>
               {username == cid ? (
@@ -276,7 +260,7 @@ const FormAccount = () => {
               )}
             </Grid>
             <Grid item xs={6}>
-              {staffRoleId == 1 || staffRoleId == 3 ? (
+              {userRoleId == 1 || userRoleId == 10 ? (
                 <Box
                   sx={{
                     gap: 5,
