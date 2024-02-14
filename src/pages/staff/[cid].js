@@ -16,6 +16,13 @@ import TabPanel from '@mui/lab/TabPanel'
 import FormAccount from 'src/views/form-layouts/FormAccount'
 import { ConsoleNetworkOutline } from 'mdi-material-ui'
 import FormWork from 'src/views/form-layouts/FormWork'
+import TableReportMonthlyStaffAttendance from 'src/views/tables/TableReportMonthlyStaffAttendance'
+import moment from 'moment'
+import 'moment/locale/th' // without this line it didn't work
+import Leaves from '../leaves/cid/[cid]'
+import TableReportYearlyStaffLeave from 'src/views/tables/TableReportYearlyStaffLeave'
+import TableReportYearlyStaffOutStation from 'src/views/tables/TableReportYearlyStaffOutStation'
+import TableReportYearlyStaffAttendance from 'src/views/tables/TableReportYearlyStaffAttendance'
 
 // const defaultData = {
 //   ptName: 'Loading',
@@ -49,7 +56,9 @@ export const PttypesContext = createContext()
 
 export const InvesmentHistoryContext = createContext()
 
-export const LoanHistoryContext = createContext()
+export const StaffStrDateContext = createContext()
+
+export const StaffCidContext = createContext()
 
 export const DividendHistoryContext = createContext()
 
@@ -62,22 +71,29 @@ const FormLayouts = () => {
   if (router.isReady) {
     router.query.cid
   }
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
   const [staffDetail, setStaffDetail] = useState()
 
-  // console.log(staffDetail)
-  // const cid = staffDetail?.cid
+  const selectedStaffCid = router.query.cid ?? staffDetail?.cid
   const [positions, setPositions] = useState([])
   const [contractTypes, setContractTypes] = useState([])
   const [depts, setDepts] = useState([])
   const [pNames, setPnames] = useState([])
   const [StaffStatus, setReferCauses] = useState([])
-  const [spouseDetails, setSpouseDetails] = useState()
-  const [staffInvestmentHistories, setStaffInvestmentHistories] = useState({ blogs: [] })
-  const [staffLoanHistories, setStaffLoanHistories] = useState({ blogs: [] })
-  const [staffDividendHistories, setStaffDividendHistories] = useState({ blogs: [] })
   const [staffSuretyHistories, setStaffSuretyHistories] = useState({ blogs: [] })
   const [value, setValue] = React.useState('personalInfo')
   const [tabHistoryValue, setTabHistoryValue] = React.useState('monthly-attendance')
+
+  console.log('router.query.cid = ' + router.query.cid)
+  console.log(staffDetail)
+  console.log("Selected staff cid = " + staffDetail?.cid)
+
+  const strDate =
+    moment(date).format('DD') +
+    ' เดือน ' +
+    moment(date).format('MMMM') +
+    ' พ.ศ.' +
+    moment(date).add(543, 'year').format('YYYY')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -89,7 +105,8 @@ const FormLayouts = () => {
 
   const fetchStaffDetail = async () => {
     let uri = apiConfig.baseURL + `/staff/${router.query.cid}`
-    console.log(uri)
+
+    // console.log(uri)
     try {
       await axios
         .get(uri)
@@ -102,7 +119,8 @@ const FormLayouts = () => {
 
   const fetchPositions = async () => {
     let uri = apiConfig.baseURL + `/utils/positions`
-    console.log(uri)
+
+    // console.log(uri)
     try {
       await axios
         .get(uri)
@@ -115,7 +133,8 @@ const FormLayouts = () => {
 
   const fetchPnames = async () => {
     let uri = apiConfig.baseURL + `/utils/pname`
-    console.log(uri)
+
+    // console.log(uri)
     try {
       await axios
         .get(uri)
@@ -128,7 +147,8 @@ const FormLayouts = () => {
 
   const fetchContractTypes = async () => {
     let uri = apiConfig.baseURL + `/utils/contract-types`
-    console.log(uri)
+
+    // console.log(uri)
     try {
       await axios
         .get(uri)
@@ -245,12 +265,14 @@ const FormLayouts = () => {
           </TabList>
         </Box>
         <TabPanel value='monthly-attendance'>
-          {staffLoanHistories.blogs.length > 0 ? (
+          {staffDetail?.cid ? (
             <Grid container wrap='nowrap'>
               <Grid item xs={12} md={12} lg={12}>
-                <LoanHistoryContext.Provider value={staffLoanHistories}>
-                  {/* <TableStaffLoanHistory /> */}
-                </LoanHistoryContext.Provider>
+                <StaffStrDateContext.Provider value={strDate}>
+                  <StaffCidContext.Provider value={selectedStaffCid}>
+                    <TableReportMonthlyStaffAttendance />
+                  </StaffCidContext.Provider>
+                </StaffStrDateContext.Provider>
               </Grid>
             </Grid>
           ) : (
@@ -275,12 +297,12 @@ const FormLayouts = () => {
           )}
         </TabPanel> */}
         <TabPanel value='yearly-attendance'>
-          {staffInvestmentHistories.blogs.length > 0 ? (
+          {staffDetail?.cid ? (
             <Grid container wrap='nowrap'>
               <Grid item xs={12} md={12} lg={12}>
-                <InvesmentHistoryContext.Provider value={staffInvestmentHistories}>
-                  {/* <TableStaffInvestmentHistory /> */}
-                </InvesmentHistoryContext.Provider>
+                <StaffCidContext.Provider value={selectedStaffCid}>
+                  <TableReportYearlyStaffAttendance />
+                </StaffCidContext.Provider>
               </Grid>
             </Grid>
           ) : (
@@ -290,12 +312,12 @@ const FormLayouts = () => {
           )}
         </TabPanel>
         <TabPanel value='yearly-leave'>
-          {staffDividendHistories.blogs.length > 0 ? (
+          {staffDetail?.cid ? (
             <Grid container wrap='nowrap'>
               <Grid item xs={12} md={12} lg={12}>
-                <DividendHistoryContext.Provider value={staffDividendHistories}>
-                  {/* <TableStaffDividendHistory /> */}
-                </DividendHistoryContext.Provider>
+                <StaffCidContext.Provider value={selectedStaffCid}>
+                  <TableReportYearlyStaffLeave />
+                </StaffCidContext.Provider>
               </Grid>
             </Grid>
           ) : (
@@ -305,11 +327,13 @@ const FormLayouts = () => {
           )}
         </TabPanel>
         <TabPanel value='yearly-outstation'>
-          {staffSuretyHistories.blogs.length > 0 ? (
+          {staffDetail?.cid ? (
             <Grid container wrap='nowrap'>
-              <SuretyHistoryContext.Provider value={staffSuretyHistories}>
-                {/* <TableStaffSuretyHistory /> */}
-              </SuretyHistoryContext.Provider>
+              <Grid item xs={12} md={12} lg={12}>
+                <StaffCidContext.Provider value={selectedStaffCid}>
+                  <TableReportYearlyStaffOutStation />
+                </StaffCidContext.Provider>
+              </Grid>
             </Grid>
           ) : (
             <Typography variant='h4'>

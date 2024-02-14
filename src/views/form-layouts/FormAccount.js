@@ -63,7 +63,7 @@ const FormAccount = () => {
   console.log('username = ' + username)
 
   const onSubmit = data => {
-    // setSaveLoading(true)
+    setSaveLoading(true)
     console.log('onSubmit')
     console.log(data)
     if (data.newPassword !== data.confirmPassword) {
@@ -72,30 +72,29 @@ const FormAccount = () => {
     }
     else {
 
-
       let uri = apiConfig.baseURL + `/auth/${cid}`
       console.log(uri)
 
-      // fetch(uri, {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // })
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     console.log(data)
-      //     setSaveLoading(false)
-      //     if (data.status == 'success') {
-      //       toast.success(data.message)
-      //     } else {
-      //       toast.error(data.message)
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     console.log(JSON.stringify(error))
-      //   })
+      fetch(uri, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          setSaveLoading(false)
+          if (data.status == 'success') {
+            toast.success(data.message)
+          } else {
+            toast.error(data.message)
+          }
+        })
+        .catch(function (error) {
+          console.log(JSON.stringify(error))
+        })
     }
 
   }

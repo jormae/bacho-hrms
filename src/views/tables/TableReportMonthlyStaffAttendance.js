@@ -24,14 +24,30 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 
 import { DashboardStrDateContext, DashboardCidContext } from 'src/pages/index'
+import { StaffStrDateContext, StaffCidContext } from 'src/pages/staff/[cid]'
 import { ReportMonthlyAttendanceCidContext } from 'src/pages/reports/monthly/attendance/cid/[cid].js'
 
 const TableReportMonthlyStaffAttendance = () => {
 
     const strDate = useContext(DashboardStrDateContext)
+    const StaffCid = useContext(StaffCidContext)
+    const StaffDate = useContext(StaffStrDateContext)
     const DashboardCid = useContext(DashboardCidContext)
     const ReportMonthlyAttendanceCid = useContext(ReportMonthlyAttendanceCidContext)
-    const cid = DashboardCid ?? ReportMonthlyAttendanceCid
+
+    // const cid = DashboardCid ?? ReportMonthlyAttendanceCid
+    let cid
+    if (StaffCid) {
+        cid = StaffCid
+    }
+    else if (DashboardCid) {
+        cid = DashboardCid
+    }
+
+    // console.log('StaffCid = ' + StaffCid)
+    // console.log('DashboardCid = ' + DashboardCid)
+    // console.log('ReportMonthlyAttendanceCid = ' + ReportMonthlyAttendanceCid)
+    // console.log('cid = ' + cid)
     const { register } = useForm()
     const [search, setSearch] = useState('')
     const i = 1
@@ -46,19 +62,11 @@ const TableReportMonthlyStaffAttendance = () => {
     const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
     const deptName = typeof window !== 'undefined' ? localStorage.getItem('deptName') : null
 
-    const strUserName = (cid === undefined) ? username : cid
-
-    // const strUserName = cid
-    console.log("DashboardCid = " + DashboardCid)
-    console.log("ReportMonthlyAttendanceCid = " + ReportMonthlyAttendanceCid)
-    console.log("cid = " + cid)
-    console.log("username = " + username)
-    console.log("strUserName = " + strUserName)
-
+    const strUserName = cid
     const [staffInfo, setStaffInfo] = useState()
-    console.log("staffInfo = " + staffInfo)
-    const strStaffName = staffInfo ? staffInfo[0]['pname'] + staffInfo[0]['fname'] + " " + staffInfo[0]['lname'] : null
-    const strDeptName = staffInfo ? staffInfo[0]['deptName'] : null
+
+    // const strStaffName = staffInfo ? staffInfo[0]['pname'] + staffInfo[0]['fname'] + " " + staffInfo[0]['lname'] : null
+    // const strDeptName = staffInfo ? staffInfo[0]['deptName'] : null
 
     const [reportMonthlyStaffAttendances, setReportMonthlyStaffAttendances] = useState({ blogs: [] })
 
@@ -67,6 +75,15 @@ const TableReportMonthlyStaffAttendance = () => {
         moment(date).format('MMMM') +
         ' พ.ศ.' +
         moment(date).add(543, 'year').format('YYYY')
+
+    console.log("DashboardCid = " + DashboardCid)
+    console.log("ReportMonthlyAttendanceCid = " + ReportMonthlyAttendanceCid)
+    console.log("cid = " + cid)
+    console.log("username = " + username)
+    console.log("strUserName = " + strUserName)
+    console.log("staffInfo = " + staffInfo)
+
+    // console.log("strStaffName = " + strStaffName)
 
     const [pg, setpg] = React.useState(0)
     const [rpg, setrpg] = React.useState(10)
@@ -83,7 +100,7 @@ const TableReportMonthlyStaffAttendance = () => {
     const handleChangeMonth = async data => {
         console.log(data.target.value)
         setDate(data.target.value)
-        let uri = apiConfig.baseURL + `/reports/monthly/attendances/cid/${strUserName}/${data.target.value}`
+        let uri = apiConfig.baseURL + `/reports/monthly/attendances/cid/${cid}/${data.target.value}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -94,7 +111,7 @@ const TableReportMonthlyStaffAttendance = () => {
     }
 
     const fetchMonthlyStaffAttendances = async () => {
-        let uri = apiConfig.baseURL + `/reports/monthly/attendances/cid/${strUserName}/${month}`
+        let uri = apiConfig.baseURL + `/reports/monthly/attendances/cid/${cid}/${month}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -105,7 +122,7 @@ const TableReportMonthlyStaffAttendance = () => {
     }
 
     const fetchStaffInfo = async () => {
-        let uri = apiConfig.baseURL + `/staff/${strUserName}/`
+        let uri = apiConfig.baseURL + `/staff/${cid}/`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -123,7 +140,8 @@ const TableReportMonthlyStaffAttendance = () => {
     return (
         <Card>
             <CardHeader
-                title={`รายงานข้อมูลลงเวลา ${strMonth} ${strStaffName} ${strDeptName}`}
+
+                // title={`รายงานข้อมูลลงเวลา ${strMonth} ${strStaffName} (${strDeptName})`}
                 titleTypographyProps={{ variant: 'h6' }}
             />
             <Divider sx={{ margin: 0 }} />

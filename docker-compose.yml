@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   web:
-    image: 'jormae/bacho-hrms-web:1.0.4'
+    image: 'jormae/bacho-hrms-web:1.0.5'
     build: .
     ports:
       - 8005:3005
