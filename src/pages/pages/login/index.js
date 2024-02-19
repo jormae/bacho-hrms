@@ -104,7 +104,7 @@ const LoginPage = () => {
           localStorage.setItem('mainDeptName', data.mainDeptName)
           localStorage.setItem('positionName', data.positionName)
           localStorage.setItem('avatar', data.avatar)
-          window.location = '/'
+          window.location = `/staff/${data.username}`
         } else {
           setError(true)
           setLoading(false)

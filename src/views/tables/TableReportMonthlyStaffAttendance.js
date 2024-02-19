@@ -54,6 +54,7 @@ const TableReportMonthlyStaffAttendance = () => {
     const month = moment().format('YYYY-MM')
     const [date, setDate] = useState(moment().format('YYYY-MM'))
     const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
     const mainDeptId = typeof window !== 'undefined' ? localStorage.getItem('mainDeptId') : null
     const mainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
@@ -125,7 +126,12 @@ const TableReportMonthlyStaffAttendance = () => {
         let uri = apiConfig.baseURL + `/staff/${cid}/`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri, { headers: { "X-Access-Token": token, "content-type": "application/json" } })
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
             setStaffInfo(data)
         } catch (error) {
             console.log(error)

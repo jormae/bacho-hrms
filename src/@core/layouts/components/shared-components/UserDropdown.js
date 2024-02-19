@@ -151,13 +151,13 @@ const UserDropdown = () => {
             Dashboard
           </Box>
         </MenuItem>
-        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/member/${username}`)}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/staff/${username}`)}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             ข้อมูลของฉัน
           </Box>
         </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/loan-form')}>
+        {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/loan-form')}>
           <Box sx={styles}>
             <EmailOutline sx={{ marginRight: 2 }} />
             คำร้องขอสวัสดิการ

@@ -359,16 +359,18 @@ const FormLayouts = () => {
   )
 
   return (
-    <Grid container spacing={6}>
+    <div>
       {err ? (
-        <Grid item xs={12} md={12}>
-          <Alert severity='error'>
-            <AlertTitle>Error!</AlertTitle>
-            {err}
-          </Alert>
+        <Grid container spacing={6}>
+          <Grid item xs={12} md={12}>
+            <Alert severity='error'>
+              <AlertTitle>Error!</AlertTitle>
+              {err}
+            </Alert>
+          </Grid>
         </Grid>
       ) : (
-        <div>
+        <Grid container spacing={6}>
           <Grid item lg={4} md={12} xs={12}>
             <SkeletonStaffCardLoading />
           </Grid>
@@ -378,10 +380,9 @@ const FormLayouts = () => {
           <Grid item md={12} xs={12}>
             <SkeletonStaffInvestmentAndLoadHistotiesLoading />
           </Grid>
-        </div>
+        </Grid>
       )}
-
-    </Grid>
+    </div>
   )
 }
 
