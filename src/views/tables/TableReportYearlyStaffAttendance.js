@@ -25,10 +25,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
-// import { DashboardStrDateContext, DashboardCidContext } from 'src/pages/index'
 import { StaffStrDateContext, StaffCidContext } from 'src/pages/staff/[cid]'
-
-// import { ReportMonthlyAttendanceCidContext } from 'src/pages/reports/monthly/attendance/cid/[cid].js'
 
 const TableReportYearlyStaffAttendance = () => {
 
@@ -55,6 +52,7 @@ const TableReportYearlyStaffAttendance = () => {
 
     console.log('cid = ' + cid)
     const i = 1
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
     const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
     const [yearOptions, setYearOptions] = useState({ blogs: [] })
     const currentYear = moment().format('YYYY')
@@ -104,7 +102,12 @@ const TableReportYearlyStaffAttendance = () => {
         let uri = apiConfig.baseURL + `/staff/${cid}/`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
             setStaffInfo(data)
         } catch (error) {
             console.log(error)

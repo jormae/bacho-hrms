@@ -67,6 +67,7 @@ const TableReportYearlyStaffLeave = () => {
     const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
     const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
     const deptName = typeof window !== 'undefined' ? localStorage.getItem('deptName') : null
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
     const strUserName = (cid === undefined) ? username : cid
 
@@ -101,13 +102,6 @@ const TableReportYearlyStaffLeave = () => {
     }
 
     const [staffInfo, setStaffInfo] = useState()
-
-    // console.log("staffInfo = " + staffInfo)
-
-    // const strStaffName = staffInfo ? staffInfo[0]['pname'] + staffInfo[0]['fname'] + " " + staffInfo[0]['lname'] : null
-    // const strDeptName = staffInfo ? staffInfo[0]['deptName'] : null
-
-    // const [reportMonthlyStaffAttendances, setReportMonthlyStaffAttendances] = useState({ blogs: [] })
 
     const strMonth =
         ' เดือน ' +
@@ -155,7 +149,12 @@ const TableReportYearlyStaffLeave = () => {
         let uri = apiConfig.baseURL + `/staff/${cid}/`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
             setStaffInfo(data)
         } catch (error) {
             console.log(error)

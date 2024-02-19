@@ -25,52 +25,23 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
-// import { DashboardStrDateContext, DashboardCidContext } from 'src/pages/index'
 import { StaffStrDateContext, StaffCidContext } from 'src/pages/staff/[cid]'
-
-// import { ReportMonthlyAttendanceCidContext } from 'src/pages/reports/monthly/attendance/cid/[cid].js'
 
 const TableReportYearlyStaffOutStation = () => {
 
-    // const strDate = useContext(DashboardStrDateContext)
     const StaffCid = useContext(StaffCidContext)
 
-    // const StaffDate = useContext(StaffStrDateContext)
-    // const DashboardCid = useContext(DashboardCidContext)
-
-    // const ReportMonthlyAttendanceCid = useContext(ReportMonthlyAttendanceCidContext)
-
-    // const cid = DashboardCid ?? ReportMonthlyAttendanceCid
-
-    // console.log('StaffCid = ' + StaffCid)
     let cid
     if (StaffCid) {
         cid = StaffCid
     }
 
-    // else if (DashboardCid) {
-    //     cid = DashboardCid
-    // }
     console.log('StaffCid = ' + StaffCid)
-
-    // console.log('DashboardCid = ' + DashboardCid)
-
-    // console.log('ReportMonthlyAttendanceCid = ' + ReportMonthlyAttendanceCid)
     console.log('cid = ' + cid)
     const i = 1
 
-    // const month = moment().format('YYYY-MM')
-    // const [date, setDate] = useState(moment().format('YYYY-MM'))
-    // const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
     const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
-
-    // const mainDeptId = typeof window !== 'undefined' ? localStorage.getItem('mainDeptId') : null
-    // const mainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
-    // const deptId = typeof window !== 'undefined' ? localStorage.getItem('deptId') : null
-    // const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
-    // const deptName = typeof window !== 'undefined' ? localStorage.getItem('deptName') : null
-
-    // const strUserName = (cid === undefined) ? username : cid
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
     const [yearOptions, setYearOptions] = useState({ blogs: [] })
     const currentYear = moment().format('YYYY')
@@ -120,7 +91,12 @@ const TableReportYearlyStaffOutStation = () => {
         let uri = apiConfig.baseURL + `/staff/${cid}/`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
             setStaffInfo(data)
         } catch (error) {
             console.log(error)
