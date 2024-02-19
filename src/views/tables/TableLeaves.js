@@ -40,6 +40,7 @@ const TableLeaves = () => {
     const today = moment().format('YYYY-MM-DD')
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
     const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
     const mainDeptId = typeof window !== 'undefined' ? localStorage.getItem('mainDeptId') : null
     const mainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
@@ -103,7 +104,17 @@ const TableLeaves = () => {
         let uri = apiConfig.baseURL + `/leaves/all/${selectedYear}`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .catch(error => {
+                    console.error(error)
+                    console.error(error.response.data)
+                    setError(error.message + ` (${error.response.data})`)
+                })
             setLeaves({ blogs: data })
         } catch (error) {
             console.log(error)

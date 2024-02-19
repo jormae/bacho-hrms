@@ -14,9 +14,17 @@ import TableLeavesNew from 'src/views/tables/TableLeavesNew'
 import TableLeavesColleagueSigned from 'src/views/tables/TableLeavesColleagueSigned'
 import TableLeavesHeadDeptSigned from 'src/views/tables/TableLeavesHeadDeptSigned'
 import TableLeavesRejected from 'src/views/tables/TableLeavesRejected'
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
+import axios from 'axios'
+import apiConfig from 'src/configs/apiConfig'
 
 const Leaves = () => {
     const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
+    const [err, setError] = useState()
+    const [leaves, setLeaves] = useState({ blogs: [] })
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
+
     const [tabHistoryValue, setTabHistoryValue] = useState('newLeave')
 
     const handleChange = (event, newValue) => {
@@ -26,6 +34,31 @@ const Leaves = () => {
     const handleTabHistoryChange = (event, newValue) => {
         setTabHistoryValue(newValue)
     }
+
+    const fetchLeaves = async () => {
+        let uri = apiConfig.baseURL + `/leaves/all/2024`
+        console.log(uri)
+        try {
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .catch(error => {
+                    console.error(error)
+                    console.error(error.response.data)
+                    setError(error.message + ` (${error.response.data})`)
+                })
+            setLeaves({ blogs: data })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchLeaves()
+    }, [])
 
     const SkeletonLeaveReportLoading = () => (
         <Box sx={{ width: '100%' }}>
@@ -74,19 +107,30 @@ const Leaves = () => {
 
         return (
             <Grid container spacing={6}>
-                <Grid container item></Grid>
-                <Grid item xs={12}>
-                    <Grid container spacing={6}>
+                {err ? (
+                    <Grid item xs={12} md={12}>
+                        <Alert severity='error'>
+                            <AlertTitle>Error!</AlertTitle>
+                            {err}
+                        </Alert>
+                    </Grid>
+                ) : (
+                    <div>
+                        {/* <Grid container item></Grid> */}
                         <Grid item xs={12}>
-                            <SkeletonLeaveReportLoading />
+                            <Grid container spacing={6}>
+                                <Grid item xs={12}>
+                                    <SkeletonLeaveReportLoading />
+                                </Grid>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Grid>
-                {userRoleId == 1 ? (
-                    <Grid item xs={12}>
-                        <SkeletonLeaveStatusReportLoading />
-                    </Grid>
-                ) : null}
+                        {userRoleId == 1 ? (
+                            <Grid item xs={12}>
+                                <SkeletonLeaveStatusReportLoading />
+                            </Grid>
+                        ) : null}
+                    </div>
+                )}
             </Grid>
         )
     }

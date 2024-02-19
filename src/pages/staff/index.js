@@ -9,29 +9,38 @@ import apiConfig from 'src/configs/apiConfig'
 import Error401 from '../401'
 import Error404 from '../404'
 import Error500 from '../500'
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 
 export const DataContext = createContext()
 
 export const CardContext = createContext()
 
 const FormLayouts = () => {
+
+  const [err, setError] = useState()
   const [staff, setStaff] = useState({ blogs: [] })
   const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
-  console.log(userRoleId)
-
-
-  // console.log(staff)
-
-  // const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
   const fetchStaff = async () => {
     let uri = apiConfig.baseURL + `/staff`
     console.log(uri)
     try {
-      const { data } = await axios.get(uri)
+      const { data } = await axios.get(uri, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        }
+      })
+        .catch(error => {
+          console.error(error)
+          console.error(error.response.data)
+          setError(error.message + ` (${error.response.data})`)
+        })
       setStaff({ blogs: data })
     } catch (error) {
-      // console.log(error)
+      console.log(error)
     }
   }
 
@@ -102,11 +111,20 @@ const FormLayouts = () => {
 
     return (
       <Grid container spacing={6}>
-        <DataContext.Provider value={staff}>
-          <Grid item xs={12}>
-            <TableMember />
+        {err ? (
+          <Grid item xs={12} md={12}>
+            <Alert severity='error'>
+              <AlertTitle>Error!</AlertTitle>
+              {err}
+            </Alert>
           </Grid>
-        </DataContext.Provider>
+        ) : (
+          <DataContext.Provider value={staff}>
+            <Grid item xs={12}>
+              <TableMember />
+            </Grid>
+          </DataContext.Provider>
+        )}
       </Grid>
     )
   }

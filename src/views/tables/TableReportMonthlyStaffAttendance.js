@@ -125,7 +125,7 @@ const TableReportMonthlyStaffAttendance = () => {
         let uri = apiConfig.baseURL + `/staff/${cid}/`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, { headers: { "X-Access-Token": token, "content-type": "application/json" } })
             setStaffInfo(data)
         } catch (error) {
             console.log(error)

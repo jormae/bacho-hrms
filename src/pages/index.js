@@ -370,6 +370,16 @@ const Dashboard = () => {
 
     <Grid container spacing={6}>
       <Grid container item></Grid>
+      {err ? (
+        <Grid item xs={12} md={12}>
+          <Alert severity='error'>
+            <AlertTitle>Error!</AlertTitle>
+            {err}
+          </Alert>
+        </Grid>
+      ) : (
+        ''
+      )}
       <Grid item xs={12}>
         <Card>
           <CardHeader

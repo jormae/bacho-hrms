@@ -23,6 +23,8 @@ import Leaves from '../leaves/cid/[cid]'
 import TableReportYearlyStaffLeave from 'src/views/tables/TableReportYearlyStaffLeave'
 import TableReportYearlyStaffOutStation from 'src/views/tables/TableReportYearlyStaffOutStation'
 import TableReportYearlyStaffAttendance from 'src/views/tables/TableReportYearlyStaffAttendance'
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 
 // const defaultData = {
 //   ptName: 'Loading',
@@ -71,6 +73,7 @@ const FormLayouts = () => {
   if (router.isReady) {
     router.query.cid
   }
+  const [err, setError] = useState()
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
   const [staffDetail, setStaffDetail] = useState()
 
@@ -83,10 +86,11 @@ const FormLayouts = () => {
   const [staffSuretyHistories, setStaffSuretyHistories] = useState({ blogs: [] })
   const [value, setValue] = React.useState('personalInfo')
   const [tabHistoryValue, setTabHistoryValue] = React.useState('monthly-attendance')
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
-  console.log('router.query.cid = ' + router.query.cid)
-  console.log(staffDetail)
-  console.log("Selected staff cid = " + staffDetail?.cid)
+  // console.log('router.query.cid = ' + router.query.cid)
+  // console.log(staffDetail)
+  // console.log("Selected staff cid = " + staffDetail?.cid)
 
   const strDate =
     moment(date).format('DD') +
@@ -109,9 +113,18 @@ const FormLayouts = () => {
     // console.log(uri)
     try {
       await axios
-        .get(uri)
+        .get(uri, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          }
+        })
         .then(result => setStaffDetail(result.data[0]))
-        .catch(error => console.log('An error occurred' + error))
+        .catch(error => {
+          console.error(error)
+          console.error(error.response.data)
+          setError(error.message + ` (${error.response.data})`)
+        })
     } catch (error) {
       console.log(error)
     }
@@ -347,15 +360,27 @@ const FormLayouts = () => {
 
   return (
     <Grid container spacing={6}>
-      <Grid item lg={4} md={12} xs={12}>
-        <SkeletonStaffCardLoading />
-      </Grid>
-      <Grid item lg={8} md={12} xs={12}>
-        <SkeletonStaffFormsLoading />
-      </Grid>
-      <Grid item md={12} xs={12}>
-        <SkeletonStaffInvestmentAndLoadHistotiesLoading />
-      </Grid>
+      {err ? (
+        <Grid item xs={12} md={12}>
+          <Alert severity='error'>
+            <AlertTitle>Error!</AlertTitle>
+            {err}
+          </Alert>
+        </Grid>
+      ) : (
+        <div>
+          <Grid item lg={4} md={12} xs={12}>
+            <SkeletonStaffCardLoading />
+          </Grid>
+          <Grid item lg={8} md={12} xs={12}>
+            <SkeletonStaffFormsLoading />
+          </Grid>
+          <Grid item md={12} xs={12}>
+            <SkeletonStaffInvestmentAndLoadHistotiesLoading />
+          </Grid>
+        </div>
+      )}
+
     </Grid>
   )
 }
