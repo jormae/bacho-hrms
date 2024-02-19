@@ -63,7 +63,17 @@ const TableReportMonthlyAttendance = () => {
         let uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${data.target.value}`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .catch(error => {
+                    console.error(error)
+                    console.error(error.response.data)
+                    setError(error.message + ` (${error.response.data})`)
+                })
             setReportAttendances({ blogs: data })
         } catch (error) {
             console.log(error)
@@ -74,7 +84,17 @@ const TableReportMonthlyAttendance = () => {
         let uri = apiConfig.baseURL + `/reports/monthly/attendances/deptId/date/${data.target.value}/${selectedYearMonth}`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
+                .catch(error => {
+                    console.error(error)
+                    console.error(error.response.data)
+                    setError(error.message + ` (${error.response.data})`)
+                })
             setReportAttendances({ blogs: data })
         } catch (error) {
             console.log(error)
