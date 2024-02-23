@@ -38,7 +38,10 @@ const TableReportDailyMainDeptAttendance = () => {
 
     const mainDeptId = typeof window !== 'undefined' ? localStorage.getItem('mainDeptId') : null
     const mainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
     const [reportDailyMainDeptAttendances, setReportDailyMainDeptAttendances] = useState({ blogs: [] })
+    const [selectedDeptId, setSelectedDeptId] = useState()
+    console.log(selectedDeptId)
 
     const [deptFilter, setDeptFilter] = useState('all')
     const [deptOptions, setDeptOptions] = useState({ blogs: [] })
@@ -69,14 +72,18 @@ const TableReportDailyMainDeptAttendance = () => {
     }
 
     const handleChangeDept = async data => {
-        console.log(data.target.value)
+        setDeptFilter(data.target.value)
 
-        // setDate(data.target.value)
         // let uri = apiConfig.baseURL + `/reports/daily/attendances/main-dept/${mainDeptId}/${data.target.value}`
         let uri = apiConfig.baseURL + `/reports/daily/attendances/dept/${data.target.value}/${today}`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
             setReportDailyMainDeptAttendances({ blogs: data })
         } catch (error) {
             console.log(error)
@@ -145,12 +152,11 @@ const TableReportDailyMainDeptAttendance = () => {
                                     placeholder='เลือกหน่วยงาน'
                                     value={deptFilter}
                                     onChange={handleChangeDept}
-
-                                // onChange={e => setDeptFilter(e.target.value)}
+                                    defaultValue={deptFilter}
                                 >
                                     <MenuItem value='all'>ทั้งหมด</MenuItem>
                                     {deptOptions.blogs.map(row => (
-                                        <MenuItem key={row.deptId} value={row.deptId}>
+                                        <MenuItem key={row.deptId} value={row.deptId} >
                                             {row.deptName}
                                         </MenuItem>
                                     ))}

@@ -67,6 +67,9 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
 
     const strDate = useContext(ReportMonthlyAttendanceDateContext)
     const cid = useContext(ReportMonthlyAttendanceCidContext)
+
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
+
     let i = 1
     const [reportMonthlyStaffAttendances, setReportMonthlyStaffAttendances] = useState({ blogs: [] })
     const [staffInfo, setStaffInfo] = useState()
@@ -126,7 +129,12 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
         let uri = apiConfig.baseURL + `/staff/${cid}/`
         console.log(uri)
         try {
-            const { data } = await axios.get(uri)
+            const { data } = await axios.get(uri, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            })
             setStaffInfo(data[0])
         } catch (error) {
             console.log(error)

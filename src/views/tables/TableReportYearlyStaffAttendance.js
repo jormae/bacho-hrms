@@ -19,15 +19,18 @@ import Button from '@mui/material/Button'
 import Link from 'next/link'
 import axios from 'axios'
 import apiConfig from 'src/configs/apiConfig'
-import moment from 'moment'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import moment from 'moment'
+import 'moment/locale/th'
 
 import { StaffStrDateContext, StaffCidContext } from 'src/pages/staff/[cid]'
 
 const TableReportYearlyStaffAttendance = () => {
+
+
 
     // const strDate = useContext(DashboardStrDateContext)
     const StaffCid = useContext(StaffCidContext)
@@ -189,7 +192,7 @@ const TableReportYearlyStaffAttendance = () => {
                                     {/* <TableCell align='center' component='th' scope='row'>
                                         {i++}
                                     </TableCell> */}
-                                    <TableCell align='center'>{row.month}</TableCell>
+                                    <TableCell align='center'>{moment(row.yearMonth).format('MMMM')}</TableCell>
                                     <TableCell align='center'>{row.checkinShift}/{row.checkoutShift}</TableCell>
                                     <TableCell align='center'>{row.checkinShift1}/{row.checkoutShift1}</TableCell>
                                     <TableCell align='center'>{row.checkinShift2}/{row.checkoutShift2}</TableCell>
@@ -202,7 +205,7 @@ const TableReportYearlyStaffAttendance = () => {
                                     <TableCell align='center'>{row.checkinShift9}/{row.checkoutShift9}</TableCell>
                                     <TableCell align='center'>{row.checkinShift10}/{row.checkoutShift10}</TableCell>
                                     <TableCell align='center' color='success'>
-                                        <Link passHref href={`../../leaves/leaveId/${row.leaveId}`} color='success'>
+                                        <Link passHref href={`../../reports/monthly/attendance/print/${row.cid}/${row.yearMonth}`} color='success'>
                                             <Button type='button' variant='outlined'>
                                                 รายละเอียด
                                             </Button>

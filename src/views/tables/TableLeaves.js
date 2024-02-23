@@ -24,19 +24,17 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import { Typography } from '@mui/material'
 
 import { DashboardStrDateContext } from 'src/pages/index'
 
 const TableLeaves = () => {
 
     const strDate = useContext(DashboardStrDateContext)
-
-    // const yearBudget = 2024;
-    // const thYearBudget = yearBudget + 543;
-
     const { register } = useForm()
     const [search, setSearch] = useState('')
     const i = 1
+    const [err, setError] = useState()
     const today = moment().format('YYYY-MM-DD')
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
     const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
@@ -49,8 +47,6 @@ const TableLeaves = () => {
     const [leaves, setLeaves] = useState({ blogs: [] })
 
     const currentYear = moment().format('YYYY')
-
-    // const currentYear = 2023
     const [yearOptions, setYearOptions] = useState({ blogs: [] })
     const [selectedYear, setSelectedYear] = useState(currentYear)
 
@@ -60,13 +56,11 @@ const TableLeaves = () => {
     const [dept, setDept] = useState('all')
     const [deptFilter, setDeptFilter] = useState('all')
     const [deptOptions, setDeptOptions] = useState({ blogs: [] })
+    const [selectedDeptName, setSelectedDeptName] = useState({ blogs: [] })
+    console.log(selectedDeptName)
 
     const handleYearBudgetChange = async data => {
-        console.log(data.target.value)
-
-        // setDate(data.target.value)
         setSelectedYear(data.target.value)
-
         let uri = apiConfig.baseURL + `/leaves/yearbudget/${data.target.value}`
         console.log(uri)
         try {
@@ -78,11 +72,14 @@ const TableLeaves = () => {
     }
 
     const handleChangeDept = async data => {
+        setDeptFilter(data.target.value)
         let uri = apiConfig.baseURL + `/leaves/yearbudget/deptId/${selectedYear}/${data.target.value}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
             setLeaves({ blogs: data })
+            setSelectedDeptName({ blogs: data[0]['deptName'] })
+
         } catch (error) {
             console.log(error)
         }
@@ -101,7 +98,9 @@ const TableLeaves = () => {
     }
 
     const fetchLeaves = async () => {
-        let uri = apiConfig.baseURL + `/leaves/all/${selectedYear}`
+        let admin_uri = apiConfig.baseURL + `/leaves/all/${selectedYear}`
+        let manager_uri = apiConfig.baseURL + `/leaves/main-dept/year/${mainDeptId}/${selectedYear}`
+        let uri = (userRoleId == 1) ? admin_uri : manager_uri
         console.log(uri)
         try {
             const { data } = await axios.get(uri, {
@@ -122,7 +121,10 @@ const TableLeaves = () => {
     }
 
     const fetchDepts = async () => {
-        let uri = apiConfig.baseURL + `/utils/depts`
+        // let uri = apiConfig.baseURL + `/utils/depts`
+        let admin_uri = apiConfig.baseURL + `/utils/depts/`
+        let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
+        let uri = (userRoleId == 1) ? admin_uri : manager_uri
 
         console.log(uri)
         try {
@@ -152,6 +154,7 @@ const TableLeaves = () => {
     return (
         <Card>
             <CardHeader title={`รายงานสรุปข้อมูลการลาปฎิบัติงานประจำปีงบประมาณ ${strYearBudget}`} sx={{ textAlign: "center" }} titleTypographyProps={{ variant: 'h3' }} />
+            <Typography sx={{ textAlign: "center", marginBottom: 4 }}>{`${mainDeptName} ${selectedDeptName['blogs'] ?? ''}`}</Typography>
             <Divider sx={{ margin: 0 }} />
             <CardContent>
                 <Grid item xs={12} md={12} lg={12}>
@@ -178,6 +181,7 @@ const TableLeaves = () => {
                                         label='หน่วยงาน'
                                         value={deptFilter}
                                         onChange={handleChangeDept}
+                                        defaultValue={deptFilter}
                                     >
                                         <MenuItem value='all'>ทั้งหมด</MenuItem>
                                         {deptOptions.blogs.map(row => (

@@ -24,6 +24,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
+import { Typography } from '@mui/material'
 
 // import { DashboardStrDateContext } from 'src/pages/index'
 
@@ -50,8 +51,11 @@ const TableReportMonthlyAttendance = () => {
     const mainDeptId = typeof window !== 'undefined' ? localStorage.getItem('mainDeptId') : null
     const mainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
     const deptId = typeof window !== 'undefined' ? localStorage.getItem('deptId') : null
-    const deptName = typeof window !== 'undefined' ? localStorage.getItem('deptName') : null
+
+    // const deptName = typeof window !== 'undefined' ? localStorage.getItem('deptName') : null
     const [reportAttendances, setReportAttendances] = useState({ blogs: [] })
+    const [selectedDeptName, setSelectedDeptName] = useState({ blogs: [] })
+    console.log(selectedDeptName)
 
     const [dept, setDept] = useState('all')
     const [deptFilter, setDeptFilter] = useState('all')
@@ -81,6 +85,7 @@ const TableReportMonthlyAttendance = () => {
     }
 
     const handleChangeDept = async data => {
+        setDeptFilter(data.target.value)
         let uri = apiConfig.baseURL + `/reports/monthly/attendances/deptId/date/${data.target.value}/${selectedYearMonth}`
         console.log(uri)
         try {
@@ -96,6 +101,7 @@ const TableReportMonthlyAttendance = () => {
                     setError(error.message + ` (${error.response.data})`)
                 })
             setReportAttendances({ blogs: data })
+            setSelectedDeptName({ blogs: data[0]['deptName'] })
         } catch (error) {
             console.log(error)
         }
@@ -114,7 +120,10 @@ const TableReportMonthlyAttendance = () => {
     }
 
     const fetchReportAttendances = async () => {
-        let uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${selectedYearMonth}`
+        // let uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${selectedYearMonth}`
+        let admin_uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${selectedYearMonth}`
+        let manager_uri = apiConfig.baseURL + `/reports/monthly/attendances/main-dept/date/${mainDeptId}/${selectedYearMonth}`
+        let uri = (userRoleId == 1) ? admin_uri : manager_uri
         console.log(uri)
         try {
             const { data } = await axios.get(uri, {
@@ -135,8 +144,9 @@ const TableReportMonthlyAttendance = () => {
     }
 
     const fetchDepts = async () => {
-        let uri = apiConfig.baseURL + `/utils/depts`
-
+        let admin_uri = apiConfig.baseURL + `/utils/depts/`
+        let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
+        let uri = (userRoleId == 1) ? admin_uri : manager_uri
         console.log(uri)
         try {
             const { data } = await axios.get(uri)
@@ -163,6 +173,7 @@ const TableReportMonthlyAttendance = () => {
             ) : (
                 <Card>
                     <CardHeader title={`รายงานสรุปข้อมูลการลงเวลาปฎิบัติงานประจำ${strDate}`} sx={{ textAlign: "center" }} titleTypographyProps={{ variant: 'h3' }} />
+                    <Typography sx={{ textAlign: "center", marginBottom: 4 }}>{`${mainDeptName} ${selectedDeptName['blogs'] ?? ''}`}</Typography>
                     <Divider sx={{ margin: 0 }} />
                     <CardContent>
                         <Grid item xs={12} md={12} lg={12}>
@@ -188,6 +199,7 @@ const TableReportMonthlyAttendance = () => {
                                             placeholder='เลือกหน่วยงาน'
                                             value={deptFilter}
                                             onChange={handleChangeDept}
+                                            defaultValue={deptFilter}
                                         >
                                             <MenuItem value='all'>ทั้งหมด</MenuItem>
                                             {deptOptions.blogs.map(row => (

@@ -25,20 +25,7 @@ import TableReportYearlyStaffOutStation from 'src/views/tables/TableReportYearly
 import TableReportYearlyStaffAttendance from 'src/views/tables/TableReportYearlyStaffAttendance'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
-
-// const defaultData = {
-//   ptName: 'Loading',
-//   admitDate: '2022-04-09T17:00:00.000Z',
-//   dischargeDate: '2022-04-11T17:00:00.000Z',
-//   doctorCode: 'Loading',
-//   wardCode: 'Loading',
-//   dischargeStatusCode: 'Loading',
-//   dischargeTypeCode: 'Loading',
-//   referCauseCode: 0,
-//   referHospitalCode: 0,
-//   pttypeCode: 'Loading',
-//   admitDuration: 'Loading'
-// }
+import Swal from 'sweetalert2';
 
 export const StaffContext = createContext()
 
@@ -87,10 +74,7 @@ const FormLayouts = () => {
   const [value, setValue] = React.useState('personalInfo')
   const [tabHistoryValue, setTabHistoryValue] = React.useState('monthly-attendance')
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
-
-  // console.log('router.query.cid = ' + router.query.cid)
-  // console.log(staffDetail)
-  // console.log("Selected staff cid = " + staffDetail?.cid)
+  const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
 
   const strDate =
     moment(date).format('DD') +
@@ -110,7 +94,6 @@ const FormLayouts = () => {
   const fetchStaffDetail = async () => {
     let uri = apiConfig.baseURL + `/staff/${router.query.cid}`
 
-    // console.log(uri)
     try {
       await axios
         .get(uri, {
@@ -184,9 +167,28 @@ const FormLayouts = () => {
     }
   }
 
+  const getUserPass = async () => {
+    let uri = apiConfig.baseURL + `/auth/default-password/${username}`
+    console.log(uri)
+    try {
+      const { data } = await axios.get(uri)
+      console.log(data)
+      if (data.status == "error") {
+        Swal.fire({
+          icon: 'warning',
+          title: "คำแนะนำ!",
+          text: data.message,
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     if (router.isReady) {
       router.query
+      getUserPass()
       fetchStaffDetail()
       fetchPnames()
       fetchContractTypes()
@@ -294,21 +296,6 @@ const FormLayouts = () => {
             </Typography>
           )}
         </TabPanel>
-        {/* <TabPanel value='otherLoan'>
-          {staffLoanHistories.blogs.length > 0 ? (
-            <Grid container wrap='nowrap'>
-               <Grid item xs={12} md={12} lg={12}>
-                <LoanHistoryContext.Provider value={staffLoanHistories}>
-                  <TableStaffLoanHistory />
-                </LoanHistoryContext.Provider>
-              </Grid>
-            </Grid>
-          ) : (
-            <Typography variant='h4'>
-              <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-            </Typography>
-          )}
-        </TabPanel> */}
         <TabPanel value='yearly-attendance'>
           {staffDetail?.cid ? (
             <Grid container wrap='nowrap'>
