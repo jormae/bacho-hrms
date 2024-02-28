@@ -231,6 +231,7 @@ const TableReportMonthlyAttendance = () => {
                                         <TableCell align='center'>ชื่อ-สกุล</TableCell>
                                         <TableCell align='center'>หน่วยงาน</TableCell>
                                         <TableCell align='center'>ทั้งหมด</TableCell>
+                                        <TableCell align='center'>สาย</TableCell>
                                         <TableCell align='center'>เวรเช้า</TableCell>
                                         <TableCell align='center'>เวร Day 4</TableCell>
                                         <TableCell align='center'>เวร Day</TableCell>
@@ -260,6 +261,9 @@ const TableReportMonthlyAttendance = () => {
                                                 <TableCell>{row.deptName}</TableCell>
                                                 <TableCell align='center' sx={{ fontWeight: "bold" }}>
                                                     {row.totalCheckin}/{row.totalCheckout}
+                                                </TableCell>
+                                                <TableCell align='center' sx={{ fontWeight: "bold" }}>
+                                                    {row.totalLateCheckin}
                                                 </TableCell>
                                                 <TableCell align='center'>
                                                     {row.totalCheckinShift1}/{row.totalCheckoutShift1}

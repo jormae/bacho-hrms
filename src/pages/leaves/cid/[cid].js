@@ -27,6 +27,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import Chip from '@mui/material/Chip';
 import moment from 'moment'
 
 export const ReportMonthlyLeaveDeptContext = createContext()
@@ -173,12 +174,12 @@ const Leaves = () => {
                                                 <TableCell>{moment(row.leaveStartDate).add(543, 'year').format('DD/MM/YYYY')}</TableCell>
                                                 <TableCell>{moment(row.leaveEndDate).add(543, 'year').format('DD/MM/YYYY')}</TableCell>
                                                 <TableCell align='center'>{row.leaveSessionName ?? "-"}</TableCell>
-                                                <TableCell align='center'>{row.totalLeaveDay ?? "-"} วัน </TableCell>
+                                                <TableCell align='center'>{row.totalLeaveDays ?? 0} วัน </TableCell>
                                                 <TableCell>{row.leaveReason ?? "-"}</TableCell>
                                                 <TableCell align='center'> {row.replacementColleagueName ?? "-"}</TableCell>
-                                                <TableCell align='center'> {row.leaveStatusName ?? "-"}</TableCell>
+                                                <TableCell align='center'>{row.leaveStatusId == 6 ? <Chip variant="outlined" color="warning" label={row.leaveStatusName} /> : <Chip variant="outlined" color="success" label={row.leaveStatusName} />}</TableCell>
                                                 <TableCell align='center'>{row.filePath ?? "-"} </TableCell>
-                                                <TableCell>{row.leaveRemark ?? "-"}</TableCell>
+                                                <TableCell align='center'>{row.totalCancelLeaveDay ? <Chip variant="outlined" color="primary" label={`ยกเลิกวันลา ${row.totalCancelLeaveDay} วัน`} /> : ''}</TableCell>
                                                 <TableCell align='center' color='success'>
                                                     <Link passHref href={`../../leaves/leaveId/${row.leaveId}`} color='success'>
                                                         <Button type='button' variant='outlined'>
