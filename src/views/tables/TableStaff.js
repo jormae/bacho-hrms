@@ -1,7 +1,7 @@
 // ** MUI Imports
 import React, { useContext, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Paper, Avatar } from '@mui/material'
+import { Paper, Avatar, Skeleton } from '@mui/material'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -22,6 +22,7 @@ import Chip from '@mui/material/Chip'
 import { DataContext } from 'src/pages/staff'
 
 const TableStaff = props => {
+
   const staff = useContext(DataContext)
 
   const { register } = useForm()
@@ -39,6 +40,40 @@ const TableStaff = props => {
     setrpg(parseInt(event.target.value, 10))
     setpg(0)
   }
+
+  const TableRowsLoader = ({ rowsNum }) => {
+    return [...Array(rowsNum)].map((row, index) => (
+      <TableRow key={index}>
+        <TableCell component="th" scope="row">
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation="wave" variant="text" />
+        </TableCell>
+      </TableRow>
+    ));
+  };
 
   return (
     <Card>
@@ -76,17 +111,20 @@ const TableStaff = props => {
                 <TableCell align='center'>ตำแหน่ง</TableCell>
                 <TableCell align='center'>งาน</TableCell>
                 <TableCell align='center'>กลุ่มงาน</TableCell>
-                <TableCell align='center'>ประเภท</TableCell>
+                <TableCell align='center'>สถานะการทำงาน</TableCell>
                 <TableCell align='center'>จัดการ</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {staff.blogs
-                .filter(row => {
-                  return search.toLowerCase() === '' ? row : row.staffName.toLowerCase().includes(search)
-                })
-                .slice(pg * rpg, pg * rpg + rpg)
-                .map(row => (
+              {
+              !staff.blogs[0] ? (
+                <TableRowsLoader rowsNum={5} />
+              ) : (
+              staff.blogs?.filter(row => {
+                return search.toLowerCase() === '' ? row : (row.staffName.includes(search) || row.cid.toString().includes(search))
+              })
+              .slice(pg * rpg, pg * rpg + rpg)
+              .map(row => (
                   <TableRow key={row.cid} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell align='center' component='th' scope='row'>
                       {i++}
@@ -112,7 +150,9 @@ const TableStaff = props => {
                       </Link>
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+                )
+                }
             </TableBody>
           </Table>
         </TableContainer>
@@ -129,5 +169,7 @@ const TableStaff = props => {
     </Card>
   )
 }
+
+
 
 export default TableStaff

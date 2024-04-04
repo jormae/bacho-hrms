@@ -71,7 +71,6 @@ const data = [
 
 const ChartChangeLogs = () => {
   const [chartLogs, setChartChangeLogs] = useState({ blogs: [] })
-  // const date = '2022-10'
   const date = moment().format('YYYY-MM')
 
   const fetchChartLogs = async () => {

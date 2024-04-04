@@ -11,6 +11,7 @@ import Error404 from '../404'
 import Error500 from '../500'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
+import { Box } from '@mui/material/'
 
 export const DataContext = createContext()
 
@@ -104,30 +105,42 @@ const FormLayouts = () => {
     fetchStaff()
   }, [])
 
-  if (userRoleId != 1) {
-    return <Error401 />;
-  }
-  else {
+    //   const SkeletonLeaveReportLoading = () => (
+    //     <Box sx={{ width: '100%' }}>
+    //         <Grid container wrap='nowrap'>
+    //             <Grid item xs={12} md={12} lg={12}>
+    //             <DataContext.Provider value={staff}>
+    //               <TableMember />
+    //             </DataContext.Provider>
+    //             </Grid>
+    //         </Grid>
+    //     </Box>
+    // )
 
-    return (
-      <Grid container spacing={6}>
-        {err ? (
-          <Grid item xs={12} md={12}>
-            <Alert severity='error'>
-              <AlertTitle>Error!</AlertTitle>
-              {err}
-            </Alert>
-          </Grid>
-        ) : (
-          <DataContext.Provider value={staff}>
-            <Grid item xs={12}>
-              <TableMember />
+    if (userRoleId != 1) {
+        return <Error401 />;
+    }
+    else {
+
+        return (
+            <Grid container spacing={6}>
+                <Grid item xs={12}>
+                    {/* <SkeletonLeaveReportLoading /> */}
+                    <Box sx={{ width: '100%' }}>
+                      <Grid container wrap='nowrap'>
+                          <Grid item xs={12} md={12} lg={12}>
+                          <DataContext.Provider value={staff}>
+                            <TableMember />
+                          </DataContext.Provider>
+                          </Grid>
+                      </Grid>
+                  </Box>
+                </Grid>
             </Grid>
-          </DataContext.Provider>
-        )}
-      </Grid>
-    )
-  }
+            
+        )
+    }
+
 }
 
 export default FormLayouts

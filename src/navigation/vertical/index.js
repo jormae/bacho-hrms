@@ -13,6 +13,9 @@ import FileDocumentMultipleOutline from 'mdi-material-ui/FileDocumentMultipleOut
 import BarcodeScan from 'mdi-material-ui/BarcodeScan'
 import ChartLine from 'mdi-material-ui/ChartLine'
 import Profile from 'mdi-material-ui/FaceManProfile'
+import { Account, ChartAreaspline, Clock, ClockAlert, ClockCheck } from 'mdi-material-ui'
+import UserIcon from 'src/layouts/components/UserIcon'
+import { ListAlt, ListAltRounded } from '@mui/icons-material'
 
 const navigation = () => {
 
@@ -22,34 +25,46 @@ const navigation = () => {
   const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
 
   return [
+
+    {
+      sectionTitle: 'เมนูหลัก'
+    },
     {
       title: 'Dashboard',
       icon: HomeOutline,
       path: '/'
     },
-
-    // {
-    //   title: 'Account Settings',
-    //   icon: AccountCogOutline,
-    //   path: '/account-settings'
-    // },
-    {
-      sectionTitle: 'Pages'
-    },
     {
       title: 'เจ้าหน้าที่',
-      icon: Profile,
+      icon: Account,
       path: '/staff'
     },
     {
-      title: 'ลา',
-      icon: FileDocumentMultipleOutline,
-      path: '/leaves'
+      title: 'ข้อมูลลงเวลางาน',
+      icon: ClockCheck,
+      path: '/attendance'
+    },
+    
+    // {
+    //   title: 'ข้อมูลลาปฏิบัติงาน',
+    //   icon: ListAltRounded,
+    //   path: '/leave'
+    // },
+    {
+    sectionTitle: 'รายงานรายเดือน'
     },
     {
-      title: 'รายงานรายเดือน',
-      icon: BarcodeScan,
+      title: 'ลงเวลาปฏิบัติงาน',
+      icon: Clock,
       path: '/reports/monthly/attendance'
+    },
+    {
+      sectionTitle: 'รายงานรายปี'
+    },
+    {
+      title: 'สรุปลาปฏิบัติงาน',
+      icon: ChartAreaspline,
+      path: '/leaves'
     },
 
     // {

@@ -26,14 +26,8 @@ import { DashboardReportAttendance1Context, DashboardStrDateContext } from 'src/
 
 const TableReportAttendance1 = () => {
   console.log('TableReportAttendance1')
-  // const paidReports = useContext(PaidContext)
   const dashboardReportAttendance1 = useContext(DashboardReportAttendance1Context)
   const strDate = useContext(DashboardStrDateContext)
-  // const dashboardStrDate = useContext(DashboardStrDateContext)
-  // const attendanceDataTable = paidReports ?? dashboardReportAttendance1;
-  // const attendanceDataTable = useContext(DashboardReportAttendance1Context);
-  // const paidStrDate = useContext(StrDateContext);
-  // const paidStrDate = strDate ?? dashboardStrDate;
   console.log('dashboardReportAttendance1' + dashboardReportAttendance1)
 
   const { register } = useForm()

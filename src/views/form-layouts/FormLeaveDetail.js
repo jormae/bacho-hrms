@@ -30,6 +30,7 @@ import {
 const FormLeaveDetail = () => {
 
     const leaveDetail = useContext(LeaveDetailContext)
+    console.log(leaveDetail)
 
     const { register, handleSubmit, reset } = useForm()
     const [loading, setLoading] = React.useState(false)
@@ -111,6 +112,13 @@ const FormLeaveDetail = () => {
                         </Grid>
                         <Grid item xs={12} md={3} >
                             {leaveDetail?.leaveId ? (
+                                <TextField InputProps={{ readOnly: true }} fullWidth label='เหตุผลของการลา' defaultValue={leaveDetail?.leaveReason} />
+                            ) : (
+                                <Skeleton variant='rectangular' fullWidth height={55} />
+                            )}
+                        </Grid>
+                        <Grid item xs={12} md={3} >
+                            {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='วันที่เริ่มลา' defaultValue={moment(leaveDetail?.leaveStartDate).add(543, 'year').format('DD/MM/YYYY')} />
                             ) : (
                                 <Skeleton variant='rectangular' fullWidth height={55} />
@@ -156,6 +164,7 @@ const FormLeaveDetail = () => {
                 <CardHeader title='ข้อมูลการอนุมัติ' titleTypographyProps={{ variant: 'h6' }} />
                 <CardContent>
                     <Grid container spacing={5}>
+                    {leaveDetail?.replacementColleagueName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='ชื่อผูรับผิดชอบงานแทน' defaultValue={leaveDetail?.replacementColleagueName} />
@@ -163,6 +172,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+{leaveDetail?.replacementColleagueName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='วันที่-เวลา' defaultValue={moment(leaveDetail?.colleagueSignDateTime).add(543, 'year').format('DD/MM/YYYY HH:mm')} />
@@ -170,6 +181,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+{leaveDetail?.replacementColleagueName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='สถานะ' defaultValue={leaveDetail?.colleagueSign} />
@@ -177,7 +190,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
-
+}
+{leaveDetail?.headName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='ชื่อหัวหน้างาน' defaultValue={leaveDetail?.headName} />
@@ -185,6 +199,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+{leaveDetail?.headName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='วันที่-เวลา' defaultValue={moment(leaveDetail?.headSignDateTime).add(543, 'year').format('DD/MM/YYYY HH:mm')} />
@@ -192,6 +208,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+{leaveDetail?.headName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='สถานะ' defaultValue={leaveDetail?.headSign} />
@@ -199,7 +217,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
-
+}
+{leaveDetail?.managerName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='ชื่อหัวหน้ากลุ่มงาน' defaultValue={leaveDetail?.managerName} />
@@ -207,6 +226,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+{leaveDetail?.managerName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='วันที่-เวลา' defaultValue={moment(leaveDetail?.managerSignDateTime).add(543, 'year').format('DD/MM/YYYY HH:mm')} />
@@ -214,6 +235,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+{leaveDetail?.managerName && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='สถานะ' defaultValue={leaveDetail?.managerSign} />
@@ -221,7 +244,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
-
+}
+                        {leaveDetail?.directorSign && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='ชื่อผู้บริหาร' defaultValue={leaveDetail?.directorName} />
@@ -229,6 +253,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+                                                {leaveDetail?.directorSign && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='วันที่-เวลา' defaultValue={moment(leaveDetail?.directorSignDateTime).add(543, 'year').format('DD/MM/YYYY HH:mm')} />
@@ -236,6 +262,8 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+}
+                        {leaveDetail?.directorSign && 
                         <Grid item xs={12} md={4} >
                             {leaveDetail?.leaveId ? (
                                 <TextField InputProps={{ readOnly: true }} fullWidth label='สถานะ' defaultValue={leaveDetail?.directorSign} />
@@ -243,6 +271,7 @@ const FormLeaveDetail = () => {
                                 <Skeleton variant='rectangular' fullWidth height={55} />
                             )}
                         </Grid>
+                        }
 
                         <Grid item xs={12}>
                             <Box

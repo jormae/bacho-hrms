@@ -17,4 +17,4 @@ COPY --from=BUILD_IMAGE /app/.next ./.next
 COPY --from=BUILD_IMAGE /app/public ./public
 EXPOSE 3005
 
-CMD ["yarn", "start"]
+CMD ["npm", "start"]

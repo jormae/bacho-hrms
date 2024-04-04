@@ -1,7 +1,7 @@
 // ** MUI Imports
 import React, { useEffect, useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Paper from '@mui/material/Paper'
+import {Paper, Skeleton} from '@mui/material/'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -156,6 +156,64 @@ const TableReportMonthlyAttendance = () => {
         }
     }
 
+    const TableRowsLoader = ({ rowsNum }) => {
+        return [...Array(rowsNum)].map((row, index) => (
+          <TableRow key={index}>
+            <TableCell component="th" scope="row">
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+            <TableCell>
+              <Skeleton animation="wave" variant="text" />
+            </TableCell>
+          </TableRow>
+        ));
+      };
+
     useEffect(() => {
         fetchReportAttendances()
         fetchDepts()
@@ -247,7 +305,11 @@ const TableReportMonthlyAttendance = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {reportAttendances.blogs
+                                    {
+                                        !reportAttendances.blogs[0] ? (
+                                        <TableRowsLoader rowsNum={5} />
+                                        ) : (
+                                        reportAttendances.blogs
                                         .filter(row => {
                                             return search === '' ? row : row.staffName.includes(search);
                                         })
@@ -302,7 +364,7 @@ const TableReportMonthlyAttendance = () => {
                                                     </Link>
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
+                                        )))}
                                 </TableBody>
                             </Table>
                         </TableContainer>

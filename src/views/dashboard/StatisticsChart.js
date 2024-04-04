@@ -32,8 +32,8 @@ const StatisticChart = () => {
   let totalReturnEclaim = chartStats?.totalReturnEclaim
   let totalStock = chartStats?.totalStock
 
-  // const date = '2022-10'
   const date = moment().subtract(1, 'months').endOf('month').format('YYYY-MM')
+  
   const fetchStatChart = async () => {
     let uri = apiConfig.baseURL + `/dashboard/chart-status/${date}`
     console.log(uri)
