@@ -157,6 +157,16 @@ const UserDropdown = () => {
             ข้อมูลของฉัน
           </Box>
         </MenuItem>
+        {memberRoleId != 1 && ( 
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose(`/data-correct/attendance`)}>
+          <Box sx={styles}>
+            <AccountOutline sx={{ marginRight: 2 }} />
+            Data Correct
+          </Box>
+        </MenuItem>
+        
+          )
+        }
         {/* <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/loan-form')}>
           <Box sx={styles}>
             <EmailOutline sx={{ marginRight: 2 }} />

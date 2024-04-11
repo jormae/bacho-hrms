@@ -22,6 +22,7 @@ import apiConfig from 'src/configs/apiConfig'
 import moment from 'moment'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import toast, { Toaster } from 'react-hot-toast'
 
 import { DashboardStrDateContext, DashboardCidContext } from 'src/pages/index'
 import { StaffStrDateContext, StaffCidContext } from 'src/pages/staff/[cid]'
@@ -119,6 +120,7 @@ const TableReportMonthlyStaffAttendance = () => {
             setReportMonthlyStaffAttendances({ blogs: data })
         } catch (error) {
             console.log(error)
+            toast.error(`Error ${error.response.status} : ข้อมูลปฏิบัตงานรายเดือน (${error.response.data})`)
         }
     }
 
@@ -150,6 +152,7 @@ const TableReportMonthlyStaffAttendance = () => {
                 // title={`รายงานข้อมูลลงเวลา ${strMonth} ${strStaffName} (${strDeptName})`}
                 titleTypographyProps={{ variant: 'h6' }}
             />
+            <Toaster />
             <Divider sx={{ margin: 0 }} />
             <CardContent>
                 <Grid item xs={12} md={12} lg={12}>
