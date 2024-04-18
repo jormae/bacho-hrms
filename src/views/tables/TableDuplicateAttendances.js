@@ -50,12 +50,13 @@ const TableDuplicateAttendances = () => {
 // }
 const [err, setError] = useState()
 
+  const [isLoading, setIsLoading] = useState(true)
   const [attendances, setAttendances] = useState({ blogs: [] })
 
   const [attendanceId, setAttendanceId] = useState()
   const [confirmLoading, setConfirmLoading] = useState(false)
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
-console.log(attendanceId)
+  console.log(attendanceId)
   const { register } = useForm()
   const [search, setSearch] = useState('')
   const i = 1
@@ -125,6 +126,7 @@ console.log(attendanceId)
           console.error(error.response.data)
           setError(error.message + ` (${error.response.data})`)
         })
+        setIsLoading(false)
         setAttendances({ blogs: data })
        
     } catch (error) {
@@ -243,7 +245,7 @@ console.log(attendanceId)
             </TableHead>
             <TableBody>
               {
-                !attendances.blogs[0] ? (
+                isLoading ? (
                 <TableRowsLoader rowsNum={5} />
               ) : (
                 attendances.blogs

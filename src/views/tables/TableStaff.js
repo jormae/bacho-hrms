@@ -78,6 +78,9 @@ const TableStaff = props => {
   return (
     <Card>
       <CardHeader title='ทะเบียนเจ้าหน้าที่ทั้งหมด' titleTypographyProps={{ variant: 'h6' }} />
+      <Link href={`staff/add`} color='success' passHref>
+        <Button variant='contained' sx={{float:'right', mr:'20px', mt:'-50px'}}>เพิ่มเจ้าหน้าที่</Button>
+      </Link>
       <Divider sx={{ margin: 0 }} />
       <CardContent>
         <Grid item xs={12} md={12} lg={12}>
@@ -143,7 +146,7 @@ const TableStaff = props => {
                     <TableCell>{row.mainDeptName}</TableCell>
                     <TableCell>{row.workStatusId == 1 ? 'ทำงาน' : 'ไม่ทำงาน'}</TableCell>
                     <TableCell align='center'>
-                      <Link href={`staff/${row.cid}`} color='success'>
+                      <Link href={`staff/${row.cid}`} color='success' passHref>
                         <Button type='button' variant='outlined'>
                           รายละเอียด
                         </Button>

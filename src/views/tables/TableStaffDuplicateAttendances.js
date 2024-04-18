@@ -42,13 +42,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const TableStaffDuplicateAttendances = () => {
 
-//   const attendances = useContext(AttendancesContext)
-const router = useRouter()
-if (router.isReady) {
-  router.query.cid
-  router.query.attendanceTypeId
-  router.query.date
-}
+  const router = useRouter()
+  if (router.isReady) {
+    router.query.cid
+    router.query.attendanceTypeId
+    router.query.date
+  }
+  const [isLoading, setIsLoading] = useState(true)
   const [attendances, setAttendances] = useState({ blogs: [] })
   const [attendanceId, setAttendanceId] = useState()
   const [confirmLoading, setConfirmLoading] = useState(false)
@@ -114,7 +114,7 @@ if (router.isReady) {
           setError(error.message + ` (${error.response.data})`)
         })
         setAttendances({ blogs: data })
-       
+       setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -216,7 +216,7 @@ if (router.isReady) {
             </TableHead>
             <TableBody>
               {
-                !attendances.blogs[0] ? (
+                isLoading ? (
                 <TableRowsLoader rowsNum={5} />
               ) : (
                 attendances.blogs
