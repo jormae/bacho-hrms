@@ -160,7 +160,8 @@ const TableReportDailyMainDeptAttendance = () => {
     useEffect(() => {
         fetchDepts()
         fetchDailyAttendanceMainDeptReports()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
 
   const TableRowsLoader = ({ rowsNum }) => {

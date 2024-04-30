@@ -97,7 +97,8 @@ const FormLayouts = () => {
   useEffect(() => {
     fetchDepts()
     fetchAttendanceReports()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
   // const SkeletonMemberCardLoading = () => (
   //   <Box sx={{ width: '100%' }}>
@@ -258,7 +259,7 @@ const FormLayouts = () => {
                         <TableCell align='center'>{row.totalLeave ?? 0}</TableCell>
                         <TableCell align='center'>{row.totalOutStation ?? 0}</TableCell>
                         <TableCell align='center' color='success'>
-                          <Link href={`../../monthly/attendance/cid/${row.cid}/${date}`} color='success'>
+                          <Link passHref href={`../../monthly/attendance/cid/${row.cid}/${date}`} color='success'>
                             <Button type='button' variant='outlined'>
                               รายละเอียด
                             </Button>

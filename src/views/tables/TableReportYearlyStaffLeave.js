@@ -176,7 +176,8 @@ const TableReportYearlyStaffLeave = () => {
         fetchYearBudgetOptions()
         fetchStaffInfo()
         fetchLeaveReports()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
         <Card>

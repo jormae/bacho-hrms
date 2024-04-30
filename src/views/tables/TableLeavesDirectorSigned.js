@@ -111,7 +111,8 @@ const TableLeavesDirectorSigned = () => {
     useEffect(() => {
         fetchLeaves()
         fetchDepts()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
         <Card>

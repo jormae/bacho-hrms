@@ -123,7 +123,8 @@ const TableReportMonthlyStaffSumAttendance = () => {
     useEffect(() => {
         fetchStaffInfo()
         fetchMonthlyStaffAttendances()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
         <Card>

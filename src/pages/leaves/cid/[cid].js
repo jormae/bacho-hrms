@@ -104,7 +104,8 @@ const Leaves = () => {
         }
         fetchYearBudgetOptions()
         fetchLeaveReports()
-    }, [router.isReady, router.query])
+    }, [router.isReady, router.query]) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     const SkeletonLeaveReportLoading = () => (
         <Box sx={{ width: '100%' }}>

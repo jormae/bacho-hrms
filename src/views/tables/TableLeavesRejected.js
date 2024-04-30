@@ -111,7 +111,8 @@ const TableLeavesRejected = () => {
     useEffect(() => {
         fetchLeaves()
         fetchDepts()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
         <Card>

@@ -30,7 +30,8 @@ const CardMember = () => {
 
   useEffect(() => {
     fetchTotalMember()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
   return (
     

@@ -160,7 +160,7 @@ const TableStaffDuplicateAttendances = () => {
     <Card>
         <Toaster />
       <CardHeader title={`รายงานข้อมูลการลงเวลาทำงานซ้ำ`} titleTypographyProps={{ variant: 'h6' }} />
-      <Link href={`../../`} color='success'>
+      <Link passHref href={`../../`} color='success' >
         <Button type='button' variant='contained' color="primary" sx={{mr:2, float:right, mt:-13}} startIcon={<Reply />}>
             กลับ
         </Button>

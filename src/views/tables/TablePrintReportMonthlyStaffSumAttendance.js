@@ -147,7 +147,8 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
         fetchMonthlyStaffAttendances()
 
         // handlePrint()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
 

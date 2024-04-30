@@ -73,7 +73,8 @@ const TableReportMonthlyAttendanceDept = () => {
   useEffect(() => {
     fetchDepts()
     console.log(dept)
-  }, [dept])
+  }, [dept]) // eslint-disable-line react-hooks/exhaustive-deps
+
 
   return (
     <Card>

@@ -195,7 +195,8 @@ const TableLeaves = () => {
         fetchYearBudgetOptions()
         fetchLeaves()
         fetchDepts()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
         <Card>

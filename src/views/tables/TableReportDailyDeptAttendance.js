@@ -83,7 +83,8 @@ const TableReportDailyDeptAttendance = () => {
 
     useEffect(() => {
         fetchDailyAttendanceDeptReports()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     return (
         <Card>

@@ -58,7 +58,8 @@ const Leaves = () => {
 
     useEffect(() => {
         fetchLeaves()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     const SkeletonLeaveReportLoading = () => (
         <Box sx={{ width: '100%' }}>

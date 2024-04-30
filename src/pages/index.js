@@ -316,7 +316,7 @@ const Dashboard = () => {
     // fetchAttendanceReports()
     // fetchDepts()
     // fetchMonthlyStaffAttendances()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const SkeletonReportDailyAttendancesLoading = () => (
@@ -386,7 +386,7 @@ const Dashboard = () => {
                 <Typography variant='body2' sx={{ marginBottom: 6 }}>
                   {row.appTitleEn}
                 </Typography>
-                  <Link href={row.appLink} color='success'>
+                  <Link passHref href={row.appLink} color='success'>
                     <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
                       GO
                     </Button>

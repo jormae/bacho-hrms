@@ -123,7 +123,8 @@ const FormLayouts = () => {
       fetchPositions()
       fetchDepts()
       fetchMainDepts()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const onSubmit = data => {
     console.log(data)

@@ -136,7 +136,8 @@ const [err, setError] = useState()
 
   useEffect(() => {
     fetchAttendances()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
 
   const TableRowsLoader = ({ rowsNum }) => {
@@ -272,7 +273,7 @@ const [err, setError] = useState()
                     <Button variant='contained' color="error" sx={{mr:2, font:'fff'}} onClick={()=>handleClickOpen(row.id)}   startIcon={<DeleteCircle style={{color:'fff'}} />}>
                     <Typography color="white">ลบ</Typography>
                       </Button>
-                      <Link href={`../data-correct/attendance/${row.cid}/${row.attendanceTypeId}/${moment(row.attendanceDateTime).add(-7, 'hour').format('YYYYMMDDHHmmss')}`} color='success'>
+                      <Link passHref href={`../data-correct/attendance/${row.cid}/${row.attendanceTypeId}/${moment(row.attendanceDateTime).add(-7, 'hour').format('YYYYMMDDHHmmss')}`} color='success'>
                       <Button type='button' variant='contained'>
                         <Typography color="white">รายละเอียด</Typography>
                       </Button>
