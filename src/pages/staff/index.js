@@ -12,6 +12,8 @@ import Error500 from '../500'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 import { Box } from '@mui/material/'
+import Cookies from 'js-cookie'
+import verifyToken from 'src/middlewares/authorization'
 
 export const DataContext = createContext()
 
@@ -45,63 +47,40 @@ const FormLayouts = () => {
     }
   }
 
-  const {
-    register,
-    resetField,
-    handleSubmit,
-    formState: { errors }
-  } = useForm()
+  // const verifyToken = async () => {
+  //   const token = localStorage.getItem('token')
+  //   let uri = apiConfig.baseURL + '/auth/token'
+  //   fetch(uri, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: 'Bearer ' + token
+  //     }
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       if (data.status !== 'success') {
+  //         localStorage.removeItem('token')
+  //         localStorage.removeItem('staffName')
+  //         window.location = '/pages/login'
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error:', error)
+  //     })
+  // }
 
-  const onSubmit = data => {
-    let uri = apiConfig.baseURL + '/member/upload/'
-    fetch(uri, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status == 'success') {
-          toast.success(data.message)
-          fetchStaff()
-        } else {
-          toast.error(data.errors[0].msg)
-        }
-      })
-      .catch(function (error) {
-        console.log(JSON.stringify(error))
-      })
+  // const checkCActiveCookie = () => {
+  //   const cookiesToken = Cookies.get('token')
+  //   console.log('get cookiesToken = '+cookiesToken)
+  //   if(!cookiesToken){
+  //     window.location = `/pages/login`
 
-    resetField('an')
-  }
-
-  const verifyToken = async () => {
-    const token = localStorage.getItem('token')
-    let uri = apiConfig.baseURL + '/auth/token'
-    fetch(uri, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status !== 'success') {
-          localStorage.removeItem('token')
-          localStorage.removeItem('staffName')
-          window.location = '/pages/login'
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error)
-      })
-  }
+  //   }
+  // }
 
   useEffect(() => {
-    // verifyToken()
+    verifyToken()
     fetchStaff()
   }, [])
 

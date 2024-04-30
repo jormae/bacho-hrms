@@ -117,26 +117,7 @@ const FormLayouts = () => {
     }
   }
 
-  const getUserPass = async () => {
-    let uri = apiConfig.baseURL + `/auth/default-password/${username}`
-    console.log(uri)
-    try {
-      const { data } = await axios.get(uri)
-      console.log(data)
-      if (data.status == "error") {
-        Swal.fire({
-          icon: 'warning',
-          title: "คำแนะนำ!",
-          text: data.message,
-        })
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
-      getUserPass()
       fetchPnames()
       fetchContractTypes()
       fetchPositions()

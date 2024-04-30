@@ -13,6 +13,7 @@ import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
+import Cookies from 'js-cookie'
 
 // ** Icons Imports
 import CogOutline from 'mdi-material-ui/CogOutline'
@@ -63,6 +64,8 @@ const UserDropdown = () => {
     localStorage.removeItem('userRoleId')
     localStorage.removeItem('deptName')
     localStorage.removeItem('deptId')
+    Cookies.remove('bch_token')
+    Cookies.remove('bch_user')
 
     if (url) {
       router.push(url)

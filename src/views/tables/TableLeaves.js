@@ -61,7 +61,10 @@ const TableLeaves = () => {
 
     const handleYearBudgetChange = async data => {
         setSelectedYear(data.target.value)
-        let uri = apiConfig.baseURL + `/leaves/yearbudget/${data.target.value}`
+        
+        // let uri = apiConfig.baseURL + `/leaves/yearbudget/${data.target.value}`
+
+        let uri = apiConfig.baseURL + `/leaves/all/${data.target.value}`
         console.log(uri)
         try {
             const { data } = await axios.get(uri)

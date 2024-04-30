@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Cookies from 'js-cookie'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -104,7 +105,17 @@ const LoginPage = () => {
           localStorage.setItem('mainDeptName', data.mainDeptName)
           localStorage.setItem('positionName', data.positionName)
           localStorage.setItem('avatar', data.avatar)
-          window.location = `/staff/${data.username}`
+          window.location = `/`
+
+          // window.location = `/staff/${data.username}`
+
+          let expires = new Date()
+          expires.setTime(expires.getTime() + (36000))
+
+          Cookies.set('bch_token', data.token, {secure:true, expires, sameSite: 'Lax', domain:'.bachohospital.org'})
+          Cookies.set('bch_user', data.username, {secure:true, expires, sameSite: 'Lax', domain:'.bachohospital.org'})
+          
+
         } else {
           setError(true)
           setLoading(false)

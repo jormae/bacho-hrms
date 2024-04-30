@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState, createContext } from 'react'
 import { useForm } from 'react-hook-form'
-import Grid from '@mui/material/Grid'
+import {Grid,Avatar} from '@mui/material/'
 import Router from 'next/router'
 import Poll from 'mdi-material-ui/Poll'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
@@ -23,6 +23,8 @@ import Skeleton from '@mui/material/Skeleton'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import TablePagination from '@mui/material/TablePagination'
+import Cookies from 'js-cookie'
+import Link from 'next/link'
 
 // ** Styled Component Import
 import apiConfig from 'src/configs/apiConfig'
@@ -48,6 +50,9 @@ import TableReportDailyMainDeptAttendance from 'src/views/tables/TableReportDail
 import TableReportDailyAttendance from 'src/views/tables/TableReportDailyAttendance'
 import TableReportDailyDeptAttendance from 'src/views/tables/TableReportDailyDeptAttendance'
 import TableReportMonthlyStaffAttendance from 'src/views/tables/TableReportMonthlyStaffAttendance'
+import verifyToken from 'src/middlewares/authorization'
+import { AccessAlarm, InfoOutlined } from '@mui/icons-material'
+import { Account, ChartBar } from 'mdi-material-ui'
 
 export const DataContext = createContext()
 
@@ -96,6 +101,8 @@ const Dashboard = () => {
   const i = 1
   moment.locale('th')
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
+  const [apps, setApps] = useState({ blogs: [] })
+  const [attendanceReports, setAttendanceReports] = useState({ blogs: [] })
   const [sumDailyReportAttendance, setSumDailyReportAttendance] = useState({ blogs: [] })
   const [reportDailyAttendances, setReportDailyAttendances] = useState({ blogs: [] })
   const [reportDailyDeptAttendances, setReportDailyDeptAttendances] = useState({ blogs: [] })
@@ -206,31 +213,40 @@ const Dashboard = () => {
     })
   }
 
-  const verifyToken = async () => {
-    const token = localStorage.getItem('token')
-    let uri = apiConfig.baseURL + '/auth/token'
-    fetch(uri, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        if (data.status !== 'success') {
-          localStorage.removeItem('token')
-          localStorage.removeItem('username')
-          window.location = '/pages/login'
-          console.log(data)
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error)
-        setError('Unable to connect to database, please contact administrator')
-      })
-  }
+  // const checkActiveCookie = () => {
+  //   const cookiesToken = Cookies.get('token')
+  //   console.log('get cookiesToken = '+cookiesToken)
+  //   if(!cookiesToken){
+  //     window.location = `/pages/login`
+
+  //   }
+  // }
+
+  // const verifyToken = async () => {
+  //   const token = localStorage.getItem('token')
+  //   let uri = apiConfig.baseURL + '/auth/token'
+  //   fetch(uri, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: 'Bearer ' + token
+  //     }
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       if (data.status !== 'success') {
+  //         localStorage.removeItem('token')
+  //         localStorage.removeItem('username')
+  //         window.location = '/pages/login'
+  //         console.log(data)
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error:', error)
+  //       setError('Unable to connect to database, please contact administrator')
+  //     })
+  // }
 
   const fetchDailyAttendanceMainDeptReports = async () => {
     let uri = apiConfig.baseURL + `/reports/daily/attendances/main-dept/${mainDeptId}/${today}`
@@ -254,14 +270,25 @@ const Dashboard = () => {
     }
   }
 
-  const fetchDepts = async () => {
-    let admin_uri = apiConfig.baseURL + `/utils/depts/`
-    let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
-    let uri = (userRoleId == 1) ? admin_uri : manager_uri
+  // const fetchDepts = async () => {
+  //   let admin_uri = apiConfig.baseURL + `/utils/depts/`
+  //   let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
+  //   let uri = (userRoleId == 1) ? admin_uri : manager_uri
+  //   console.log(uri)
+  //   try {
+  //     const { data } = await axios.get(uri)
+  //     setDeptOptions({ blogs: data })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  const fetchApps = async () => {
+    let uri = apiConfig.baseURL + `/utils/apps/`
     console.log(uri)
     try {
       const { data } = await axios.get(uri)
-      setDeptOptions({ blogs: data })
+      setApps({ blogs: data })
     } catch (error) {
       console.log(error)
     }
@@ -280,13 +307,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     verifyToken()
+    fetchApps()
     fetchReportAttendance1()
-    fetchReportDailyAttendances()
-    fetchDailyAttendanceMainDeptReports()
-    fetchDailyAttendanceDeptReports()
-    fetchAttendanceReports()
-    fetchDepts()
-    fetchMonthlyStaffAttendances()
+
+    // fetchReportDailyAttendances()
+    // fetchDailyAttendanceMainDeptReports()
+    // fetchDailyAttendanceDeptReports()
+    // fetchAttendanceReports()
+    // fetchDepts()
+    // fetchMonthlyStaffAttendances()
   }, [])
 
 
@@ -310,40 +339,64 @@ const Dashboard = () => {
     </Box>
   )
 
-  const SkeletonReportDailyAttendancesMainDeptLoading = () => (
-    <Box sx={{ width: '100%' }}>
-      {reportDailyMainDeptAttendances.blogs ? (
-        <Grid container wrap='nowrap'>
-          <Grid item xs={12} md={12} lg={12}>
-            <DashboardStrDateContext.Provider value={strDate}>
-              <TableReportDailyMainDeptAttendance />
-            </DashboardStrDateContext.Provider>
-          </Grid>
-        </Grid>
-      ) : (
-        <Typography variant='h4'>
-          <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-        </Typography>
-      )}
-    </Box>
-  )
+  // const SkeletonReportDailyAttendancesMainDeptLoading = () => (
+  //   <Box sx={{ width: '100%' }}>
+  //     {reportDailyMainDeptAttendances.blogs ? (
+  //       <Grid container wrap='nowrap'>
+  //         <Grid item xs={12} md={12} lg={12}>
+  //           <DashboardStrDateContext.Provider value={strDate}>
+  //             <TableReportDailyMainDeptAttendance />
+  //           </DashboardStrDateContext.Provider>
+  //         </Grid>
+  //       </Grid>
+  //     ) : (
+  //       <Typography variant='h4'>
+  //         <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
+  //       </Typography>
+  //     )}
+  //   </Box>
+  // )
 
-  const SkeletonReportDailyAttendancesDeptLoading = () => (
+  const SkeletonAppsLoading = () => (
     <Box sx={{ width: '100%' }}>
-      {reportDailyDeptAttendances.blogs ? (
-        <Grid container wrap='nowrap'>
-          <Grid item xs={12} md={12} lg={12}>
-            <DashboardStrDateContext.Provider value={strDate}>
-              <TableReportDailyDeptAttendance />
-            </DashboardStrDateContext.Provider>
+
+        {/* <Grid container wrap='nowrap'> */}
+
+        <Grid container spacing={6}>
+        {apps.blogs.map(row => (
+          <Grid key={row.appId} item xs={12} md={3} lg={3}>
+            <Card >
+              <CardContent
+                sx={{
+                  display: 'flex',
+                  textAlign: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  padding: theme => `${theme.spacing(9.75, 5, 9.25)} !important`
+                }}
+              >
+                <Avatar
+                  sx={{ width: 50, height: 50, marginBottom: 2.25, color: 'common.white', backgroundColor: 'primary.main' }}
+                >
+                  <ChartBar sx={{ fontSize: '2rem' }} />
+                </Avatar>
+                <Typography variant='h6' sx={{ marginBottom: 2.75 }}>
+                  {row.appTitle}
+                </Typography>
+                <Typography variant='body2' sx={{ marginBottom: 6 }}>
+                  {row.appTitleEn}
+                </Typography>
+                  <Link href={row.appLink} color='success'>
+                    <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+                      GO
+                    </Button>
+                  </Link>
+              </CardContent>
+            </Card>
           </Grid>
-        </Grid>
-      ) : (
-        <Typography variant='h4'>
-          <Skeleton width='100%' height={200} sx={{ animationDuration: '3.0s' }} />
-        </Typography>
-      )}
-    </Box>
+       ))}
+       </Grid>
+    </Box>   
   )
 
   const SkeletonReportMonthlyStaffAttendancesLoading = () => (
@@ -370,7 +423,7 @@ const Dashboard = () => {
 
     <Grid container spacing={6}>
       <Grid container item></Grid>
-      {err ? (
+      {/* {err ? (
         <Grid item xs={12} md={12}>
           <Alert severity='error'>
             <AlertTitle>Error!</AlertTitle>
@@ -379,8 +432,8 @@ const Dashboard = () => {
         </Grid>
       ) : (
         ''
-      )}
-      <Grid item xs={12}>
+      )} */}
+      {/* <Grid item xs={12}>
         <Card>
           <CardHeader
             title={`รายงานสรุปข้อมูลลงเวลาวันที่ ${strDate}`}
@@ -400,7 +453,7 @@ const Dashboard = () => {
                         <TableCell align='center'>ตรงเวลา</TableCell>
                         <TableCell align='center'>สาย</TableCell>
                         <TableCell align='center'>ลา</TableCell>
-                        {/* <TableCell align='center'>จัดการ</TableCell> */}
+                        {/* <TableCell align='center'>จัดการ</TableCell> 
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -422,7 +475,7 @@ const Dashboard = () => {
                                 แสดงรายละเอียด
                               </Button>
                               </Link>
-                            </TableCell> */}
+                            </TableCell> 
                           </TableRow>
                         ))}
                     </TableBody>
@@ -432,36 +485,32 @@ const Dashboard = () => {
             </Grid>
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12}>
+      </Grid> */}
+      {/* <Grid item xs={12}>
 
         {userRoleId == 1 || userRoleId == 3 || userRoleId == 10 ? //superadmin,director,hr
           <SkeletonReportDailyAttendancesLoading />
           :
           <Grid />
         }
-      </Grid>
-      <Grid item xs={12}>
+      </Grid> */}
+      {/* <Grid item xs={12}>
         {userRoleId == 1 || userRoleId == 4 ? //superadmin, manager
           <SkeletonReportDailyAttendancesMainDeptLoading />
           :
           <Grid />
         }
-      </Grid>
+      </Grid> */}
       <Grid item xs={12}>
-        {userRoleId == 1 || userRoleId == 8 ? //superadmin, head dept
-          <SkeletonReportDailyAttendancesDeptLoading />
-          :
-          <Grid />
-        }
+          <SkeletonAppsLoading />
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         {userRoleId == 1 || userRoleId == 7 ? //superadmin, head dept
           <SkeletonReportMonthlyStaffAttendancesLoading />
           :
           <Grid />
         }
-      </Grid>
+      </Grid> */}
 
     </Grid>
   )

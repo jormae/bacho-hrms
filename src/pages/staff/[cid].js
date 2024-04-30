@@ -26,6 +26,8 @@ import TableReportYearlyStaffAttendance from 'src/views/tables/TableReportYearly
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 import Swal from 'sweetalert2';
+import Cookies from 'js-cookie'
+import verifyToken from 'src/middlewares/authorization'
 
 export const StaffContext = createContext()
 
@@ -75,6 +77,9 @@ const FormLayouts = () => {
   const [tabHistoryValue, setTabHistoryValue] = React.useState('monthly-attendance')
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
+
+  // const cookiesToken = Cookies.get('token')
+  //   console.log('cookiesToken = '+cookiesToken)
 
   const strDate =
     moment(date).format('DD') +
@@ -185,7 +190,18 @@ const FormLayouts = () => {
     }
   }
 
+  // const checkCActiveCookie = () => {
+  //   const cookiesToken = Cookies.get('token')
+  //   console.log('get cookiesToken = '+cookiesToken)
+  //   if(!cookiesToken){
+  //     window.location = `/pages/login`
+
+  //   }
+  // }
+
   useEffect(() => {
+    verifyToken()
+
     if (router.isReady) {
       router.query
       getUserPass()
