@@ -74,7 +74,7 @@ const FormLayouts = () => {
       router.query
       fetchAttendanceReports()
     }
-  }, [router.isReady, router.query])
+  }, [router.isReady, router.query]) // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const SkeletonReportMonthlyStaffAttendancesLoading = () => (
     <Box sx={{ width: '100%' }}>

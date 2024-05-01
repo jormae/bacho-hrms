@@ -1,6 +1,6 @@
 services:
   web:
-    image: 'jormae/bacho-hrms-web:1.0.15'
+    image: 'jormae/bacho-hrms-web:1.0.16'
     platform: linux/amd64
     build: .
     ports:

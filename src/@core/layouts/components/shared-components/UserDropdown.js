@@ -102,7 +102,7 @@ const UserDropdown = () => {
 
   useEffect(() => {
     // getStorageItem()
-    setAvatar(typeof window !== 'undefined' ? localStorage.getItem('avatar') : null)
+    setAvatar(typeof window !== 'undefined' ? localStorage.getItem('avatar') : null) // eslint-disable-next-line react-hooks/exhaustive-deps
   })
 
 

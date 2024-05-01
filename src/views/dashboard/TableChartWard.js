@@ -32,9 +32,6 @@ const TableChartWard = () => {
     }
   }
 
-  useEffect(() => {
-    fetchChartWards()
-  }, [])
 
   return (
     <Card>

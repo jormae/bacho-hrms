@@ -45,10 +45,6 @@ const StatisticChart = () => {
     }
   }
 
-  useEffect(() => {
-    fetchStatChart()
-  }, [setChartStats])
-
   return (
     <Card>
       <CardHeader title='Report Chart Status :: สถานะชาร์ต' />

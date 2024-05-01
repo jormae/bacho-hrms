@@ -110,7 +110,7 @@ const LoginPage = () => {
           // window.location = `/staff/${data.username}`
 
           let expires = new Date()
-          expires.setTime(expires.getTime() + (36000))
+          expires.setTime(expires.getTime() + (2*60*60000))
 
           Cookies.set('bch_token', data.token, {secure:true, expires, sameSite: 'Lax', domain:'.bachohospital.org'})
           Cookies.set('bch_user', data.username, {secure:true, expires, sameSite: 'Lax', domain:'.bachohospital.org'})

@@ -17,7 +17,7 @@ const Greeting = () => {
   const theme = useTheme()
 
   return (
-    <Link href={`/member/${userName}`} color='success'>
+    <Link passHref href={`/member/${userName}`} color='success'>
       <CardActionArea>
         <Card sx={{ position: 'relative' }}>
           <CardMedia sx={{ height: '11.625rem' }} image='/images/cards/background-user.png' />

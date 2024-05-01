@@ -69,7 +69,7 @@ const Leaves = () => {
             router.query
         }
         fetchLeaveDetail()
-    }, [router.isReady, router.query])
+    }, [router.isReady, router.query]) // eslint-disable-next-line react-hooks/exhaustive-deps
 
     const SkeletonLeaveFormsLoading = () => (
         <Box sx={{ width: '100%' }}>

@@ -53,6 +53,7 @@ import TableReportMonthlyStaffAttendance from 'src/views/tables/TableReportMonth
 import verifyToken from 'src/middlewares/authorization'
 import { AccessAlarm, InfoOutlined } from '@mui/icons-material'
 import { Account, ChartBar } from 'mdi-material-ui'
+import isDefaultPassword from 'src/middlewares/default-password'
 
 export const DataContext = createContext()
 
@@ -307,6 +308,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     verifyToken()
+    isDefaultPassword()
     fetchApps()
     fetchReportAttendance1()
 

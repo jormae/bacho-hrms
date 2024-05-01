@@ -200,6 +200,7 @@ const FormLayouts = () => {
   // }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     verifyToken()
 
     if (router.isReady) {
@@ -211,7 +212,8 @@ const FormLayouts = () => {
       fetchPositions()
       fetchDepts()
     }
-  }, [router.isReady, router.query])
+    
+  }, [router.isReady, router.query]) // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const SkeletonStaffCardLoading = () => (
     <Box sx={{ width: '100%' }}>

@@ -35,7 +35,7 @@ const CardMember = () => {
 
   return (
     
-    <Link href='/member' color='success'>
+    <Link passHref href='/member' color='success'>
       <CardActionArea>
         <Card sx={{ pt: 5 }} direction='column'>
           <CardContent sx={{ pt: theme => `${theme.spacing(1)} !important` }}>
