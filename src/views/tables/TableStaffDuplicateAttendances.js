@@ -125,7 +125,7 @@ const TableStaffDuplicateAttendances = () => {
       router.query
       fetchAttendances()
     }
-  }, [router.isReady, router.query])
+  }, [router.isReady, router.query]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const TableRowsLoader = ({ rowsNum }) => {
