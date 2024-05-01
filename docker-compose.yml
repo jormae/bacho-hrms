@@ -1,10 +1,10 @@
-version: '3.3'
 services:
   web:
-    image: 'jormae/bacho-hrms-web:1.0.13'
+    image: 'jormae/bacho-hrms-web:1.0.15'
+    platform: linux/amd64
     build: .
     ports:
-      - 8005:3005
+      - 8005:3000
     restart: always
     #left -> local, right ->container
     #http://lcoalhost:8080 -p 8080:3000
