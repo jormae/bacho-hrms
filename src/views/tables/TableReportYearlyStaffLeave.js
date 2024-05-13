@@ -56,7 +56,7 @@ const TableReportYearlyStaffLeave = () => {
     // console.log('cid = ' + cid)
     const { register } = useForm()
     const [search, setSearch] = useState('')
-    const i = 1
+    let i = 1
     const month = moment().format('YYYY-MM')
     const [date, setDate] = useState(moment().format('YYYY-MM'))
     const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null

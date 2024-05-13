@@ -51,7 +51,7 @@ const Leaves = () => {
     console.log(leaveReports.blogs)
     console.log(leaveReports['blogs'])
     console.log(leaveReports['blogs'][0]?.staffName)
-    const i = 1
+    let i = 1
     const [pg, setpg] = useState(0)
     const [rpg, setrpg] = useState(10)
 

@@ -33,7 +33,7 @@ const TableLeaves = () => {
     const strDate = useContext(DashboardStrDateContext)
     const { register } = useForm()
     const [search, setSearch] = useState('')
-    const i = 1
+    let i = 1
     const [err, setError] = useState()
     const today = moment().format('YYYY-MM-DD')
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))

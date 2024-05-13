@@ -41,7 +41,7 @@ const FormLayouts = () => {
   const [deptOptions, setDeptOptions] = useState({ blogs: [] })
   const [attendanceReports, setAttendanceReports] = useState({ blogs: [] })
 
-  const i = 1
+  let i = 1
   const [pg, setpg] = useState(0)
   const [rpg, setrpg] = useState(10)
 

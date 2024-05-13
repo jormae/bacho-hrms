@@ -38,7 +38,7 @@ const TableReportMonthlyAttendanceDept = () => {
   const { register } = useForm()
   const [search, setSearch] = useState('')
   const [depts, setDepts] = useState({ blogs: [] })
-  const i = 1
+  let i = 1
 
   const [pg, setpg] = useState(0)
   const [rpg, setrpg] = useState(10)

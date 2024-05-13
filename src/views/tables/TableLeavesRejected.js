@@ -34,7 +34,7 @@ const TableLeavesRejected = () => {
 
     const { register } = useForm()
     const [search, setSearch] = useState('')
-    const i = 1
+    let i = 1
     const today = moment().format('YYYY-MM-DD')
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
     const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null

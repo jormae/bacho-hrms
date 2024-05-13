@@ -5,7 +5,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --check-files --frozen-lockfile --network-timeout 100000
 COPY . .
 # build
-RUN yarn build
+RUN yarn build 
 # remove dev dependencies
 RUN npm prune --production
 FROM node:alpine

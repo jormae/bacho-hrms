@@ -38,7 +38,7 @@ const TableReportYearlyStaffOutStation = () => {
 
     console.log('StaffCid = ' + StaffCid)
     console.log('cid = ' + cid)
-    const i = 1
+    let i = 1
 
     const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null

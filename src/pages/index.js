@@ -99,7 +99,7 @@ const Dashboard = () => {
   const mainDeptName = typeof window !== 'undefined' ? localStorage.getItem('mainDeptName') : null
   const deptId = typeof window !== 'undefined' ? localStorage.getItem('deptId') : null
 
-  const i = 1
+  let i = 1
   moment.locale('th')
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
   const [apps, setApps] = useState({ blogs: [] })

@@ -37,7 +37,7 @@ const FormLayouts = () => {
   }
   const { register } = useForm()
 
-  const i = 1
+  let i = 1
   const deptId = 3
   const date = '2023-10'
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null

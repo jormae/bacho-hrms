@@ -37,7 +37,7 @@ const TableReportMonthlyAttendance = () => {
 
     const { register } = useForm()
     const [search, setSearch] = useState('')
-    const i = 1
+    let i = 1
     const [selectedYearMonth, setSelectedYearMonth] = useState(moment().format('YYYY-MM'))
     const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null

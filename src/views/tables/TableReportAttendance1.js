@@ -32,7 +32,7 @@ const TableReportAttendance1 = () => {
 
   const { register } = useForm()
   const [search, setSearch] = useState('')
-  const i = 1
+  let i = 1
 
   const [pg, setpg] = React.useState(0)
   const [rpg, setrpg] = React.useState(10)
