@@ -2,7 +2,7 @@ FROM node:alpine as BUILD_IMAGE
 WORKDIR /app
 COPY package.json yarn.lock ./
 # install dependencies
-RUN yarn install --frozen-lockfile --network-timeout 100000
+RUN yarn install --check-files --frozen-lockfile --network-timeout 100000
 COPY . .
 # build
 RUN yarn build
