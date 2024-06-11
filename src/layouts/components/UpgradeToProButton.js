@@ -65,13 +65,13 @@ const BuyNowButton = () => {
           sx={{ pb: 4, minWidth: theme => (theme.breakpoints.down('sm') ? 400 : 300) }}
         >
           <Paper elevation={9} sx={{ borderRadius: 1, overflow: 'hidden' }}>
-            <a
+            {/* <a
               target='_blank'
               rel='noreferrer'
               href='https://themeselection.com/products/materio-mui-react-nextjs-admin-template/'
             >
               <img width='100%' alt='materio-pro-banner' src='/images/misc/materio-pro-banner.png' />
-            </a>
+            </a> */}
             <CardContent>
               <Typography sx={{ mb: 4 }} variant='h6'>
                 Materio - React Admin Template

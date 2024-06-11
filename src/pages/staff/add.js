@@ -355,7 +355,6 @@ const FormLayouts = () => {
                                 color='primary'
                                 onClick={handleSubmit(onSubmit)}
                                 loading={loading}
-                                loadingPosition='start'
                                 startIcon={<SaveIcon />}
                                 variant='contained'
                                 size='large'

@@ -220,13 +220,13 @@ const TableLeavesNew = () => {
                                             {row.managerSignDateTime ? moment(row.managerSignDateTime).add(543, 'year').format('DD/MM/YYYY') : '-'}
                                         </TableCell>
                                         <TableCell>{row.leaveStatusName}</TableCell>
-                                        {/* <TableCell align='center' color='success'>
+                                        <TableCell align='center' color='success'>
                                             <Link passHref href={`../../leaves/cid/${row.cid}`} color='success'>
                                                 <Button type='button' variant='outlined'>
                                                     รายละเอียด
                                                 </Button>
                                             </Link>
-                                        </TableCell> */}
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>

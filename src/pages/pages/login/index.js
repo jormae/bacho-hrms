@@ -110,17 +110,21 @@ const LoginPage = () => {
           // window.location = `/staff/${data.username}`
 
           let expires = new Date()
-          expires.setTime(expires.getTime() + (1 * 1 * 60000))
+          expires.setTime(expires.getTime() + (1 * 60 * 60000)) //last 1 hr (1 * 60 * 60000)
 
           Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: '.bachohospital.org' })
           Cookies.set('bch_user', data.username, { secure: true, expires, sameSite: 'Lax', domain: '.bachohospital.org' })
 
+          // Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
+          // Cookies.set('bch_user', data.username, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
+
 
         } else {
           setError(true)
-          setLoading(false)
           setMessage(data.message)
         }
+        setLoading(false)
+
       })
       .catch(error => {
         console.error('Error:', error)
@@ -207,61 +211,19 @@ const LoginPage = () => {
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
-              {/* <FormControlLabel control={<Checkbox />} label='Remember Me' />
-              <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
-              </Link> */}
             </Box>
-            {/* <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} type='submit'>
-              Login
-            </Button> */}
             <LoadingButton
               fullWidth
               type='submit'
               color='primary'
               onClick={handleSubmit(onSubmit)}
               loading={loading}
-              loadingPosition='start'
               variant='contained'
               size='large'
             >
               เข้าสู่ระบบ
             </LoadingButton>
-            {/* <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {/* <Typography variant='body2' sx={{ marginRight: 2 }}>
-                New on our platform?
-              </Typography>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/register'>
-                  <LinkStyled>Create an account</LinkStyled>
-                </Link>
-              </Typography>
-            </Box> 
-            <Divider sx={{ my: 5 }}>or</Divider> 
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
-            </Box> */}
+
           </form>
         </CardContent>
       </Card>

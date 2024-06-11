@@ -31,7 +31,6 @@ import apiConfig from "src/configs/apiConfig"
           })
           .catch(error => {
             console.error('Error:', error)
-            setError('Unable to connect to database, please contact administrator')
           })
       }
     

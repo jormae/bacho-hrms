@@ -86,25 +86,12 @@ const UserDropdown = () => {
       color: 'text.secondary'
     }
   }
-  const [avatar, setAvatar] = useState()
+
+  const avatar = typeof window !== 'undefined' ? localStorage.getItem('avatar') : null
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
   const staffName = typeof window !== 'undefined' ? localStorage.getItem('staffName') : null
   const positionName = typeof window !== 'undefined' ? localStorage.getItem('positionName') : null
   const memberRoleId = typeof window !== 'undefined' ? localStorage.getItem('memberRoleId') : null
-
-  // console.log(avatar)
-
-  // function getStorageItem() {
-
-
-
-  // }
-
-  useEffect(() => {
-    // getStorageItem()
-    setAvatar(typeof window !== 'undefined' ? localStorage.getItem('avatar') : null) // eslint-disable-next-line react-hooks/exhaustive-deps
-  })
-
 
   return (
     <Fragment>

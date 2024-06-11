@@ -13,7 +13,7 @@ import FileDocumentMultipleOutline from 'mdi-material-ui/FileDocumentMultipleOut
 import BarcodeScan from 'mdi-material-ui/BarcodeScan'
 import ChartLine from 'mdi-material-ui/ChartLine'
 import Profile from 'mdi-material-ui/FaceManProfile'
-import { Account, ChartAreaspline, Clock, ClockAlert, ClockCheck } from 'mdi-material-ui'
+import { Account, ChartAreaspline, Clock, ClockAlert, ClockCheck, DownloadBox } from 'mdi-material-ui'
 import UserIcon from 'src/layouts/components/UserIcon'
 import { ListAlt, ListAltRounded } from '@mui/icons-material'
 
@@ -43,6 +43,11 @@ const navigation = () => {
       title: 'ข้อมูลลงเวลางาน',
       icon: ClockCheck,
       path: '/attendance'
+    },
+    {
+      title: 'ดาว์นโหลด',
+      icon: DownloadBox,
+      path: 'https://portal.bachohospital.org/public/download'
     },
     
     // {

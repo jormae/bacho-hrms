@@ -54,6 +54,7 @@ import verifyToken from 'src/middlewares/authorization'
 import { AccessAlarm, InfoOutlined } from '@mui/icons-material'
 import { Account, ChartBar } from 'mdi-material-ui'
 import isDefaultPassword from 'src/middlewares/default-password'
+import newSurvey from 'src/middlewares/survey'
 
 export const DataContext = createContext()
 
@@ -309,6 +310,7 @@ const Dashboard = () => {
   useEffect(() => {
     verifyToken()
     isDefaultPassword()
+    newSurvey()
     fetchApps()
     fetchReportAttendance1()
 
