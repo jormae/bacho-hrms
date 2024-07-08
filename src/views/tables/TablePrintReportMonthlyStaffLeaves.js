@@ -58,6 +58,7 @@ const TablePrintReportMonthlyStaffLeaves = () => {
   let i = 1
   const [reportMonthlyStaffLeaves, setReportMonthlyStaffLeaves] = useState({ blogs: [] })
   const [staffInfo, setStaffInfo] = useState()
+
   const print = `
   @page: {
     size: 'A4 Portrait',
@@ -78,6 +79,7 @@ const TablePrintReportMonthlyStaffLeaves = () => {
   color: 'black'
 `
   const printRef = useRef()
+
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
     copyStyles: true,

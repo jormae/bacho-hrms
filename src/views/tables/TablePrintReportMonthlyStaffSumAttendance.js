@@ -77,6 +77,7 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
   const staffName = staffInfo?.pname + staffInfo?.fname + ' ' + staffInfo?.lname
   const deptName = staffInfo?.deptName
   const strMonth = 'เดือน ' + moment(strDate).format('MMMM') + ' พ.ศ.' + moment(strDate).add(543, 'year').format('YYYY')
+
   const print = `
   @page: {
     size: 'A4 Portrait',
@@ -97,6 +98,7 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
   color: 'black'
 `
   const printRef = useRef()
+
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
     copyStyles: true,

@@ -142,10 +142,7 @@ const TableReportMonthlyStaffAttendance = () => {
 
   return (
     <Card>
-      <CardHeader
-        // title={`รายงานข้อมูลลงเวลา ${strMonth} ${strStaffName} (${strDeptName})`}
-        titleTypographyProps={{ variant: 'h6' }}
-      />
+      <CardHeader titleTypographyProps={{ variant: 'h6' }} />
       <Toaster />
       <Divider sx={{ margin: 0 }} />
       <CardContent>
