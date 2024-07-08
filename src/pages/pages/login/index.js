@@ -110,21 +110,23 @@ const LoginPage = () => {
           // window.location = `/staff/${data.username}`
 
           let expires = new Date()
-          expires.setTime(expires.getTime() + (1 * 60 * 60000)) //last 1 hr (1 * 60 * 60000)
+          expires.setTime(expires.getTime() + 1 * 60 * 60000) //last 1 hr (1 * 60 * 60000)
 
           Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: '.bachohospital.org' })
-          Cookies.set('bch_user', data.username, { secure: true, expires, sameSite: 'Lax', domain: '.bachohospital.org' })
+          Cookies.set('bch_user', data.username, {
+            secure: true,
+            expires,
+            sameSite: 'Lax',
+            domain: '.bachohospital.org'
+          })
 
           // Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
           // Cookies.set('bch_user', data.username, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
-
-
         } else {
           setError(true)
           setMessage(data.message)
         }
         setLoading(false)
-
       })
       .catch(error => {
         console.error('Error:', error)
@@ -210,8 +212,7 @@ const LoginPage = () => {
             </FormControl>
             <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
-            >
-            </Box>
+            ></Box>
             <LoadingButton
               fullWidth
               type='submit'
@@ -223,7 +224,6 @@ const LoginPage = () => {
             >
               เข้าสู่ระบบ
             </LoadingButton>
-
           </form>
         </CardContent>
       </Card>

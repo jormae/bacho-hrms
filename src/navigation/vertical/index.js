@@ -18,14 +18,12 @@ import UserIcon from 'src/layouts/components/UserIcon'
 import { ListAlt, ListAltRounded } from '@mui/icons-material'
 
 const navigation = () => {
-
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
   const memberName = typeof window !== 'undefined' ? localStorage.getItem('memberName') : null
   const memberRoleName = typeof window !== 'undefined' ? localStorage.getItem('memberRoleName') : null
   const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
 
   return [
-
     {
       sectionTitle: 'เมนูหลัก'
     },
@@ -49,14 +47,14 @@ const navigation = () => {
       icon: DownloadBox,
       path: 'https://portal.bachohospital.org/public/download'
     },
-    
+
     // {
     //   title: 'ข้อมูลลาปฏิบัติงาน',
     //   icon: ListAltRounded,
     //   path: '/leave'
     // },
     {
-    sectionTitle: 'รายงานรายเดือน'
+      sectionTitle: 'รายงานรายเดือน'
     },
     {
       title: 'ลงเวลาปฏิบัติงาน',
@@ -70,122 +68,7 @@ const navigation = () => {
       title: 'สรุปลาปฏิบัติงาน',
       icon: ChartAreaspline,
       path: '/leaves'
-    },
-
-    // {
-    //   title: 'ส่ง-รับคืนสรุปชาร์ต',
-    //   icon: BarcodeScan,
-    //   path: '/summary-return-chart'
-    // },
-    // {
-    //   title: 'รับคืนออดิตชาร์ต',
-    //   icon: BarcodeScan,
-    //   path: '/audit-chart'
-    // },
-    // {
-    //   title: 'ส่งรีออดิตชาร์ต',
-    //   icon: BarcodeScan,
-    //   path: '/reaudit-chart'
-    // },
-    // {
-    //   title: 'ส่งงาน eclaim',
-    //   icon: Login,
-    //   path: '/submit-eclaim'
-    // },
-    // {
-    //   title: 'รับคืนงาน eclaim',
-    //   icon: BarcodeScan,
-    //   path: '/return-eclaim'
-    // },
-    // {
-    //   title: 'จัดเก็บชาร์ต',
-    //   icon: BarcodeScan,
-    //   path: '/stock-folder'
-    // },
-
-    // {
-    //   title: 'Login',
-    //   icon: Login,
-    //   path: '/pages/login',
-    //   openInNewTab: false
-    // },
-    // {
-    //   title: 'Register',
-    //   icon: AccountPlusOutline,
-    //   path: '/pages/register',
-    //   openInNewTab: false
-    // },
-    // {
-    //   title: 'Error',
-    //   icon: AlertCircleOutline,
-    //   path: '/pages/error',
-    //   openInNewTab: false
-    // },
-    // {
-    //   sectionTitle: 'System Reports'
-    // },
-    // userRoleId == 1 || useRoleId == 10 ?
-    //   {
-    //     title: 'ชาร์ตทั้งหมด',
-    //     icon: FileDocumentMultipleOutline,
-    //     path: '/all-chart'
-    //   } : null,
-    // userRoleId == 1 || useRoleId == 10 ?
-    //   {
-    //     title: 'รายงานความครบถ้วน',
-    //     icon: FileDocumentMultipleOutline,
-    //     path: '/report-chart-status'
-    //   } : null,
-
-    // {
-    //   title: 'รายงานความทันเวลา',
-    //   icon: FileDocumentMultipleOutline,
-    //   path: '/report-chart-due'
-    // },
-    // {
-    //   title: 'รายงานความสมบูรณ์',
-    //   icon: FileDocumentMultipleOutline,
-    //   path: '/report-chart-complete'
-    // },
-    // {
-    //   title: 'รายงานสรุป',
-    //   icon: ChartLine,
-    //   path: '/report-summary'
-    // }
-    // {
-    //   title: 'Icons',
-    //   path: '/icons',
-    //   icon: GoogleCirclesExtended
-    // }
-
-    // {
-    //   sectionTitle: 'User Interface'
-    // },
-    // {
-    //   title: 'Typography',
-    //   icon: FormatLetterCase,
-    //   path: '/typography'
-    // },
-    // {
-    //   title: 'Icons',
-    //   path: '/icons',
-    //   icon: GoogleCirclesExtended
-    // },
-    // {
-    //   title: 'Cards',
-    //   icon: CreditCardOutline,
-    //   path: '/cards'
-    // },
-    // {
-    //   title: 'Tables',
-    //   icon: Table,
-    //   path: '/tables'
-    // },
-    // {
-    //   icon: CubeOutline,
-    //   title: 'Form Layouts',
-    //   path: '/form-layouts'
-    // }
+    }
   ]
 }
 

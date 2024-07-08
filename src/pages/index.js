@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState, createContext } from 'react'
 import { useForm } from 'react-hook-form'
-import {Grid,Avatar} from '@mui/material/'
+import { Grid, Avatar } from '@mui/material/'
 import Router from 'next/router'
 import Poll from 'mdi-material-ui/Poll'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
@@ -29,7 +29,6 @@ import Link from 'next/link'
 // ** Styled Component Import
 import apiConfig from 'src/configs/apiConfig'
 import axios from 'axios'
-
 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -128,8 +127,6 @@ const Dashboard = () => {
     moment(date).format('MMMM') +
     ' พ.ศ.' +
     moment(date).add(543, 'year').format('YYYY')
-
-
 
   const handleDeptChangeDate = async data => {
     console.log(data.target.value)
@@ -322,7 +319,6 @@ const Dashboard = () => {
     // fetchMonthlyStaffAttendances()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-
   const SkeletonReportDailyAttendancesLoading = () => (
     <Box sx={{ width: '100%' }}>
       {reportDailyAttendances.blogs ? (
@@ -363,13 +359,12 @@ const Dashboard = () => {
 
   const SkeletonAppsLoading = () => (
     <Box sx={{ width: '100%' }}>
+      {/* <Grid container wrap='nowrap'> */}
 
-        {/* <Grid container wrap='nowrap'> */}
-
-        <Grid container spacing={6}>
+      <Grid container spacing={6}>
         {apps.blogs.map(row => (
           <Grid key={row.appId} item xs={12} md={3} lg={3}>
-            <Card >
+            <Card>
               <CardContent
                 sx={{
                   display: 'flex',
@@ -380,7 +375,13 @@ const Dashboard = () => {
                 }}
               >
                 <Avatar
-                  sx={{ width: 50, height: 50, marginBottom: 2.25, color: 'common.white', backgroundColor: 'primary.main' }}
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    marginBottom: 2.25,
+                    color: 'common.white',
+                    backgroundColor: 'primary.main'
+                  }}
                 >
                   <ChartBar sx={{ fontSize: '2rem' }} />
                 </Avatar>
@@ -390,17 +391,17 @@ const Dashboard = () => {
                 <Typography variant='body2' sx={{ marginBottom: 6 }}>
                   {row.appTitleEn}
                 </Typography>
-                  <Link passHref href={row.appLink} color='success'>
-                    <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
-                      GO
-                    </Button>
-                  </Link>
+                <Link passHref href={row.appLink} color='success'>
+                  <Button variant='contained' sx={{ padding: theme => theme.spacing(1.75, 5.5) }}>
+                    GO
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </Grid>
-       ))}
-       </Grid>
-    </Box>   
+        ))}
+      </Grid>
+    </Box>
   )
 
   const SkeletonReportMonthlyStaffAttendancesLoading = () => (
@@ -424,7 +425,6 @@ const Dashboard = () => {
   )
 
   return (
-
     <Grid container spacing={6}>
       <Grid container item></Grid>
       {/* {err ? (
@@ -506,7 +506,7 @@ const Dashboard = () => {
         }
       </Grid> */}
       <Grid item xs={12}>
-          <SkeletonAppsLoading />
+        <SkeletonAppsLoading />
       </Grid>
       {/* <Grid item xs={12}>
         {userRoleId == 1 || userRoleId == 7 ? //superadmin, head dept
@@ -515,7 +515,6 @@ const Dashboard = () => {
           <Grid />
         }
       </Grid> */}
-
     </Grid>
   )
 }

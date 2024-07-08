@@ -5,8 +5,8 @@ module.exports = {
   reactStrictMode: true,
   output: 'standalone',
   experimental: {
-    esmExternals: false,
-    jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
+    esmExternals: false
+    // jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
   },
   webpack: config => {
     config.resolve.alias = {
@@ -15,6 +15,6 @@ module.exports = {
     }
 
     return config
-  },
-  future: { webpack5: true }
+  }
+  // future: { webpack5: true }
 }
