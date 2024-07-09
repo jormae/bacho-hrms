@@ -20,7 +20,6 @@ export const DataContext = createContext()
 export const CardContext = createContext()
 
 const FormLayouts = () => {
-
   const [err, setError] = useState()
   const [staff, setStaff] = useState({ blogs: [] })
   const userRoleId = typeof window !== 'undefined' ? localStorage.getItem('userRoleId') : null
@@ -30,12 +29,13 @@ const FormLayouts = () => {
     let uri = apiConfig.baseURL + `/staff`
     console.log(uri)
     try {
-      const { data } = await axios.get(uri, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token
-        }
-      })
+      const { data } = await axios
+        .get(uri, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          }
+        })
         .catch(error => {
           console.error(error)
           console.error(error.response.data)
@@ -84,43 +84,37 @@ const FormLayouts = () => {
     fetchStaff()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  //   const SkeletonLeaveReportLoading = () => (
+  //     <Box sx={{ width: '100%' }}>
+  //         <Grid container wrap='nowrap'>
+  //             <Grid item xs={12} md={12} lg={12}>
+  //             <DataContext.Provider value={staff}>
+  //               <TableMember />
+  //             </DataContext.Provider>
+  //             </Grid>
+  //         </Grid>
+  //     </Box>
+  // )
 
-    //   const SkeletonLeaveReportLoading = () => (
-    //     <Box sx={{ width: '100%' }}>
-    //         <Grid container wrap='nowrap'>
-    //             <Grid item xs={12} md={12} lg={12}>
-    //             <DataContext.Provider value={staff}>
-    //               <TableMember />
-    //             </DataContext.Provider>
-    //             </Grid>
-    //         </Grid>
-    //     </Box>
-    // )
-
-    if (userRoleId != 1) {
-        return <Error401 />;
-    }
-    else {
-
-        return (
-            <Grid container spacing={6}>
-                <Grid item xs={12}>
-                    {/* <SkeletonLeaveReportLoading /> */}
-                    <Box sx={{ width: '100%' }}>
-                      <Grid container wrap='nowrap'>
-                          <Grid item xs={12} md={12} lg={12}>
-                          <DataContext.Provider value={staff}>
-                            <TableMember />
-                          </DataContext.Provider>
-                          </Grid>
-                      </Grid>
-                  </Box>
-                </Grid>
+  if (userRoleId != '1' && userRoleId != '10') {
+    return <Error401 />
+  } else {
+    return (
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <Box sx={{ width: '100%' }}>
+            <Grid container wrap='nowrap'>
+              <Grid item xs={12} md={12} lg={12}>
+                <DataContext.Provider value={staff}>
+                  <TableMember />
+                </DataContext.Provider>
+              </Grid>
             </Grid>
-            
-        )
-    }
-
+          </Box>
+        </Grid>
+      </Grid>
+    )
+  }
 }
 
 export default FormLayouts

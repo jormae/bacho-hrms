@@ -16,6 +16,7 @@ import Profile from 'mdi-material-ui/FaceManProfile'
 import { Account, ChartAreaspline, Clock, ClockAlert, ClockCheck, DownloadBox } from 'mdi-material-ui'
 import UserIcon from 'src/layouts/components/UserIcon'
 import { ListAlt, ListAltRounded } from '@mui/icons-material'
+import BarChartIcon from '@mui/icons-material/BarChart'
 
 const navigation = () => {
   const username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
@@ -43,6 +44,11 @@ const navigation = () => {
       path: '/attendance'
     },
     {
+      title: 'ข้อมูลลาปฏิบัติงาน',
+      icon: ChartAreaspline,
+      path: '/leaves'
+    },
+    {
       title: 'ดาว์นโหลด',
       icon: DownloadBox,
       path: 'https://portal.bachohospital.org/public/download'
@@ -65,9 +71,9 @@ const navigation = () => {
       sectionTitle: 'รายงานรายปี'
     },
     {
-      title: 'สรุปลาปฏิบัติงาน',
-      icon: ChartAreaspline,
-      path: '/leaves'
+      title: 'ลาปฏิบัติงาน',
+      icon: BarChartIcon,
+      path: '/reports/yearly/leaves'
     }
   ]
 }

@@ -174,6 +174,7 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
       </TableRow>
     ))
   }
+
   return (
     <div>
       <div ref={printRef}>

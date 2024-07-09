@@ -105,9 +105,7 @@ const TableReportMonthlyAttendance = () => {
   }
 
   const handleChangeDept = async data => {
-    setDeptFilter(data.target.value)
     setDeptId(data.target.value)
-    console.log(JSON.stringify(data.key))
   }
 
   const [pg, setpg] = React.useState(0)
@@ -154,9 +152,10 @@ const TableReportMonthlyAttendance = () => {
     // let uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${selectedYearMonth}`
     // let admin_uri = apiConfig.baseURL + `/reports/monthly/attendances/date/${selectedYearMonth}`
     let admin_uri = apiConfig.baseURL + `/reports/monthly/attendances/deptId/date/${deptId}/${selectedYearMonth}`
+
     let manager_uri =
       apiConfig.baseURL + `/reports/monthly/attendances/main-dept/date/${mainDeptId}/${selectedYearMonth}`
-    let uri = userRoleId == 1 ? admin_uri : manager_uri
+    let uri = userRoleId == 1 || userRoleId == 10 ? admin_uri : manager_uri
     console.log(uri)
     console.log('deptId = ' + deptId)
     console.log('selectedYearMonth = ' + selectedYearMonth)
@@ -184,7 +183,7 @@ const TableReportMonthlyAttendance = () => {
   const fetchDepts = async () => {
     let admin_uri = apiConfig.baseURL + `/utils/depts/`
     let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
-    let uri = userRoleId == 1 ? admin_uri : manager_uri
+    let uri = userRoleId == 1 || userRoleId == 10 ? admin_uri : manager_uri
     console.log(uri)
     try {
       const { data } = await axios.get(uri)
