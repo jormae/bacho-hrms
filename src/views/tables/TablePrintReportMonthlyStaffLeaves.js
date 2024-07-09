@@ -20,28 +20,32 @@ import { Typography } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
+  Typography: {
+    fontSize: '16px',
+    marginTop: '-5px',
+    marginBottom: '-5px',
+    color: 'black'
+  },
   [`@page`]: {
-    size: 'A4 Portrait',
+    size: 'A4 Landscape',
     margin: 20
   },
   [`@media print`]: {
     Typography: {
-      fontSize: '18px',
+      fontSize: '16px',
       color: 'black'
     },
     table: {
-      minWidth: 650,
       color: '000',
-      width: 1024,
+      width: '99%',
       '& .MuiTableCell-root': {
         border: '1px solid black'
       },
       margin: 'auto',
       color: 'black'
     },
-    TableCell: {
-      fontSize: '30px',
-      color: 'black'
+    hide: {
+      display: 'none'
     }
   },
   color: 'black'
@@ -60,21 +64,20 @@ const TablePrintReportMonthlyStaffLeaves = () => {
   const [staffInfo, setStaffInfo] = useState()
 
   const print = `
-  @page: {
-    size: 'A4 Portrait',
-    margin: 20
+  Typography: {
+    fontSize: '16px',
+    marginTop: '-15px',
+    marginBottom: '-15px',
   },
-  @media print: {
+  @page: {
+    size: 'A4 Landscape',
+    margin: 25
+  },
+  @media print {
     Typography: {
-      fontSize: '20px',
+      fontSize: '14px',
       color: 'black'
     },
-    table: {
-      minWidth: 650,
-    TableCell: {
-      fontSize: '30px',
-      color: 'black'
-    }
   },
   color: 'black'
 `
@@ -137,41 +140,43 @@ const TablePrintReportMonthlyStaffLeaves = () => {
         <Table className={classes.table} size='small'>
           <TableHead>
             <TableRow style={{ backgroundColor: '#dedede' }}>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                ที่
+              <TableCell align='center'>
+                <Typography className={classes.Typography}>ที่</Typography>
               </TableCell>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                วันที่
+              <TableCell align='center'>
+                <Typography className={classes.Typography}> วันที่</Typography>
               </TableCell>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                จำนวนวันลา
+              <TableCell align='center'>
+                <Typography className={classes.Typography}> จำนวนวันลา</Typography>
               </TableCell>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                ประเภทการลา
+              <TableCell align='center'>
+                <Typography className={classes.Typography}> ประเภทการลา</Typography>
               </TableCell>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                หมายเหตุ
+              <TableCell align='center'>
+                <Typography className={classes.Typography}> หมายเหตุ</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {reportMonthlyStaffLeaves.blogs.map((row, index) => (
               <TableRow key={index}>
-                <TableCell align='center' component='th' scope='row' style={{ color: 'black', fontSize: '18px' }}>
-                  {i++}
+                <TableCell align='center' component='th' scope='row'>
+                  <Typography className={classes.Typography}>{i++}</Typography>
                 </TableCell>
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  {moment(row.leaveStartDate).add(543, 'year').format('DD/MM/YYYY')} -{' '}
-                  {moment(row.leaveEndDate).add(543, 'year').format('DD/MM/YYYY')}
+                <TableCell align='center'>
+                  <Typography className={classes.Typography}>
+                    {moment(row.leaveStartDate).add(543, 'year').format('DD/MM/YYYY')} -{' '}
+                    {moment(row.leaveEndDate).add(543, 'year').format('DD/MM/YYYY')}
+                  </Typography>
                 </TableCell>
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  {row.totalLeaveDays}
+                <TableCell align='center'>
+                  <Typography className={classes.Typography}>{row.totalLeaveDays}</Typography>
                 </TableCell>
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  {row.leaveMainTypeName}
+                <TableCell align='center'>
+                  <Typography className={classes.Typography}>{row.leaveMainTypeName}</Typography>
                 </TableCell>
-                <TableCell align='left' style={{ color: 'black', fontSize: '18px' }}>
-                  {row.leaveReason}
+                <TableCell align='left'>
+                  <Typography className={classes.Typography}>{row.leaveReason}</Typography>
                 </TableCell>
               </TableRow>
             ))}

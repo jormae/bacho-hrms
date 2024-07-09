@@ -24,6 +24,7 @@ import moment from 'moment'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import PrintIcon from '@mui/icons-material/Print'
+import Skeleton from '@mui/material/Skeleton'
 
 import { DashboardStrDateContext, DashboardCidContext } from 'src/pages/index'
 import {
@@ -34,30 +35,32 @@ import { Typography } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
+  Typography: {
+    fontSize: '16px',
+    marginTop: '-5px',
+    marginBottom: '-5px',
+    color: 'black'
+  },
   [`@page`]: {
-    size: 'A4 Portrait',
+    size: 'A4 Landscape',
     margin: 20
   },
   [`@media print`]: {
     Typography: {
-      fontSize: '18px',
+      fontSize: '16px',
       color: 'black'
     },
     table: {
-      minWidth: 650,
-
-      // fontSize: '18px',
       color: '000',
-      width: 1024,
+      width: '99%',
       '& .MuiTableCell-root': {
         border: '1px solid black'
       },
       margin: 'auto',
       color: 'black'
     },
-    TableCell: {
-      fontSize: '30px',
-      color: 'black'
+    hide: {
+      display: 'none'
     }
   },
   color: 'black'
@@ -79,21 +82,20 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
   const strMonth = 'เดือน ' + moment(strDate).format('MMMM') + ' พ.ศ.' + moment(strDate).add(543, 'year').format('YYYY')
 
   const print = `
-  @page: {
-    size: 'A4 Portrait',
-    margin: 20
+  Typography: {
+    fontSize: '14px',
+    marginTop: '-15px',
+    marginBottom: '-15px',
   },
-  @media print: {
+  @page: {
+    size: 'A4 Landscape',
+    margin: 25
+  },
+  @media print {
     Typography: {
-      fontSize: '20px',
+      fontSize: '14px',
       color: 'black'
     },
-    table: {
-      minWidth: 650,
-    TableCell: {
-      fontSize: '30px',
-      color: 'black'
-    }
   },
   color: 'black'
 `
@@ -151,6 +153,27 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
     // handlePrint()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const TableRowsLoader = ({ rowsNum }) => {
+    return [...Array(rowsNum)].map((row, index) => (
+      <TableRow key={index}>
+        <TableCell component='th' scope='row'>
+          <Skeleton animation='wave' variant='text' />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation='wave' variant='text' />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation='wave' variant='text' />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation='wave' variant='text' />
+        </TableCell>
+        <TableCell>
+          <Skeleton animation='wave' variant='text' />
+        </TableCell>
+      </TableRow>
+    ))
+  }
   return (
     <div>
       <div ref={printRef}>
@@ -166,182 +189,179 @@ const TablePrintReportMonthlyStaffSumAttendance = () => {
         <Table className={classes.table} width='1024' size='small'>
           <TableHead>
             <TableRow style={{ backgroundColor: '#dedede' }}>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                ที่
-              </TableCell>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                วันที่
-              </TableCell>
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                วัน
-              </TableCell>
+              <TableCell align='center'>วันที่</TableCell>
+              <TableCell align='center'>วัน</TableCell>
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift1 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวรเช้า
-                </TableCell>
+                <TableCell align='center'>เวรเช้า</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift2 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวร DAY 4
-                </TableCell>
+                <TableCell align='center'>เวร DAY 4</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift3 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวร DAY
-                </TableCell>
+                <TableCell align='center'>เวร DAY</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift4 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวร NIGHT
-                </TableCell>
+                <TableCell align='center'>เวร NIGHT</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift5 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวรเช้าครึ่งวัน
-                </TableCell>
+                <TableCell align='center'>เวรเช้าครึ่งวัน</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift6 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  บ่าย-ดึก
-                </TableCell>
+                <TableCell align='center'>บ่าย-ดึก</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift7 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  บ่าย-เที่ยงคืน
-                </TableCell>
+                <TableCell align='center'>บ่าย-เที่ยงคืน</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift8 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวร 24 ชั่วโมง
-                </TableCell>
+                <TableCell align='center'>เวร 24 ชั่วโมง</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift9 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวรหัวรุ่ง 1
-                </TableCell>
+                <TableCell align='center'>เวรหัวรุ่ง 1</TableCell>
               ) : (
                 ''
               )}
               {countMonthlyStaffAttendance.blogs[0]?.attendanceShift10 > 0 ? (
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  เวรหัวรุ่ง 2
-                </TableCell>
+                <TableCell align='center'>เวรหัวรุ่ง 2</TableCell>
               ) : (
                 ''
               )}
               {/* <TableCell align='center'>รายการลา</TableCell> */}
-              <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                หมายเหตุ
-              </TableCell>
+              <TableCell align='center'>หมายเหตุ</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {reportMonthlyStaffAttendances.blogs.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell align='center' component='th' scope='row' style={{ color: 'black', fontSize: '18px' }}>
-                  {i++}
-                </TableCell>
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  {moment(row.attendanceDate).add(543, 'year').format('DD/MM/YYYY')}
-                </TableCell>
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  {moment(row.attendanceDate).format('dddd')}
-                </TableCell>
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift1 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift1} - {row.checkoutShift1}
+            {!reportMonthlyStaffAttendances.blogs[0] ? (
+              <TableRowsLoader rowsNum={5} />
+            ) : (
+              reportMonthlyStaffAttendances.blogs.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell align='center'>
+                    <Typography className={classes.Typography}>
+                      {moment(row.attendanceDate).add(543, 'year').format('DD/MM/YYYY')}
+                    </Typography>
                   </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift2 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift2} - {row.checkoutShift2}
+                  <TableCell align='center'>
+                    <Typography className={classes.Typography}> {moment(row.attendanceDate).format('dddd')}</Typography>
                   </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift3 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift3} - {row.checkoutShift3}
+
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift1 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift1} - {row.checkoutShift1}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift2 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift2} - {row.checkoutShift2}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift3 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift3} - {row.checkoutShift3}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift4 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift4} - {row.checkoutShift4}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift5 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift5} - {row.checkoutShift5}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift6 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift6} - {row.checkoutShift6}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift7 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift7} - {row.checkoutShift7}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift8 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift8} - {row.checkoutShift8}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift9 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift9} - {row.checkoutShift9}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {countMonthlyStaffAttendance.blogs[0]?.attendanceShift10 > 0 ? (
+                    <TableCell align='center'>
+                      <Typography className={classes.Typography}>
+                        {row.checkinShift10} - {row.checkoutShift10}
+                      </Typography>
+                    </TableCell>
+                  ) : (
+                    ''
+                  )}
+                  {/* <TableCell align='center'>{row.leaveTitle}{row.outStation ? "ราชการนอกสถานที่" : ""}</TableCell> */}
+                  <TableCell align='center'>
+                    <Typography className={classes.Typography}>
+                      {row.leaveTitle}
+                      {row.outStation ? 'ราชการนอกสถานที่' : ''}
+                      {row.dayRemark}
+                      {row.holidayRemark}
+                    </Typography>
                   </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift4 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift4} - {row.checkoutShift4}
-                  </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift5 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift5} - {row.checkoutShift5}
-                  </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift6 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift6} - {row.checkoutShift6}
-                  </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift7 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift7} - {row.checkoutShift7}
-                  </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift8 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift8} - {row.checkoutShift8}
-                  </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift9 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift9} - {row.checkoutShift9}
-                  </TableCell>
-                ) : (
-                  ''
-                )}
-                {countMonthlyStaffAttendance.blogs[0]?.attendanceShift10 > 0 ? (
-                  <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                    {row.checkinShift10} - {row.checkoutShift10}
-                  </TableCell>
-                ) : (
-                  ''
-                )}
-                {/* <TableCell align='center'>{row.leaveTitle}{row.outStation ? "ราชการนอกสถานที่" : ""}</TableCell> */}
-                <TableCell align='center' style={{ color: 'black', fontSize: '18px' }}>
-                  {row.leaveTitle}
-                  {row.outStation ? 'ราชการนอกสถานที่' : ''}
-                  {row.dayRemark}
-                  {row.holidayRemark}
-                </TableCell>
-              </TableRow>
-            ))}
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>

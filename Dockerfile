@@ -8,6 +8,7 @@ COPY . .
 RUN yarn build 
 # remove dev dependencies
 RUN npm prune --production
+
 FROM node:alpine
 WORKDIR /app
 # copy from build image
