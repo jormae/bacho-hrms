@@ -91,6 +91,7 @@ const TableAllLeaves = () => {
       console.log(error)
     }
   }
+
   const fetchDepts = async () => {
     let admin_uri = apiConfig.baseURL + `/utils/depts/`
     let manager_uri = apiConfig.baseURL + `/utils/depts/${mainDeptId}`
