@@ -71,7 +71,7 @@ const Leaves = () => {
     </Box>
   )
 
-  if (userRoleId != '1' && userRoleId != '10') {
+  if (userRoleId == '7') {
     return <Error401 />
   } else {
     return (

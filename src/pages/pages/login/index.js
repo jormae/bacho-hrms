@@ -110,18 +110,18 @@ const LoginPage = () => {
           // window.location = `/staff/${data.username}`
 
           let expires = new Date()
-          expires.setTime(expires.getTime() + 1 * 60 * 60000) //last 1 hr (1 * 60 * 60000)
+          expires.setTime(expires.getTime() + 3 * 60 * 60000) //last 1 hr (1 * 60 * 60000)
 
-          // Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: '.bachohospital.org' })
-          // Cookies.set('bch_user', data.username, {
-          //   secure: true,
-          //   expires,
-          //   sameSite: 'Lax',
-          //   domain: '.bachohospital.org'
-          // })
+          Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: '.bachohospital.org' })
+          Cookies.set('bch_user', data.username, {
+            secure: true,
+            expires,
+            sameSite: 'Lax',
+            domain: '.bachohospital.org'
+          })
 
-          Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
-          Cookies.set('bch_user', data.username, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
+          // Cookies.set('bch_token', data.token, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
+          // Cookies.set('bch_user', data.username, { secure: true, expires, sameSite: 'Lax', domain: 'localhost' })
         } else {
           setError(true)
           setMessage(data.message)
